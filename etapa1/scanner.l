@@ -58,7 +58,7 @@ int lineCount;
 "\%>\%"         {return TK_OC_FORWARD_PIPE;}
 "\%|\%"         {return TK_OC_BASH_PIPE;}
 
-[a-zA-Z_][0-9a-zA-Z_] {return TK_IDENTIFICADOR;}
+[a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
 
 (+|-)?[0-9]+ {return TK_LIT_INT;}
 [0-9]+\.[0-9]+(e|E)(+|-)?[0-9]+ {return TK_LIT_FLOAT;}
