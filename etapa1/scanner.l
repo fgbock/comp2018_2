@@ -8,8 +8,8 @@ int lineCount;
 
 %%
 
-" "             {}
 "	"       {}
+" "             {}
 "//".*          {}
 "/*"            BEGIN(comment);
 
@@ -61,7 +61,7 @@ int lineCount;
 [a-zA-Z_][0-9a-zA-Z_] {return TK_IDENTIFICADOR;}
 
 (+|-)?[0-9]+ {return TK_LIT_INT;}
- {return TK_LIT_FLOAT;}
+[0-9]+\.[0-9]+(e|E)(+|-)?[0-9]+ {return TK_LIT_FLOAT;}
 "false"         {return TK_LIT_FALSE;}
 "true"          {return TK_LIT_TRUE;}
 '[^']'          {return TK_LIT_CHAR;}
