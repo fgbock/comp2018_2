@@ -7,6 +7,7 @@ int lineCount;
 %x comment
 
 %%
+
 " "             {}
 "	"       {}
 "//".*          {}
@@ -59,7 +60,12 @@ int lineCount;
 
 [a-zA-Z_][0-9a-zA-Z_] {return TK_IDENTIFICADOR;}
 
+(+|-)?[0-9]+ {return TK_LIT_INT;}
+ {return TK_LIT_FLOAT;}
+"false"         {return TK_LIT_FALSE;}
+"true"          {return TK_LIT_TRUE;}
 '[^']'          {return TK_LIT_CHAR;}
+"[^\"]*"        {return TK_LIT_STRING;}
 
 .		{return TOKEN_ERRO;}
 
