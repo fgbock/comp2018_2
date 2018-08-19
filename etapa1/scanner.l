@@ -7,7 +7,9 @@ int lineCount;
 %x comment
 
 %%
-"//".*          
+" "             {}
+"	"       {}
+"//".*          {}
 "/*"            BEGIN(comment);
 
 <comment>"*/"	BEGIN(0);
@@ -55,9 +57,11 @@ int lineCount;
 "\%>\%"         {return TK_OC_FORWARD_PIPE;}
 "\%|\%"         {return TK_OC_BASH_PIPE;}
 
+[a-zA-Z_][0-9a-zA-Z_] {return TK_IDENTIFICADOR;}
 
+'[^']'          {return TK_LIT_CHAR;}
 
-.		{return TOKEN_ERRO}
+.		{return TOKEN_ERRO;}
 
 %%
 
