@@ -4,8 +4,17 @@
 int lineCount;
 %}
 
+%x comment
+
 %%
-"\n"            {line_number++;}
+"//".*          
+"/*"            BEGIN(comment);
+
+<comment>"*/"	BEGIN(0);
+<comment>.*     
+<comment>\n     {lineCount++;}
+
+"\n"            {lineCount++;}
 
 "int"           {return TK_PR_INT;}
 "float"         {return TK_PR_FLOAT;}
@@ -33,7 +42,7 @@ int lineCount;
 "public"        {return TK_PR_PUBLIC;}
 "protected"     {return TK_PR_PROTECTED;}
 
-[,;:()\[\]{}+-|?*/<>=!&%#^.$] {return (int) yytext[0];}
+[,;:\]\[{}+-|?*/<>=!&%#^.$()] {return (int) yytext[0];}
 
 "<="            {return TK_OC_LE;}
 ">="            {return TK_OC_GE;}
@@ -45,6 +54,10 @@ int lineCount;
 "<<"            {return TK_OC_SL;}
 "\%>\%"         {return TK_OC_FORWARD_PIPE;}
 "\%|\%"         {return TK_OC_BASH_PIPE;}
+
+
+
+.		{return TOKEN_ERRO}
 
 %%
 
