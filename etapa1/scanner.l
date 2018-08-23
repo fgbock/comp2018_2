@@ -44,6 +44,11 @@ int lineCount;
 "private"       {return TK_PR_PRIVATE;}
 "public"        {return TK_PR_PUBLIC;}
 "protected"     {return TK_PR_PROTECTED;}
+"false"         {return TK_LIT_FALSE;}
+"true"          {return TK_LIT_TRUE;}
+
+(\+|\-)?[0-9]+    {return TK_LIT_INT;}
+[a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
 
 [,;:\]\[{}+-|?*/<>=!&%#^.$()] {return (int) yytext[0];}
 
@@ -58,14 +63,11 @@ int lineCount;
 "\%>\%"         {return TK_OC_FORWARD_PIPE;}
 "\%|\%"         {return TK_OC_BASH_PIPE;}
 
-(\+|\-)?[0-9]+    {return TK_LIT_INT;}
+
 (\+|\-)?[0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {return TK_LIT_FLOAT;}
-"false"         {return TK_LIT_FALSE;}
-"true"          {return TK_LIT_TRUE;}
+
 '[^']'          {return TK_LIT_CHAR;}
 \"[^"]*\"       {return TK_LIT_STRING;}
-
-[a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
 
 .		{return TOKEN_ERRO;}
 
