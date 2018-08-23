@@ -63,7 +63,7 @@ int lineCount;
 "false"         {return TK_LIT_FALSE;}
 "true"          {return TK_LIT_TRUE;}
 '[^']'          {return TK_LIT_CHAR;}
-"[^\"]*"        {return TK_LIT_STRING;}
+\"[^"]*\"       {return TK_LIT_STRING;}
 
 [a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
 
