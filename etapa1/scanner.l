@@ -59,7 +59,7 @@ int lineCount;
 "\%|\%"         {return TK_OC_BASH_PIPE;}
 
 (\+|\-)?[0-9]+    {return TK_LIT_INT;}
-[0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {return TK_LIT_FLOAT;}
+(\+|\-)?[0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {return TK_LIT_FLOAT;}
 "false"         {return TK_LIT_FALSE;}
 "true"          {return TK_LIT_TRUE;}
 '[^']'          {return TK_LIT_CHAR;}
