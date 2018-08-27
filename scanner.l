@@ -1,7 +1,7 @@
 %{
 #include "tokens.h"
 
-int lineCount;
+int lineCount = 1;
 %}
 
 %x comment
@@ -13,9 +13,9 @@ int lineCount;
 "//".*          {}
 "/*"            BEGIN(comment);
 
-<comment>"*/"	BEGIN(0);
-<comment>.*     
-<comment>\n     {lineCount++;}
+<comment>"\*/"	BEGIN(INITIAL);
+<comment>.     
+<comment>"\n"     {lineCount++;}
 
 "\n"            {lineCount++;}
 
