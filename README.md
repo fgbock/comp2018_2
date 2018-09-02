@@ -4,7 +4,8 @@
 
 Instale o Flex:
 ```
-apt-get install flex
+apt install flex
+apt install bison
 ```
 
 E compile o programa:
