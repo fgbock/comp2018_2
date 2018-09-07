@@ -74,12 +74,14 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTI
 param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
 opcional_const: %empty | TK_PR_CONST;
 
-comando_simples: %empty | declaracao_variavel_local_definida ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | bloco_comandos ';' comando_simples;
+comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao_primitiva ';' comando_simples | atribuicao_novo_tipo ';' comando_simples | bloco_comandos ';' comando_simples;
 declaracao_variavel_local_primitiva: opcional_static opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
-declaracao_variavel_local_definida: opcional_static opcional_const tipo_variavel TK_IDENTIFICADOR ';';
+declaracao_variavel_local_novo_tipo: opcional_static opcional_const tipo_variavel TK_IDENTIFICADOR ';';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
 bloco_comandos: %empty | '{' comando_simples '}';
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
+atribuicao_primitiva: TK_IDENTIFICADOR opcional_acesso_vetor '=' expressao;
+atribuicao_novo_tipo: TK_IDENTIFICADOR opcional_acesso_vetor '$' TK_IDENTIFICADOR '=' expressao;
 
 opcional_acesso_vetor: %empty | '[' expressao ']';
 acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
