@@ -82,4 +82,17 @@ opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal
 bloco_comandos: %empty | '{' comando_simples '}';
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
 
+opcional_acesso_vetor: %empty | '[' expressao ']';
+acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
+
+expressao: acesso_variavel;
+expressao: '(' expressao ')';
+expressao: operador_unario expressao;
+expressao: expressao operador_binario expressao;
+expressao: expressao '?' expressao ':' expressao;
+
+
+
+>>>>>>> 3ec4fd53ff001e8828f05f53fffca9c2bd46265c
+
 %%
