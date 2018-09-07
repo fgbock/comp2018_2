@@ -49,7 +49,7 @@ void yyerror (char const *s);
 
 %%
 
-programa: declaracao_variavel_global | declaracao_novo_tipo | %empty;
+programa: declaracao_variavel_global | declaracao_novo_tipo | declaracao_funcao | %empty;
 
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
 declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty;
@@ -63,10 +63,23 @@ opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
 tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva;
 
+/*
 operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
 operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | 'TK_OC_GE' | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
-operador_binario: operator_aritmetico | operador_relacional;
+operador_binario: operator_aritmetico | operador_relacional; */
 
+declaracao_funcao: opcional_static tipo_variavel_primitiva TK_IDENTIFICADOR lista_param_funcao bloco_comandos;
+lista_param_funcao: '(' primeiro_param_funcao ')';
+primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
+param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
+opcional_const: %empty | TK_PR_CONST;
+
+comando_simples: %empty | declaracao_variavel_local_definida ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | bloco_comandos ';' comando_simples;
+declaracao_variavel_local_primitiva: opcional_static opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
+declaracao_variavel_local_definida: opcional_static opcional_const tipo_variavel TK_IDENTIFICADOR ';';
+opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
+bloco_comandos: %empty | '{' comando_simples '}';
+literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
 
 %%
