@@ -47,7 +47,7 @@ int lineCount = 1;
 "false"         {return TK_LIT_FALSE;}
 "true"          {return TK_LIT_TRUE;}
 
-(\+|\-)?[0-9]+    {return TK_LIT_INT;}
+[0-9]+    {return TK_LIT_INT;}
 [a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
 
 [,;:\]\[{}+-|?*/<>=!&%#^.$()] {return (int) yytext[0];}
@@ -64,7 +64,7 @@ int lineCount = 1;
 "\%|\%"         {return TK_OC_BASH_PIPE;}
 
 
-(\+|\-)?[0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {return TK_LIT_FLOAT;}
+[0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {return TK_LIT_FLOAT;}
 
 '[^']'          {return TK_LIT_CHAR;}
 \"[^"]*\"       {return TK_LIT_STRING;}
