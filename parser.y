@@ -53,7 +53,7 @@ programa: declaracao_variavel_global | declaracao_novo_tipo | %empty
 
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}'
 declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty
-declaracao_novo_tipo_propriedade: declaracao_novo_tipo_propriedade | opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';'
+declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';'
 opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED
 
 declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';'
