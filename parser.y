@@ -49,20 +49,19 @@ void yyerror (char const *s);
 
 %%
 
-programa: declaracao_variavel_global
+programa: declaracao_variavel_global | declaracao_novo_tipo | %empty
 
-declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedades '}'
-declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade
-declaracao_novo_tipo_propriedade: propriedade_encapsulamento TK_IDENTIFICADOR
-propriedade_encapsulamento: TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED
+declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}'
+declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty
+declaracao_novo_tipo_propriedade: declaracao_novo_tipo_propriedade | opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';'
+opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED
 
 declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';'
 opcional_static: %empty | TK_PR_STATIC
 opcional_tamanho: %empty | '[' TK_LIT_INT ']'
 
-
-tipo_variavel: TK_IDENTIFICADOR | TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING
-
+tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING
+tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva
 
 
 %%
