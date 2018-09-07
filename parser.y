@@ -68,5 +68,16 @@ operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | 'TK_OC_GE' | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
 operador_binario: operator_aritmetico | operador_relacional;
 
+opcional_acesso_vetor: %empty | '[' expressao ']';
+acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
+
+expressao: acesso_variavel;
+expressao: '(' expressao ')';
+expressao: operador_unario expressao;
+expressao: expressao operador_binario expressao;
+expressao: expressao '?' expressao ':' expressao;
+
+
+
 
 %%
