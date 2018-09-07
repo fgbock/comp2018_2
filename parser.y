@@ -63,11 +63,10 @@ opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
 tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva;
 
-/*
 operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
 operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
-operador_relacional: '<' | '>' | TK_OC_LE | 'TK_OC_GE' | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
-operador_binario: operator_aritmetico | operador_relacional; */
+operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
+operador_binario: operator_aritmetico | operador_relacional;
 
 declaracao_funcao: opcional_static tipo_variavel_primitiva TK_IDENTIFICADOR lista_param_funcao bloco_comandos;
 lista_param_funcao: '(' primeiro_param_funcao ')';
@@ -90,9 +89,5 @@ expressao: '(' expressao ')';
 expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
-
-
-
->>>>>>> 3ec4fd53ff001e8828f05f53fffca9c2bd46265c
 
 %%
