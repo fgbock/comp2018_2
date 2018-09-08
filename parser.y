@@ -73,6 +73,7 @@ declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcio
 
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
+tipo_variavel_usuario: TK_IDENTIFICADOR;
 tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva;
 
 /* operadores */
@@ -87,11 +88,13 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTI
 param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
+comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
 
 /* comandos simples - declarações */
-declaracao_variavel_local_primitiva: opcional_static opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
-declaracao_variavel_local_novo_tipo: opcional_static opcional_const tipo_variavel TK_IDENTIFICADOR ';';
+declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
+declaracao_variavel_local_aux: declaracao_variavel_local_primitiva | declaracao_variavel_local_novo_tipo;
+declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
+declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR ';';
 
 /* comandos simples - bloco de comandos */
 bloco_comandos: %empty | '{' comando_simples '}';
@@ -121,14 +124,17 @@ expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
-/* comandos de laco */
+/* controles de fluxo */
+comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional;
+comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
+comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
+
+/* comandos de iteracao */
 comando_laco: comando_foreach | comando_for | comando_while | comando_do_while;
 comando_foreach: TK_PR_FOREACH '(' lista_expressoes_primeira ')' bloco_comandos;
 comando_for: TK_PR_FOR '(' lista_expressoes_primeira ')';
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
-
-
 
 
 %%

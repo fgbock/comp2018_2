@@ -17,5 +17,5 @@ debug:
 	gcc -o etapa2 main.o yyerror.o parser.tab.o lex.yy.o
 
 clean:
-	rm -rf etapa2 lex.yy.c lex.yy.o main.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output
+	rm -rf etapa2 lex.yy.c lex.yy.o main.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE
 	
