@@ -109,7 +109,7 @@ lista_expressoes_primeira: expressao ';' lista_expressoes;
 lista_expressoes: %empty | expressao ';' lista_expressoes;
 
 /* comando simples - função */
-chamada_funcao: TK_IDENTIFICADOR '(' primeiro_argumento ')';
+chamada_funcao: TK_IDENTIFICADOR '(' primeiro_argumento ')' optional_pipe_command;
 primeiro_argumento: %empty | argumento;
 argumento: %empty | expressao ',' argumento | '.' ',' argumento;
 
@@ -125,12 +125,14 @@ expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
 /* comandos de return, break, continue e case */
+comando_extra: comando_return | comando_break | comando_continue | comando_case;
 comando_return: TK_PR_RETURN expressao ';';
 comando_break: TK_PR_BREAK ';';
 comando_continue: TK_PR_CONTINUE ';';
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
+comando_fluxo: comando_if | comando_switch;
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional;
 comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
@@ -141,6 +143,13 @@ comando_foreach: TK_PR_FOREACH '(' lista_expressoes_primeira ')' bloco_comandos;
 comando_for: TK_PR_FOR '(' lista_expressoes_primeira ')';
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
+
+/* comandos com pipes */
+pipe: TK_OC_FORWARD_PIPE | TK_OC_BASH_PIPE;
+optional_pipe_command: %empty | comando_pipe;
+comando_pipe: pipe chamada_funcao;
+
+
 
 
 %%
