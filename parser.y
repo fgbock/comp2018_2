@@ -59,7 +59,8 @@ opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
 opcional_propriedade: %empty | '$' TK_IDENTIFICADOR;
-acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
+acesso_variavel_simples: TK_IDENTIFICADOR opcional_acesso_vetor;
+acesso_variavel_simples_ou_usuario: acesso_variavel_simples opcional_propriedade;
 
 /* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
@@ -86,7 +87,7 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTI
 param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao_primitiva ';' comando_simples | atribuicao_novo_tipo ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
+comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local_primitiva: opcional_static opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
@@ -96,8 +97,7 @@ declaracao_variavel_local_novo_tipo: opcional_static opcional_const tipo_variave
 bloco_comandos: %empty | '{' comando_simples '}';
 
 /* comandos simples - atribuições */
-atribuicao_primitiva: TK_IDENTIFICADOR opcional_acesso_vetor '=' expressao;
-atribuicao_novo_tipo: TK_IDENTIFICADOR opcional_acesso_vetor '$' TK_IDENTIFICADOR '=' expressao;
+atribuicao: acesso_variavel_simples_ou_usuario '=' expressao;
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
@@ -111,11 +111,11 @@ primeiro_argumento: %empty | argumento;
 argumento: %empty | expressao ',' argumento | '.' ',' argumento;
 
 /* comando simples - shift */
-shift: TK_IDENTIFICADOR opcional_acesso_vetor opcional_propriedade shift_token expressao;
+shift: acesso_variavel_simples_ou_usuario shift_token expressao;
 shift_token: TK_OC_SR | TK_OC_SL;
 
 /* expressões */
-expressao: acesso_variavel;
+expressao: acesso_variavel_simples_ou_usuario;
 expressao: '(' expressao ')';
 expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
