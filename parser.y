@@ -121,4 +121,14 @@ expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
+/* comandos de laco */
+comando_laco: comando_foreach | comando_for | comando_while | comando_do_while;
+comando_foreach: TK_PR_FOREACH '(' lista_expressoes_primeira ')' bloco_comandos;
+comando_for: TK_PR_FOR '(' lista_expressoes_primeira ')';
+comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
+comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
+
+
+
+
 %%
