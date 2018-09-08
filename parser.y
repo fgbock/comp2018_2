@@ -51,41 +51,70 @@ void yyerror (char const *s);
 
 programa: declaracao_variavel_global | declaracao_novo_tipo | declaracao_funcao | %empty;
 
+/* opcionais & auxiliares */
+literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
+opcional_static: %empty | TK_PR_STATIC;
+opcional_tamanho: %empty | '[' TK_LIT_INT ']';
+opcional_const: %empty | TK_PR_CONST;
+opcional_acesso_vetor: %empty | '[' expressao ']';
+opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
+opcional_propriedade: %empty | '$' TK_IDENTIFICADOR;
+acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
+
+/* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
 declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty;
 declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';';
 opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
 
+/* declaração de variável global */
 declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';';
-opcional_static: %empty | TK_PR_STATIC;
-opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 
+/* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
 tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva;
 
+/* operadores */
 operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
 operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
 operador_binario: operator_aritmetico | operador_relacional;
 
-declaracao_funcao: opcional_static tipo_variavel_primitiva TK_IDENTIFICADOR lista_param_funcao bloco_comandos;
-lista_param_funcao: '(' primeiro_param_funcao ')';
+/* declaração de função */
+declaracao_funcao: opcional_static tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;
 primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
 param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
-opcional_const: %empty | TK_PR_CONST;
 
-comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao_primitiva ';' comando_simples | atribuicao_novo_tipo ';' comando_simples | bloco_comandos ';' comando_simples;
+/* comando simples */
+comando_simples: %empty | declaracao_variavel_local_novo_tipo ';' comando_simples | declaracao_variavel_local_primitiva ';' comando_simples | atribuicao_primitiva ';' comando_simples | atribuicao_novo_tipo ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
+
+/* comandos simples - declarações */
 declaracao_variavel_local_primitiva: opcional_static opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
 declaracao_variavel_local_novo_tipo: opcional_static opcional_const tipo_variavel TK_IDENTIFICADOR ';';
-opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
+
+/* comandos simples - bloco de comandos */
 bloco_comandos: %empty | '{' comando_simples '}';
-literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
+
+/* comandos simples - atribuições */
 atribuicao_primitiva: TK_IDENTIFICADOR opcional_acesso_vetor '=' expressao;
 atribuicao_novo_tipo: TK_IDENTIFICADOR opcional_acesso_vetor '$' TK_IDENTIFICADOR '=' expressao;
 
-opcional_acesso_vetor: %empty | '[' expressao ']';
-acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor;
+/* comando simples - io */
+input: TK_PR_INPUT expressao;
+output: TK_PR_OUTPUT lista_expressoes_primeira;
+lista_expressoes_primeira: expressao ';' lista_expressoes;
+lista_expressoes: %empty | expressao ';' lista_expressoes;
 
+/* comando simples - função */
+chamada_funcao: TK_IDENTIFICADOR '(' primeiro_argumento ')';
+primeiro_argumento: %empty | argumento;
+argumento: %empty | expressao ',' argumento | '.' ',' argumento;
+
+/* comando simples - shift */
+shift: TK_IDENTIFICADOR opcional_acesso_vetor opcional_propriedade shift_token expressao;
+shift_token: TK_OC_SR | TK_OC_SL;
+
+/* expressões */
 expressao: acesso_variavel;
 expressao: '(' expressao ')';
 expressao: operador_unario expressao;
