@@ -124,6 +124,12 @@ expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
+/* comandos de return, break, continue e case */
+comando_return: TK_PR_RETURN expressao ';';
+comando_break: TK_PR_BREAK ';';
+comando_continue: TK_PR_CONTINUE ';';
+comando_case: TK_PR_CASE TK_LIT_INT ':';
+
 /* controles de fluxo */
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional;
 comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
