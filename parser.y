@@ -47,7 +47,9 @@ void yyerror (char const *s);
 %token TK_IDENTIFICADOR
 %token TOKEN_ERRO
 
+
 %%
+
 
 programa: declaracao_variavel_global programa | declaracao_novo_tipo programa | declaracao_funcao programa | %empty;
 
