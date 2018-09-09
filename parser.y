@@ -59,8 +59,9 @@ opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
 opcional_propriedade: %empty | '$' TK_IDENTIFICADOR;
-acesso_variavel_simples: TK_IDENTIFICADOR opcional_acesso_vetor;
-acesso_variavel_simples_ou_usuario: acesso_variavel_simples opcional_propriedade;
+acesso_variavel_simples: literal opcional_acesso_vetor;
+acesso_variavel_usuario: TK_IDENTIFICADOR opcional_acesso_vetor opcional_propriedade;
+acesso_variavel_simples_ou_usuario: acesso_variavel_simples | acesso_variavel_usuario;
 
 /* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
@@ -74,7 +75,7 @@ declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcio
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
 tipo_variavel_usuario: TK_IDENTIFICADOR;
-tipo_variavel: TK_IDENTIFICADOR | tipo_variavel_primitiva;
+tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
 
 /* operadores */
 operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
@@ -83,12 +84,12 @@ operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_
 operador_binario: operator_aritmetico | operador_relacional;
 
 /* declaração de função */
-declaracao_funcao: opcional_static tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;
-primeiro_param_funcao: %empty | opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
-param_funcao: %empty | ',' opcional_const tipo_variavel_primitiva TK_IDENTIFICADOR param_funcao;
+declaracao_funcao: opcional_static tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;
+primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
+param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples;
+comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples | comando_laco ';' comando_simples | comando_fluxo ';' comando_simples | comando_pipe ';' comando_simples | comando_extra ';' comando_extra;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
@@ -105,8 +106,8 @@ atribuicao: acesso_variavel_simples_ou_usuario '=' expressao;
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
 output: TK_PR_OUTPUT lista_expressoes_primeira;
-lista_expressoes_primeira: expressao ';' lista_expressoes;
-lista_expressoes: %empty | expressao ';' lista_expressoes;
+lista_expressoes_primeira: expressao ',' lista_expressoes;
+lista_expressoes: %empty | expressao ',' lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' primeiro_argumento ')' optional_pipe_command;
@@ -140,9 +141,11 @@ comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 /* comandos de iteracao */
 comando_laco: comando_foreach | comando_for | comando_while | comando_do_while;
 comando_foreach: TK_PR_FOREACH '(' lista_expressoes_primeira ')' bloco_comandos;
-comando_for: TK_PR_FOR '(' lista_expressoes_primeira ')';
+comando_for: TK_PR_FOR '(' lista_comandos_primeira ')';
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
+lista_comandos_primeira: comando_simples ',' lista_comandos;
+lista_comandos: %empty | comando_simples ',' lista_comandos;
 
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE | TK_OC_BASH_PIPE;
