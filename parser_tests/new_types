@@ -1,0 +1,19 @@
+class meu_tipo {
+ int a:
+ int b:
+ int c
+};
+
+class meu_tipo_2 {
+ int a:
+ private int a:
+ protected int c
+};
+
+class meu_tipo_3 {
+ int a:
+ bool b:
+ float c:
+ char d:
+ string e
+};
