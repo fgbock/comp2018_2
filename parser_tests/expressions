@@ -1,0 +1,17 @@
+bool fun() {
+ a = a;
+ a = 1;
+ a = 1.42;
+ a = true;
+ a = false;
+ a = 1+1;
+ a = 1-1;
+ a = 1%1;
+ a = a[10];
+ a = a$campo;
+ a = !a;
+ a = b ? c : d;
+ a = (10 / 2) == 5;
+ a = (true == true);
+ a = ((((5))));
+}
