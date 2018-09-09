@@ -60,10 +60,8 @@ opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
-opcional_propriedade: %empty | '$' TK_IDENTIFICADOR;
-acesso_variavel_simples: literal opcional_acesso_vetor;
-acesso_variavel_usuario: TK_IDENTIFICADOR opcional_acesso_vetor opcional_propriedade;
-acesso_variavel_simples_ou_usuario: acesso_variavel_simples | acesso_variavel_usuario;
+opcional_acesso_propriedade: %empty | '$' TK_IDENTIFICADOR;
+acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor opcional_acesso_propriedade;
 
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
@@ -77,7 +75,8 @@ operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_
 operador_binario: operator_aritmetico | operador_relacional;
 
 /* expressões */
-expressao: acesso_variavel_simples_ou_usuario;
+expressao: literal;
+expressao: acesso_variavel;
 expressao: '(' expressao ')';
 expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
@@ -110,7 +109,7 @@ declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR ';';
 bloco_comandos: %empty | '{' comando_simples '}';
 
 /* comandos simples - atribuições */
-atribuicao: acesso_variavel_simples_ou_usuario '=' expressao;
+atribuicao: acesso_variavel '=' expressao;
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
@@ -122,7 +121,7 @@ chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command;
 argumento: %empty | expressao ',' argumento | '.' ',' argumento;
 
 /* comando simples - shift */
-shift: acesso_variavel_simples_ou_usuario shift_token expressao;
+shift: expressao shift_token expressao;
 shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
