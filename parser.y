@@ -49,7 +49,7 @@ void yyerror (char const *s);
 
 %%
 
-programa: declaracao_variavel_global | declaracao_novo_tipo | declaracao_funcao | %empty;
+programa: declaracao_variavel_global programa | declaracao_novo_tipo programa | declaracao_funcao programa | %empty;
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
@@ -63,15 +63,6 @@ acesso_variavel_simples: literal opcional_acesso_vetor;
 acesso_variavel_usuario: TK_IDENTIFICADOR opcional_acesso_vetor opcional_propriedade;
 acesso_variavel_simples_ou_usuario: acesso_variavel_simples | acesso_variavel_usuario;
 
-/* declarações de tipo */
-declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
-declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty;
-declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';';
-opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
-
-/* declaração de variável global */
-declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';';
-
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
 tipo_variavel_usuario: TK_IDENTIFICADOR;
@@ -82,6 +73,22 @@ operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
 operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
 operador_binario: operator_aritmetico | operador_relacional;
+
+/* expressões */
+expressao: acesso_variavel_simples_ou_usuario;
+expressao: '(' expressao ')';
+expressao: operador_unario expressao;
+expressao: expressao operador_binario expressao;
+expressao: expressao '?' expressao ':' expressao;
+
+/* declarações de tipo */
+declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}';
+declaracao_novo_tipo_propriedades: declaracao_novo_tipo_propriedade ':' | %empty;
+declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR ';';
+opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
+
+/* declaração de variável global */
+declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';';
 
 /* declaração de função */
 declaracao_funcao: opcional_static tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;
@@ -105,25 +112,16 @@ atribuicao: acesso_variavel_simples_ou_usuario '=' expressao;
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
-output: TK_PR_OUTPUT lista_expressoes_primeira;
-lista_expressoes_primeira: expressao ',' lista_expressoes;
+output: TK_PR_OUTPUT expressao ',' lista_expressoes;
 lista_expressoes: %empty | expressao ',' lista_expressoes;
 
 /* comando simples - função */
-chamada_funcao: TK_IDENTIFICADOR '(' primeiro_argumento ')' optional_pipe_command;
-primeiro_argumento: %empty | argumento;
+chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command;
 argumento: %empty | expressao ',' argumento | '.' ',' argumento;
 
 /* comando simples - shift */
 shift: acesso_variavel_simples_ou_usuario shift_token expressao;
 shift_token: TK_OC_SR | TK_OC_SL;
-
-/* expressões */
-expressao: acesso_variavel_simples_ou_usuario;
-expressao: '(' expressao ')';
-expressao: operador_unario expressao;
-expressao: expressao operador_binario expressao;
-expressao: expressao '?' expressao ':' expressao;
 
 /* comandos de return, break, continue e case */
 comando_extra: comando_return | comando_break | comando_continue | comando_case;
@@ -140,19 +138,15 @@ comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
 /* comandos de iteracao */
 comando_laco: comando_foreach | comando_for | comando_while | comando_do_while;
-comando_foreach: TK_PR_FOREACH '(' lista_expressoes_primeira ')' bloco_comandos;
-comando_for: TK_PR_FOR '(' lista_comandos_primeira ')';
+comando_foreach: TK_PR_FOREACH '(' expressao ',' lista_expressoes ')' bloco_comandos;
+comando_for: TK_PR_FOR '(' comando_simples ',' lista_comandos ')';
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
-lista_comandos_primeira: comando_simples ',' lista_comandos;
 lista_comandos: %empty | comando_simples ',' lista_comandos;
 
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE | TK_OC_BASH_PIPE;
 optional_pipe_command: %empty | comando_pipe;
 comando_pipe: pipe chamada_funcao;
-
-
-
 
 %%
