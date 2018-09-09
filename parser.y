@@ -102,8 +102,8 @@ comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribu
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
 declaracao_variavel_local_aux: declaracao_variavel_local_primitiva | declaracao_variavel_local_novo_tipo;
-declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor ';';
-declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR ';';
+declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR;
 
 /* comandos simples - bloco de comandos */
 bloco_comandos: %empty | '{' comando_simples '}';
@@ -126,9 +126,9 @@ shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
 comando_extra: comando_return | comando_break | comando_continue | comando_case;
-comando_return: TK_PR_RETURN expressao ';';
-comando_break: TK_PR_BREAK ';';
-comando_continue: TK_PR_CONTINUE ';';
+comando_return: TK_PR_RETURN expressao;
+comando_break: TK_PR_BREAK;
+comando_continue: TK_PR_CONTINUE;
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
