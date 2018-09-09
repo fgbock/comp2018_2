@@ -69,7 +69,7 @@ tipo_variavel_usuario: TK_IDENTIFICADOR;
 tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
 
 /* operadores */
-operador_unario: '+' | '-' | '&' | '*' | '?' | '#';
+operador_unario: '+' | '-' | '!' | '&' | '*' | '?' | '#';
 operator_aritmetico: '+' | '-' | '*' | '/' | '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
 operador_binario: operator_aritmetico | operador_relacional;
