@@ -1,0 +1,6 @@
+variavel_global int;
+variavel_global float;
+variavel_global tipo_do_usuario;
+variavel_global int[100];
+variavel_global static int[100];
+ 
