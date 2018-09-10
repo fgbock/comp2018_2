@@ -1,0 +1,20 @@
+int test()
+{
+  if (true) then
+  {
+     a = 1;
+  }
+  else
+  {
+     a = 2;
+  }
+
+  switch (a) {
+    case 1:
+      a = 0;
+      break;
+    case 2:
+     a = 42;
+     break;
+  }
+}

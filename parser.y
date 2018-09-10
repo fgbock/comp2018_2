@@ -97,7 +97,7 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR pa
 param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples | comando_laco ';' comando_simples | comando_fluxo ';' comando_simples | comando_pipe ';' comando_simples | comando_extra ';' comando_simples;
+comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples | comando_laco ';' comando_simples | comando_fluxo comando_simples | comando_pipe ';' comando_simples | comando_extra comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
@@ -126,9 +126,9 @@ shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
 comando_extra: comando_return | comando_break | comando_continue | comando_case;
-comando_return: TK_PR_RETURN expressao;
-comando_break: TK_PR_BREAK;
-comando_continue: TK_PR_CONTINUE;
+comando_return: TK_PR_RETURN expressao ';';
+comando_break: TK_PR_BREAK ';';
+comando_continue: TK_PR_CONTINUE ';';
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
