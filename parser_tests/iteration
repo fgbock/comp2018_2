@@ -1,6 +1,13 @@
 bool fun() 
 {
 
+
+ foreach (item : 1, 2, 3, 2+2, f(), a[20]) 
+ {
+   a = a + item;
+ }
+
+
  for (i = 0 :
       i < 100 : 
       i = i + 1) 

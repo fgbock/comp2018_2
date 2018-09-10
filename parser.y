@@ -123,8 +123,8 @@ atribuicao: acesso_variavel '=' expressao;
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
-output: TK_PR_OUTPUT expressao ',' lista_expressoes;
-lista_expressoes: %empty | expressao ',' lista_expressoes;
+output: TK_PR_OUTPUT expressao lista_expressoes;
+lista_expressoes: %empty | ',' expressao lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command;
@@ -148,7 +148,7 @@ comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 /* comandos de iteracao */
 comandos_dentro_for: atribuicao comandos_dentro_for_aux;
 comandos_dentro_for_aux: %empty | ',' atribuicao comandos_dentro_for_aux;
-comando_foreach: TK_PR_FOREACH '(' expressao ',' lista_expressoes ')' bloco_comandos;
+comando_foreach: TK_PR_FOREACH '(' TK_IDENTIFICADOR ':' expressao lista_expressoes ')' bloco_comandos;
 comando_for: TK_PR_FOR '(' comandos_dentro_for ':' expressao ':' comandos_dentro_for ')' bloco_comandos;
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
