@@ -77,6 +77,7 @@ operador_binario: operator_aritmetico | operador_relacional;
 /* expressões */
 expressao: literal;
 expressao: acesso_variavel;
+expressao: chamada_funcao;
 expressao: '(' expressao ')';
 expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
