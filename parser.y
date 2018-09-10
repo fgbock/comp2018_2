@@ -98,7 +98,11 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR pa
 param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_simples: %empty | declaracao_variavel_local ';' comando_simples | atribuicao ';' comando_simples | bloco_comandos ';' comando_simples | input ';' comando_simples | output ';' comando_simples | chamada_funcao ';' comando_simples | shift ';' comando_simples | comando_laco ';' comando_simples | comando_fluxo comando_simples | comando_pipe ';' comando_simples | comando_extra comando_simples;
+comando_com_ponto_e_virgula: atribuicao | declaracao_variavel_local | input | output | chamada_funcao | shift | comando_return | comando_break | comando_continue | comando_do_while;
+comando_sem_ponto_e_virgula: comando_if | comando_switch | comando_case | comando_foreach | comando_for | comando_while;
+comando_simples: %empty;
+comando_simples: comando_com_ponto_e_virgula ';' comando_simples;
+comando_simples: comando_sem_ponto_e_virgula comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
@@ -126,25 +130,23 @@ shift: expressao shift_token expressao;
 shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
-comando_extra: comando_return | comando_break | comando_continue | comando_case;
-comando_return: TK_PR_RETURN expressao ';';
-comando_break: TK_PR_BREAK ';';
-comando_continue: TK_PR_CONTINUE ';';
+comando_return: TK_PR_RETURN expressao;
+comando_break: TK_PR_BREAK;
+comando_continue: TK_PR_CONTINUE;
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
-comando_fluxo: comando_if | comando_switch;
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional;
 comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
 /* comandos de iteracao */
-comando_laco: comando_foreach | comando_for | comando_while | comando_do_while;
+comandos_dentro_for: atribuicao comandos_dentro_for_aux;
+comandos_dentro_for_aux: %empty | ',' atribuicao comandos_dentro_for_aux;
 comando_foreach: TK_PR_FOREACH '(' expressao ',' lista_expressoes ')' bloco_comandos;
-comando_for: TK_PR_FOR '(' comando_simples ',' lista_comandos ')';
+comando_for: TK_PR_FOR '(' comandos_dentro_for ':' expressao ':' comandos_dentro_for ')' bloco_comandos;
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
-lista_comandos: %empty | comando_simples ',' lista_comandos;
 
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE | TK_OC_BASH_PIPE;
