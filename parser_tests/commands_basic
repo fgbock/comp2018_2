@@ -1,0 +1,14 @@
+bool fun() {
+ 
+ int a <= 10; // declaracao_variavel_local
+ a = 10; // atribuicao
+ input a; // input
+ output 10, a; // output
+ f(); // chamada de funcao
+ a << 10; // shift left
+ a >> f(); // shift right
+ continue; // continue
+ break; // break
+ case 10: // case
+ return true; // retorno
+}

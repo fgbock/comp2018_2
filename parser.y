@@ -128,7 +128,10 @@ lista_expressoes: %empty | ',' expressao lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command;
-argumento: %empty | expressao ',' argumento | '.' ',' argumento;
+argumento: %empty;
+argumento: expressao argumento_aux;
+argumento: '.' argumento_aux;
+argumento_aux: %empty | ',' argumento;
 
 /* comando simples - shift */
 shift: expressao shift_token expressao;
