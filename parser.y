@@ -51,7 +51,7 @@ void yyerror (char const *s);
 %%
 
 
-programa: declaracao_variavel_global programa | declaracao_novo_tipo programa | declaracao_funcao programa | %empty;
+programa: declaracao_funcao_usertype_e_var_global programa | declaracao_variavel_global programa | declaracao_novo_tipo programa | declaracao_funcao programa | %empty;
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
@@ -89,11 +89,16 @@ declaracao_novo_tipo_propriedades: ':' declaracao_novo_tipo_propriedade declarac
 declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR;
 opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
 
+/* fix de s/r para declarações de global e função */
+declaracao_funcao_usertype_e_var_global: TK_IDENTIFICADOR TK_IDENTIFICADOR global | TK_IDENTIFICADOR TK_IDENTIFICADOR funcao;
+global: opcional_tamanho ';';
+funcao: '(' primeiro_param_funcao ')' bloco_comandos;
+
 /* declaração de variável global */
-declaracao_variavel_global: TK_IDENTIFICADOR opcional_static tipo_variavel opcional_tamanho ';';
+declaracao_variavel_global: TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel opcional_tamanho ';' | TK_IDENTIFICADOR tipo_variavel_primitiva opcional_tamanho ';';
 
 /* declaração de função */
-declaracao_funcao: opcional_static tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;
+declaracao_funcao: TK_PR_STATIC tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos | tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;;
 primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
