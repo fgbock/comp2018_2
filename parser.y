@@ -3,6 +3,8 @@ int yylex(void);
 void yyerror (char const *s);
 %}
 
+%define parse.error verbose
+
 %token TK_PR_INT
 %token TK_PR_FLOAT
 %token TK_PR_BOOL
