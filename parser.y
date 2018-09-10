@@ -108,6 +108,7 @@ comando_sem_ponto_e_virgula: comando_if | comando_switch | comando_case | comand
 comando_simples: %empty;
 comando_simples: comando_com_ponto_e_virgula ';' comando_simples;
 comando_simples: comando_sem_ponto_e_virgula comando_simples;
+comando_simples: bloco_comandos comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
@@ -116,7 +117,7 @@ declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR op
 declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR;
 
 /* comandos simples - bloco de comandos */
-bloco_comandos: %empty | '{' comando_simples '}';
+bloco_comandos: '{' comando_simples '}';
 
 /* comandos simples - atribuições */
 atribuicao: acesso_variavel '=' expressao;
