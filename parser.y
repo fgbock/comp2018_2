@@ -49,7 +49,8 @@ void yyerror (char const *s);
 %token TK_IDENTIFICADOR
 %token TOKEN_ERRO
 
-
+%nonassoc '+' '-' '|'
+%nonassoc '*' '/' '&'
 %%
 
 
