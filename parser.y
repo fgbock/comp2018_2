@@ -59,7 +59,7 @@ programa: declaracao_funcao_usertype_e_var_global programa | declaracao_variavel
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
 opcional_static: %empty | TK_PR_STATIC;
-opcional_tamanho: %empty | '[' TK_LIT_INT ']';
+//opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
@@ -87,18 +87,21 @@ expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
 /* declarações de tipo */
-declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '{' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades '}'';';
+declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';';
 declaracao_novo_tipo_propriedades: ':' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades | %empty;
 declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva TK_IDENTIFICADOR;
 opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
 
 /* fix de s/r para declarações de global e função */
 declaracao_funcao_usertype_e_var_global: TK_IDENTIFICADOR TK_IDENTIFICADOR global | TK_IDENTIFICADOR TK_IDENTIFICADOR funcao;
-global: opcional_tamanho ';';
+global: ';';
 funcao: '(' primeiro_param_funcao ')' bloco_comandos;
 
 /* declaração de variável global */
-declaracao_variavel_global: TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel opcional_tamanho ';' | TK_IDENTIFICADOR tipo_variavel_primitiva opcional_tamanho ';';
+declaracao_variavel_global: /*TK_IDENTIFICADOR opcional_tamanho opcional_static tipo_variavel ';' |*/ TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' 
+| TK_IDENTIFICADOR '[' TK_LIT_INT ']' tipo_variavel ';' 
+| TK_IDENTIFICADOR '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'
+| TK_IDENTIFICADOR tipo_variavel_primitiva ';';
 
 /* declaração de função */
 declaracao_funcao: TK_PR_STATIC tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos | tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;;
@@ -108,16 +111,16 @@ param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_f
 /* comando simples */
 comando_com_ponto_e_virgula: atribuicao | declaracao_variavel_local | input | output | chamada_funcao | shift | comando_return | comando_break | comando_continue | comando_do_while;
 comando_sem_ponto_e_virgula: comando_if | comando_switch | comando_case | comando_foreach | comando_for | comando_while;
-comando_simples: %empty;
-comando_simples: comando_com_ponto_e_virgula ';' comando_simples;
-comando_simples: comando_sem_ponto_e_virgula comando_simples;
-comando_simples: bloco_comandos comando_simples;
+comando_simples: %empty 
+| comando_com_ponto_e_virgula ';' comando_simples 
+| comando_sem_ponto_e_virgula comando_simples 
+| bloco_comandos ';' comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
 declaracao_variavel_local_aux: declaracao_variavel_local_primitiva | declaracao_variavel_local_novo_tipo;
 declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor;
-declaracao_variavel_local_novo_tipo: tipo_variavel_usuario TK_IDENTIFICADOR;
+declaracao_variavel_local_novo_tipo: TK_IDENTIFICADOR TK_IDENTIFICADOR;
 
 /* comandos simples - bloco de comandos */
 bloco_comandos: '{' comando_simples '}';
