@@ -15,6 +15,6 @@ make
 
 Para rodar os testes, execute da seguinte forma:
 ```
-cat scanner_tests/strings | ./etapa1
+python test_e2.py 
 ```
 
