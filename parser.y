@@ -49,8 +49,15 @@ void yyerror (char const *s);
 %token TK_IDENTIFICADOR
 %token TOKEN_ERRO
 
-%nonassoc '+' '-' '|'
-%nonassoc '*' '/' '&'
+%left '+' '-'
+%left '*' '/' '%'
+%left TK_OC_NE TK_OC_EQ TK_OC_GE TK_OC_LE '<' '>'
+%left TK_OC_OR TK_OC_AND
+%left '!''&' '|' '^' '#'
+%left '(' ')' ':' '?'
+%left '='
+%right  TK_PR_THEN TK_PR_ELSE 
+%nonassoc '[' ']' ';' ','
 %%
 
 
@@ -109,12 +116,11 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR pa
 param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-comando_com_ponto_e_virgula: atribuicao | declaracao_variavel_local | input | output | chamada_funcao | shift | comando_return | comando_break | comando_continue | comando_do_while;
-comando_sem_ponto_e_virgula: comando_if | comando_switch | comando_case | comando_foreach | comando_for | comando_while;
+um_comando: atribuicao | declaracao_variavel_local | input | output | chamada_funcao | shift | comando_return | comando_break | comando_continue | comando_do_while | comando_if | comando_switch | comando_foreach | comando_for | comando_while;
 comando_simples: %empty 
-| comando_com_ponto_e_virgula ';' comando_simples 
-| comando_sem_ponto_e_virgula comando_simples 
-| bloco_comandos ';' comando_simples;
+| um_comando ';' comando_simples 
+| bloco_comandos ';' comando_simples
+| comando_case comando_simples;
 
 /* comandos simples - declarações */
 declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
@@ -141,7 +147,7 @@ argumento: '.' argumento_aux;
 argumento_aux: %empty | ',' argumento;
 
 /* comando simples - shift */
-shift: expressao shift_token expressao;
+shift: acesso_variavel shift_token expressao;
 shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
