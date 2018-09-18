@@ -71,7 +71,7 @@ opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
 opcional_acesso_propriedade: %empty | '$' TK_IDENTIFICADOR;
-acesso_variavel: TK_IDENTIFICADOR opcional_acesso_vetor opcional_acesso_propriedade;
+acesso_variavel: TK_IDENTIFICADOR opcional_acesso_propriedade opcional_acesso_vetor;
 
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
@@ -132,7 +132,7 @@ declaracao_variavel_local_novo_tipo: TK_IDENTIFICADOR TK_IDENTIFICADOR;
 bloco_comandos: '{' comando_simples '}';
 
 /* comandos simples - atribuições */
-atribuicao: acesso_variavel '=' expressao;
+atribuicao: acesso_variavel '=' expressao | TK_IDENTIFICADOR TK_IDENTIFICADOR;
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
