@@ -40,18 +40,54 @@ ast_node* make_node(int type) {
    return node;
 }
 
-void descompila_internal(ast_node* arvore) {
-   if (arvore == NULL) {
+void descompila_internal(ast_node* node) {
+   if (node == NULL) {
       return;
    }
-   if (arvore->type == NODE_ADD) {
-      printf("(");
-      descompila_internal(arvore->child[0]);
-      printf("+");
-      descompila_internal(arvore->child[1]);
-      printf(")");
+   switch(node->type) {
+      case NODE_INT_LITERAL:
+        printf("%d", node->int_literal);
+        break;
+      case NODE_FLOAT_LITERAL:
+        printf("%f", node->float_literal);
+        break;
+      case NODE_STRING_LITERAL:
+        printf("\"%s\"", node->string_literal);
+        break;
+      case NODE_CHAR_LITERAL:
+        printf("'%c'", node->char_literal);
+        break;
+      case NODE_BOOL_LITERAL:
+        if (node->bool_literal)
+           printf("true");
+        else 
+           printf("false");
+        break;
+      case NODE_ADD:
+        printf("(");
+        descompila_internal(node->child[0]);
+        printf("+");
+        descompila_internal(node->child[1]);
+        printf(")");
+      break;
    }
+
    printf("descompila\n");
+}
+
+void libera_internal(ast_node* node) {
+   for (int i = 0; i < MAX_CHILD_NODES; i++) {
+      if (node->child[i] != NULL) {
+         libera_internal(node->child[i]);
+      } else {
+         break;
+      }
+   }
+
+   if (node->type == NODE_STRING_LITERAL) {
+       free(node->string_literal);
+   }
+   free(node);
 }
 
 void descompila(void *arvore) {
@@ -60,5 +96,5 @@ void descompila(void *arvore) {
 
 
 void libera(void *arvore) {
-   printf("libera\n");
+   libera_internal((ast_node*)arvore);
 }
