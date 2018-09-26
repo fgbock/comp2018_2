@@ -1,4 +1,6 @@
 %{
+#include "arvore.c"
+
 int yylex(void);
 void yyerror (char const *s);
 %}
