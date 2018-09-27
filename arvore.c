@@ -10,7 +10,12 @@
 #define NODE_CHAR_LITERAL   3
 #define NODE_BOOL_LITERAL   4
 
-#define NODE_ADD            5
+#define NODE_IF             6
+#define NODE_ELSE           7
+
+#define NODE_ADD            8
+
+#define NODE_COMMAND_BLOCK  9
 
 
 typedef struct ast_node {
@@ -63,12 +68,28 @@ void descompila_internal(ast_node* node) {
         else 
            printf("false");
         break;
-      case NODE_ADD:
+      case NODE_ADD: // TODO: Make generic for binary operations
         printf("(");
         descompila_internal(node->child[0]);
         printf("+");
         descompila_internal(node->child[1]);
         printf(")");
+        break;
+      case NODE_IF:
+        printf("\nif (");
+        descompila_internal(node->child[0]); // expression
+        printf(") then");
+        descompila_internal(node->child[1]); // then block
+        descompila_internal(node->child[2]); // optional else
+        break;
+      case NODE_ELSE:
+        printf("\nelse");
+        descompila_internal(node->child[0]);
+        break;
+      case NODE_COMMAND_BLOCK:
+        printf("\n{");
+        descompila_internal(node->child[0]);
+        printf("}");
       break;
    }
 
