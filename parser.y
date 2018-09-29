@@ -96,11 +96,8 @@ tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_
 tipo_variavel_usuario: TK_IDENTIFICADOR;
 tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
 
-/* operadores */
-operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
-operador_binario: operador_relacional;
 
-/* expressões */
+/* Expressões */
 
 /* Unarias */
 expressao: '+' expressao { $$ = make_node(NODE_POSITIVE);      $$->child[0] = $2; };
@@ -121,11 +118,20 @@ expressao: expressao '|' expressao { $$ = make_node(NODE_BITWISE_OR);  $$->child
 expressao: expressao '&' expressao { $$ = make_node(NODE_BITWISE_AND); $$->child[0] = $1; $$->child[1] = $3; };
 expressao: expressao '^' expressao { $$ = make_node(NODE_EXP);         $$->child[0] = $1; $$->child[1] = $3; };
 
+/* Relacionais */
+expressao: expressao '<'       expressao { $$ = make_node(NODE_LESS);       $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '>'       expressao { $$ = make_node(NODE_GREATER);    $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_LE  expressao { $$ = make_node(NODE_LE);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_GE  expressao { $$ = make_node(NODE_GE);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_EQ  expressao { $$ = make_node(NODE_EQ);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_NE  expressao { $$ = make_node(NODE_NE);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_AND expressao { $$ = make_node(NODE_AND);        $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->child[0] = $1; $$->child[1] = $3; };
+
 expressao: literal;
 expressao: acesso_variavel;
 expressao: chamada_funcao;
 expressao: '(' expressao ')';
-expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 
 /* declarações de tipo */

@@ -54,6 +54,12 @@ void descompila_internal_binary_expression(ast_node* node)
       case NODE_DIV:
         printf("/");
         break;
+      case NODE_GREATER:
+        printf(">");
+        break;
+      case NODE_LESS:
+        printf("<");
+        break;
       case NODE_LE:
         printf("<=");
         break;

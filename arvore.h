@@ -11,6 +11,8 @@
 #define NODE_BOOL_LITERAL   4
 
 
+#define NODE_GREATER        6   // '>'
+#define NODE_LESS           7   // '<'
 #define NODE_LE             8   // '<='
 #define NODE_GE             9   // '>='
 #define NODE_EQ             10  // '=='
