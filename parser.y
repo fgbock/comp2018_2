@@ -1,16 +1,19 @@
 %{
+
 #include "arvore.h"
+
 int yylex(void);
 void yyerror (char const *s);
 
-//extern struct* ast_node;
+
+#define BINARY_EXP(X) $$ = make_node(X); $$->child[0] = $1; $$->child[1] = $3; \
+
 %}
-/*
+
 %union {
    ast_node* node;
-   int i;
 }
-*/
+
 
 
 %define parse.error verbose
@@ -60,7 +63,7 @@ void yyerror (char const *s);
 %token TOKEN_ERRO
 
 
-//%type<node> expressao;
+%type<node> expressao;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -95,12 +98,15 @@ tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
 
 /* operadores */
 operador_unario: '-' | '!' | '&' | '*' | '?' | '#';
-operator_aritmetico: '-' | '*' | '/' | '%' | '|' | '&' | '^';
+operator_aritmetico: '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
 operador_binario: operator_aritmetico | operador_relacional;
 
 /* expressões */
-expressao: expressao '+' expressao /*{ $$ = make_node(NODE_ADD); $$->child[0] = $1; $$->child[1] = $3; }; */
+expressao: expressao '+' expressao { $$ = make_node(NODE_ADD); $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '-' expressao { $$ = make_node(NODE_SUB); $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '*' expressao { $$ = make_node(NODE_MUL); $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '/' expressao { $$ = make_node(NODE_DIV); $$->child[0] = $1; $$->child[1] = $3; };
 expressao: literal;
 expressao: acesso_variavel;
 expressao: chamada_funcao;

@@ -1,4 +1,5 @@
 %{
+#include "arvore.h"
 #include "parser.tab.h"
 
 int lineCount = 1;
