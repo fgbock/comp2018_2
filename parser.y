@@ -128,11 +128,11 @@ expressao: expressao TK_OC_NE  expressao { $$ = make_node(NODE_NE);         $$->
 expressao: expressao TK_OC_AND expressao { $$ = make_node(NODE_AND);        $$->child[0] = $1; $$->child[1] = $3; };
 expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->child[0] = $1; $$->child[1] = $3; };
 
-expressao: literal;
-expressao: acesso_variavel;
-expressao: chamada_funcao;
-expressao: '(' expressao ')';
-expressao: expressao '?' expressao ':' expressao;
+expressao: literal {};
+expressao: acesso_variavel {};
+expressao: chamada_funcao {};
+expressao: '(' expressao ')' {};
+expressao: expressao '?' expressao ':' expressao {};
 
 /* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';';
