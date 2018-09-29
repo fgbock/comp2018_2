@@ -128,8 +128,15 @@ void descompila_internal(ast_node* node) {
         printf("float");
         break;
 
+      case NODE_STATIC:
+        printf("static");
+        break;
+
       case NODE_VAR_GLOBAL:
-        printf("variavel_global");
+        descompila_internal(node->child[0]);
+        descompila_internal(node->child[1]);
+        descompila_internal(node->child[2]);
+        descompila_internal(node->child[3]);
         break;
 
       case NODE_INT_LITERAL:

@@ -70,6 +70,9 @@
 #define NODE_BOOL_TYPE 104
 #define NODE_FLOAT_TYPE 105
 
+#define NODE_STATIC 106
+#define NODE_CONST 107
+
 typedef struct ast_node {
 
    // Type, one of the #defines

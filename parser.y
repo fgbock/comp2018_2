@@ -161,7 +161,7 @@ funcao: '(' primeiro_param_funcao ')' bloco_comandos;
 
 /* declaração de variável global */
 //{ printf("meme"); $$ = make_node(NODE_VAR_GLOBAL); };
-declaracao_variavel_global:  TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global:  TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3; };
 declaracao_variavel_global:  TK_IDENTIFICADOR '[' TK_LIT_INT ']' tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
 declaracao_variavel_global: TK_IDENTIFICADOR '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'{ $$ = make_node(NODE_VAR_GLOBAL); };
 declaracao_variavel_global: TK_IDENTIFICADOR tipo_variavel_primitiva ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $2;};
