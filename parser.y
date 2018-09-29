@@ -12,8 +12,12 @@ void yyerror (char const *s);
 
 %union {
    ast_node* node;
+   int valor_lexico_int;
+   int valor_lexico_bool;
+   float valor_lexico_float;
+   char valor_lexico_char;
+   char* valor_lexico_string;
 }
-
 
 %define parse.error verbose
 
