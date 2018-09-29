@@ -79,10 +79,10 @@ void descompila_internal_binary_expression(ast_node* node)
         printf("<<");
         break;
       case NODE_FORWARD_PIPE:
-        printf("\%>\%");
+        printf("%s", "\%>\%");
         break;
       case NODE_BASH_PIPE:
-        printf("\%|\%");
+        printf("%s", "\%|\%");
         break;
    }
 }
