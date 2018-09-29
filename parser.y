@@ -63,7 +63,7 @@ void yyerror (char const *s);
 %token TOKEN_ERRO
 
 
-%type<node> expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos;
+%type<node> expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -182,11 +182,12 @@ output: TK_PR_OUTPUT expressao lista_expressoes;
 lista_expressoes: %empty | ',' expressao lista_expressoes;
 
 /* comando simples - função */
-chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command;
-argumento: %empty;
-argumento: expressao argumento_aux;
-argumento: '.' argumento_aux;
-argumento_aux: %empty | ',' argumento;
+chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL);         $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $3; $$->child[2] = $5; };
+argumento: %empty { };
+argumento: expressao argumento_aux { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = $1; $$->child[1] = $2;};
+argumento: '.' argumento_aux {$$ = make_node(NODE_ARGUMENT);         $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER); $$->child[0] = $2;};
+argumento_aux: %empty {};
+argumento_aux: ',' argumento {$$ = $2;};
 
 /* comando simples - shift */
 shift: acesso_variavel shift_token expressao;
@@ -212,8 +213,10 @@ comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
 
 /* comandos com pipes */
-pipe: TK_OC_FORWARD_PIPE | TK_OC_BASH_PIPE;
-optional_pipe_command: %empty | comando_pipe;
-comando_pipe: pipe chamada_funcao;
+pipe: TK_OC_FORWARD_PIPE {$$ = make_node(NODE_FORWARD_PIPE); };
+pipe: TK_OC_BASH_PIPE {$$ = make_node(NODE_BASH_PIPE); };
+optional_pipe_command: %empty {}; 
+optional_pipe_command: comando_pipe {$$ = $1;}; 
+comando_pipe: pipe chamada_funcao {$$ = make_node(NODE_PIPE_COMMAND); $$->child[0] = $1; $$->child[1] = $2;};
 
 %%
