@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -89,7 +89,7 @@ programa_aux: declaracao_funcao_usertype_e_var_global programa_aux { $$ = make_n
 programa_aux: declaracao_variavel_global              programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
 programa_aux: declaracao_novo_tipo                    programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
 programa_aux: declaracao_funcao                       programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
-programa_aux: %empty { };
+programa_aux: %empty { $$ = NULL; };
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
@@ -100,9 +100,14 @@ opcional_acesso_propriedade: %empty | '$' TK_IDENTIFICADOR;
 acesso_variavel: TK_IDENTIFICADOR opcional_acesso_propriedade opcional_acesso_vetor;
 
 /* tipo de variável */
-tipo_variavel_primitiva: TK_PR_INT | TK_PR_FLOAT | TK_PR_CHAR | TK_PR_BOOL | TK_PR_STRING;
-tipo_variavel_usuario: TK_IDENTIFICADOR;
-tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
+tipo_variavel_primitiva: TK_PR_INT         {$$ = make_node(NODE_INT_TYPE);};
+tipo_variavel_primitiva: TK_PR_FLOAT       {$$ = make_node(NODE_FLOAT_TYPE);};
+tipo_variavel_primitiva: TK_PR_CHAR        {$$ = make_node(NODE_CHAR_TYPE);};
+tipo_variavel_primitiva: TK_PR_BOOL        {$$ = make_node(NODE_BOOL_TYPE);};
+tipo_variavel_primitiva: TK_PR_STRING      {$$ = make_node(NODE_STRING_TYPE);};
+tipo_variavel_usuario:   TK_IDENTIFICADOR  {$$ = make_node(NODE_IDENTIFIER);};
+tipo_variavel: tipo_variavel_usuario {$$ = $1;};
+tipo_variavel: tipo_variavel_primitiva {$$ = $1;};
 
 
 /* Expressões */
@@ -159,7 +164,7 @@ funcao: '(' primeiro_param_funcao ')' bloco_comandos;
 declaracao_variavel_global:  TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
 declaracao_variavel_global:  TK_IDENTIFICADOR '[' TK_LIT_INT ']' tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
 declaracao_variavel_global: TK_IDENTIFICADOR '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'{ $$ = make_node(NODE_VAR_GLOBAL); };
-declaracao_variavel_global: TK_IDENTIFICADOR tipo_variavel_primitiva ';' { $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global: TK_IDENTIFICADOR tipo_variavel_primitiva ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $2;};
 
 /* declaração de função */
 declaracao_funcao: TK_PR_STATIC tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos | tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;;
@@ -219,10 +224,10 @@ lista_expressoes: %empty | ',' expressao lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL);         $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $3; $$->child[2] = $5; };
-argumento: %empty { };
+argumento: %empty {$$ = NULL; };
 argumento: expressao argumento_aux { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = $1; $$->child[1] = $2;};
 argumento: '.' argumento_aux {$$ = make_node(NODE_ARGUMENT);         $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER); $$->child[0] = $2;};
-argumento_aux: %empty {};
+argumento_aux: %empty {$$ = NULL; };
 argumento_aux: ',' argumento {$$ = $2;};
 
 
@@ -248,7 +253,7 @@ comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE {$$ = make_node(NODE_FORWARD_PIPE); };
 pipe: TK_OC_BASH_PIPE {$$ = make_node(NODE_BASH_PIPE); };
-optional_pipe_command: %empty {}; 
+optional_pipe_command: %empty {$$ = NULL;}; 
 optional_pipe_command: comando_pipe {$$ = $1;}; 
 comando_pipe: pipe chamada_funcao {$$ = make_node(NODE_PIPE_COMMAND); $$->child[0] = $1; $$->child[1] = $2;};
 

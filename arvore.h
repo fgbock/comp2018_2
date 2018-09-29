@@ -63,6 +63,13 @@
 #define NODE_COMMAND_BLOCK  61
 #define NODE_VAR_GLOBAL     62
 
+#define NODE_ROOT 100
+#define NODE_INT_TYPE 101
+#define NODE_CHAR_TYPE 102
+#define NODE_STRING_TYPE 103
+#define NODE_BOOL_TYPE 104
+#define NODE_FLOAT_TYPE 105
+
 typedef struct ast_node {
 
    // Type, one of the #defines
@@ -89,6 +96,8 @@ void descompila_internal_binary_expression(ast_node* node);
 void descompila_internal(ast_node* node);
 
 void libera_internal(ast_node* node);
+
+void printree(ast_node* node, int lvl);
 
 void descompila(void *arvore);
 

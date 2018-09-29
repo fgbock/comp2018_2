@@ -104,12 +104,28 @@ void descompila_internal(ast_node* node) {
    if (node == NULL) {
       return;
    }
-   printf("type %d\n", node->type);
+   //printf("type %d\n", node->type);
    switch(node->type) {
 
       case NODE_PROGRAM:
         descompila_internal(node->child[0]);
         descompila_internal(node->child[1]);
+        break;
+
+      case NODE_INT_TYPE:
+        printf("int");
+        break;
+      case NODE_CHAR_TYPE:
+        printf("char");
+        break;
+      case NODE_STRING_TYPE:
+        printf("string");
+        break;
+      case NODE_BOOL_TYPE:
+        printf("bool");
+        break;
+      case NODE_FLOAT_TYPE:
+        printf("float");
         break;
 
       case NODE_VAR_GLOBAL:
@@ -235,7 +251,24 @@ void libera_internal(ast_node* node) {
    free(node);
 }
 
+void printree(ast_node* node, int lvl){
+   int i;
+   if ( node == NULL) {
+	return;
+   }
+   for(int j = 0; j < lvl; j++){printf(" ");}
+   printf("Type: %d\n", node->type);
+   for (i = 0; i < MAX_CHILD_NODES; i++) {
+      if (node->child[i] != NULL) {
+	printree(node->child[i], lvl+1);
+      } else {
+         break;
+      }
+   }	
+}
+
 void descompila(void *arvore) {
+   printree((ast_node*)arvore, 0);
    descompila_internal((ast_node*)arvore);
 }
 
