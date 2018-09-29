@@ -63,6 +63,9 @@
 #define NODE_COMMAND_BLOCK  61
 #define NODE_VAR_GLOBAL     62
 
+#define NODE_NEW_TYPE 63
+#define NODE_CLASS 64
+
 #define NODE_ROOT 100
 #define NODE_INT_TYPE 101
 #define NODE_CHAR_TYPE 102
@@ -72,6 +75,14 @@
 
 #define NODE_STATIC 106
 #define NODE_CONST 107
+#define NODE_PUBLIC 108
+#define NODE_PRIVATE 109
+#define NODE_PROTECTED 110
+
+#define NODE_NEW_TYPE_PROPERTY 111
+#define NODE_NEW_TYPE_PROPERTY_LIST 112
+
+#define NODE_EMPTY 666
 
 typedef struct ast_node {
 

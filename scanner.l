@@ -48,8 +48,8 @@ int lineCount = 1;
 "false"         {return TK_LIT_FALSE;}
 "true"          {return TK_LIT_TRUE;}
 
-[0-9]+                  {yylval.valor_lexico_int = atoi(yytext); return TK_LIT_INT;}
-[a-zA-Z_]+[0-9a-zA-Z_]* {return TK_IDENTIFICADOR;}
+[0-9]+                  {yylval.valor_lexico_int = atoi(yytext);      return TK_LIT_INT;}
+[a-zA-Z_]+[0-9a-zA-Z_]* {yylval.valor_lexico_string = strdup(yytext); return TK_IDENTIFICADOR;}
 
 [,;:\]\[{}+-|?*/<>=!&%#^.$()] {return (int) yytext[0];}
 
