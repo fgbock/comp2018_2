@@ -97,21 +97,34 @@ tipo_variavel_usuario: TK_IDENTIFICADOR;
 tipo_variavel: tipo_variavel_usuario | tipo_variavel_primitiva;
 
 /* operadores */
-operador_unario: '-' | '!' | '&' | '*' | '?' | '#';
-operator_aritmetico: '%' | '|' | '&' | '^';
 operador_relacional: '<' | '>' | TK_OC_LE | TK_OC_GE | TK_OC_EQ | TK_OC_NE | TK_OC_AND | TK_OC_OR;
-operador_binario: operator_aritmetico | operador_relacional;
+operador_binario: operador_relacional;
 
 /* expressões */
-expressao: expressao '+' expressao { $$ = make_node(NODE_ADD); $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '-' expressao { $$ = make_node(NODE_SUB); $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '*' expressao { $$ = make_node(NODE_MUL); $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '/' expressao { $$ = make_node(NODE_DIV); $$->child[0] = $1; $$->child[1] = $3; };
+
+/* Unarias */
+expressao: '+' expressao { $$ = make_node(NODE_POSITIVE);      $$->child[0] = $2; };
+expressao: '-' expressao { $$ = make_node(NODE_MINUS);         $$->child[0] = $2; };
+expressao: '!' expressao { $$ = make_node(NODE_NOT);           $$->child[0] = $2; };
+expressao: '&' expressao { $$ = make_node(NODE_DEREF_POINTER); $$->child[0] = $2; };
+expressao: '*' expressao { $$ = make_node(NODE_DEREF_VALUE);   $$->child[0] = $2; };
+expressao: '#' expressao { $$ = make_node(NODE_ACCESS);        $$->child[0] = $2; };
+expressao: '?' expressao { $$ = make_node(NODE_BOOL_EVAL);     $$->child[0] = $2; };
+
+/* Binarias */
+expressao: expressao '+' expressao { $$ = make_node(NODE_ADD);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '-' expressao { $$ = make_node(NODE_SUB);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '*' expressao { $$ = make_node(NODE_MUL);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '/' expressao { $$ = make_node(NODE_DIV);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '%' expressao { $$ = make_node(NODE_MOD);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '|' expressao { $$ = make_node(NODE_BITWISE_OR);  $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '&' expressao { $$ = make_node(NODE_BITWISE_AND); $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '^' expressao { $$ = make_node(NODE_EXP);         $$->child[0] = $1; $$->child[1] = $3; };
+
 expressao: literal;
 expressao: acesso_variavel;
 expressao: chamada_funcao;
 expressao: '(' expressao ')';
-expressao: operador_unario expressao;
 expressao: expressao operador_binario expressao;
 expressao: expressao '?' expressao ':' expressao;
 

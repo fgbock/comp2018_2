@@ -37,13 +37,18 @@
 #define NODE_ACCESS         27  // '#'
 #define NODE_BOOL_EVAL      28  // '?'
 
+#define NODE_MOD            29  // '%'
+#define NODE_BITWISE_OR     30  // '|'
+#define NODE_BITWISE_AND    31  // '&'
+#define NODE_EXP            32  // '^'
 
-#define NODE_IF             30
-#define NODE_ELSE           31
-#define NODE_TERNARY        32
+
+#define NODE_IF             40
+#define NODE_ELSE           41
+#define NODE_TERNARY        42
 
 
-#define NODE_COMMAND_BLOCK  29
+#define NODE_COMMAND_BLOCK  43
 
 
 typedef struct ast_node {
