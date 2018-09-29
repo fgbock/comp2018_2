@@ -10,12 +10,40 @@
 #define NODE_CHAR_LITERAL   3
 #define NODE_BOOL_LITERAL   4
 
-#define NODE_IF             6
-#define NODE_ELSE           7
 
-#define NODE_ADD            8
+#define NODE_LE             8   // '<='
+#define NODE_GE             9   // '>='
+#define NODE_EQ             10  // '=='
+#define NODE_NE             11  // '!='
+#define NODE_AND            12  // '&&'
+#define NODE_OR             13  // '||'
+#define NODE_SR             14  // '>>'
+#define NODE_SL             15  // '<<'
+#define NODE_FORWARD_PIPE   16  // '%>%'
+#define NODE_BASH_PIPE      17  // '%|%'
 
-#define NODE_COMMAND_BLOCK  9
+
+#define NODE_ADD            18  // '+;
+#define NODE_SUB            19  // '-'
+#define NODE_MUL            20  // '*'
+#define NODE_DIV            21  // '/'
+
+
+#define NODE_POSITIVE       22  // '+'
+#define NODE_MINUS          23  // '-'
+#define NODE_NOT            24  // '!'
+#define NODE_DEREF_POINTER  25  // '&'
+#define NODE_DEREF_VALUE    26  // '*'
+#define NODE_ACCESS         27  // '#'
+#define NODE_BOOL_EVAL      28  // '?'
+
+
+#define NODE_IF             30
+#define NODE_ELSE           31
+#define NODE_TERNARY        32
+
+
+#define NODE_COMMAND_BLOCK  29
 
 
 typedef struct ast_node {
@@ -45,6 +73,84 @@ ast_node* make_node(int type) {
    return node;
 }
 
+void descompila_internal_unary_expression(ast_node* node)
+{
+   switch(node->type)
+   {
+      case NODE_POSITIVE:
+        printf("+");
+        break;
+      case NODE_MINUS:
+        printf("-");
+        break;
+      case NODE_NOT:
+        printf("!");
+        break;
+      case NODE_DEREF_POINTER:
+        printf("&");
+        break;
+      case NODE_DEREF_VALUE:
+        printf("*");
+        break;
+      case NODE_ACCESS:
+        printf("#");
+        break;
+      case NODE_BOOL_EVAL:
+        printf("?");
+        break;
+   }
+}
+
+void descompila_internal_binary_expression(ast_node* node)
+{
+   switch(node->type)
+   {
+      case NODE_ADD:
+        printf("+");
+        break;
+      case NODE_SUB:
+        printf("-");
+        break;
+      case NODE_MUL:
+        printf("*");
+        break;
+      case NODE_DIV:
+        printf("/");
+        break;
+      case NODE_LE:
+        printf("<=");
+        break;
+      case NODE_GE:
+        printf(">=");
+        break;
+      case NODE_EQ:
+        printf("==");
+        break;
+      case NODE_NE:
+        printf("!=");
+        break;
+      case NODE_AND:
+        printf("&&");
+        break;
+      case NODE_OR:
+        printf("||");
+        break;
+      case NODE_SR:
+        printf(">>");
+        break;
+      case NODE_SL:
+        printf("<<");
+        break;
+      case NODE_FORWARD_PIPE:
+        printf("\%>\%");
+        break;
+      case NODE_BASH_PIPE:
+        printf("\%|\%");
+        break;
+   }
+}
+
+
 void descompila_internal(ast_node* node) {
    if (node == NULL) {
       return;
@@ -53,28 +159,58 @@ void descompila_internal(ast_node* node) {
       case NODE_INT_LITERAL:
         printf("%d", node->int_literal);
         break;
+
       case NODE_FLOAT_LITERAL:
         printf("%f", node->float_literal);
         break;
+
       case NODE_STRING_LITERAL:
         printf("\"%s\"", node->string_literal);
         break;
+
       case NODE_CHAR_LITERAL:
         printf("'%c'", node->char_literal);
         break;
+
       case NODE_BOOL_LITERAL:
         if (node->bool_literal)
            printf("true");
         else 
            printf("false");
         break;
-      case NODE_ADD: // TODO: Make generic for binary operations
-        printf("(");
+
+      // Unary expressions
+      case NODE_POSITIVE:
+      case NODE_MINUS:
+      case NODE_NOT:
+      case NODE_DEREF_POINTER:
+      case NODE_DEREF_VALUE:
+      case NODE_ACCESS:
+      case NODE_BOOL_EVAL:
+        descompila_internal_unary_expression(node);
         descompila_internal(node->child[0]);
-        printf("+");
-        descompila_internal(node->child[1]);
-        printf(")");
         break;
+      
+      // Binary expressions
+      case NODE_ADD:
+      case NODE_SUB:
+      case NODE_MUL:
+      case NODE_DIV:
+      case NODE_LE:
+      case NODE_GE:
+      case NODE_EQ:
+      case NODE_NE:
+      case NODE_AND:
+      case NODE_OR:
+      case NODE_SR:
+      case NODE_SL:
+      case NODE_FORWARD_PIPE:
+      case NODE_BASH_PIPE:
+        descompila_internal(node->child[0]); 
+        descompila_internal_binary_expression(node);
+        descompila_internal(node->child[1]);
+        break;
+
       case NODE_IF:
         printf("\nif (");
         descompila_internal(node->child[0]); // expression
@@ -82,18 +218,29 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]); // then block
         descompila_internal(node->child[2]); // optional else
         break;
+
       case NODE_ELSE:
         printf("\nelse");
         descompila_internal(node->child[0]);
         break;
+
+      case NODE_TERNARY:
+        descompila_internal(node->child[0]);
+        printf(" ? ");
+        descompila_internal(node->child[1]);
+        printf(" : ");
+        descompila_internal(node->child[2]);
+        break;
+
       case NODE_COMMAND_BLOCK:
         printf("\n{");
         descompila_internal(node->child[0]);
-        printf("}");
-      break;
+        printf("};");
+        break;
+
    }
 
-   printf("descompila\n");
+   printf("\n");
 }
 
 void libera_internal(ast_node* node) {
