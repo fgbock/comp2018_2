@@ -12,10 +12,10 @@ debug:
 	bison -d -v parser.y --report-file=REPORTFILE
 	gcc -g -c parser.tab.c
 	flex scanner.l
-	gcc -c lex.yy.c
-	gcc -c yyerror.c
-	gcc -c arvore.c
-	gcc -c main.c
+	gcc -g -c lex.yy.c
+	gcc -g -c yyerror.c
+	gcc -g -c arvore.c
+	gcc -g -c main.c
 	gcc -o etapa3 main.o arvore.o yyerror.o parser.tab.o lex.yy.o
 
 clean:

@@ -1,7 +1,7 @@
 #include "arvore.h"
 
 ast_node* make_node(int type) {
-   ast_node* node = malloc(sizeof(node));
+   ast_node* node = malloc(sizeof(ast_node));
    for (int i = 0; i < MAX_CHILD_NODES; i++) {
       // Just in case
       node->child[i] = NULL;
@@ -12,6 +12,9 @@ ast_node* make_node(int type) {
 
 void descompila_internal_unary_expression(ast_node* node)
 {
+   if (node == NULL) {
+      return;
+   }
    switch(node->type)
    {
       case NODE_POSITIVE:
@@ -40,6 +43,9 @@ void descompila_internal_unary_expression(ast_node* node)
 
 void descompila_internal_binary_expression(ast_node* node)
 {
+   if (node == NULL) {
+      return;
+   }
    switch(node->type)
    {
       case NODE_ADD:
@@ -99,6 +105,11 @@ void descompila_internal(ast_node* node) {
       return;
    }
    switch(node->type) {
+
+      case NODE_PROGRAM:
+        descompila_internal_unary_expression(node->child[0]);
+        descompila_internal_unary_expression(node->child[1]);
+        break;
       case NODE_INT_LITERAL:
         printf("%d", node->int_literal);
         break;
@@ -201,6 +212,9 @@ void descompila_internal(ast_node* node) {
 }
 
 void libera_internal(ast_node* node) {
+   if (node == NULL) {
+      return;
+   }
    for (int i = 0; i < MAX_CHILD_NODES; i++) {
       if (node->child[i] != NULL) {
          libera_internal(node->child[i]);

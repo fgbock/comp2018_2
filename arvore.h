@@ -10,6 +10,9 @@
 #define NODE_BOOL_LITERAL   4
 
 
+#define NODE_PROGRAM        5
+
+
 #define NODE_GREATER        6   // '>'
 #define NODE_LESS           7   // '<'
 #define NODE_LE             8   // '<='

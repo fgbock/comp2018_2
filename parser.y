@@ -5,6 +5,7 @@
 int yylex(void);
 void yyerror (char const *s);
 
+extern void *arvore;
 
 #define BINARY_EXP(X) $$ = make_node(X); $$->child[0] = $1; $$->child[1] = $3; \
 
@@ -66,7 +67,7 @@ void yyerror (char const *s);
 %token TOKEN_ERRO
 
 
-%type<node> expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -81,8 +82,14 @@ void yyerror (char const *s);
 
 
 
+programa: programa_aux { arvore = make_node(NODE_PROGRAM); };
 
-programa: declaracao_funcao_usertype_e_var_global programa | declaracao_variavel_global programa | declaracao_novo_tipo programa | declaracao_funcao programa | %empty;
+
+programa_aux: declaracao_funcao_usertype_e_var_global programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
+programa_aux: declaracao_variavel_global              programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
+programa_aux: declaracao_novo_tipo                    programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
+programa_aux: declaracao_funcao                       programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
+programa_aux: %empty { };
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
