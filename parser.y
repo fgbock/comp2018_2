@@ -15,7 +15,6 @@ void yyerror (char const *s);
 }
 
 
-
 %define parse.error verbose
 
 %token TK_PR_INT
@@ -83,8 +82,6 @@ programa: declaracao_funcao_usertype_e_var_global programa | declaracao_variavel
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
-opcional_static: %empty | TK_PR_STATIC;
-//opcional_tamanho: %empty | '[' TK_LIT_INT ']';
 opcional_const: %empty | TK_PR_CONST;
 opcional_acesso_vetor: %empty | '[' expressao ']';
 opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
@@ -158,23 +155,50 @@ primeiro_param_funcao: %empty | opcional_const tipo_variavel TK_IDENTIFICADOR pa
 param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-um_comando: atribuicao | declaracao_variavel_local | input | output | chamada_funcao | shift | comando_return | comando_break | comando_continue | comando_do_while | comando_if | comando_switch | comando_foreach | comando_for | comando_while;
+um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift | input | output | chamada_funcao | comando_return | comando_break | comando_continue | comando_do_while | comando_if | comando_switch | comando_foreach | comando_for | comando_while;
 comando_simples: %empty 
 | um_comando ';' comando_simples 
 | bloco_comandos ';' comando_simples
 | comando_case comando_simples;
 
-/* comandos simples - declarações */
-declaracao_variavel_local: opcional_static opcional_const declaracao_variavel_local_aux;
-declaracao_variavel_local_aux: declaracao_variavel_local_primitiva | declaracao_variavel_local_novo_tipo;
-declaracao_variavel_local_primitiva: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor;
-declaracao_variavel_local_novo_tipo: TK_IDENTIFICADOR TK_IDENTIFICADOR;
+
 
 /* comandos simples - bloco de comandos */
 bloco_comandos: '{' comando_simples '}';
 
 /* comandos simples - atribuições */
 atribuicao: acesso_variavel '=' expressao | TK_IDENTIFICADOR TK_IDENTIFICADOR;
+
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_IDENTIFICADOR declaracao_variavel_local_ou_atribuicao_ou_shift_id;
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const;
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static;
+declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor;
+
+declaracao_variavel_local_const: declaracao_variavel_local;
+declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local;
+declaracao_variavel_local_static: declaracao_variavel_local;
+
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao; // Shift
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao; // Shift
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao; // Atribuicao
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '$' TK_IDENTIFICADOR declaracao_variavel_local_ou_atribuicao_id_parametro; // Atribuicao
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_IDENTIFICADOR;
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao; // Atribuicao
+
+declaracao_variavel_local_ou_atribuicao_id_parametro: '[' expressao ']' '=' expressao;
+declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao;
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao; // Shift
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao; // Shift
+
+declaracao_variavel_local: TK_IDENTIFICADOR;
+declaracao_variavel_local: TK_PR_INT TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local: TK_PR_FLOAT TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local: TK_PR_BOOL TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local: TK_PR_CHAR TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local: TK_PR_STRING TK_IDENTIFICADOR opcional_declaracao_valor;
+
+declaracao_variavel_local: TK_IDENTIFICADOR TK_IDENTIFICADOR;
+
 
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
@@ -189,9 +213,6 @@ argumento: '.' argumento_aux {$$ = make_node(NODE_ARGUMENT);         $$->child[0
 argumento_aux: %empty {};
 argumento_aux: ',' argumento {$$ = $2;};
 
-/* comando simples - shift */
-shift: acesso_variavel shift_token expressao;
-shift_token: TK_OC_SR | TK_OC_SL;
 
 /* comandos de return, break, continue e case */
 comando_return: TK_PR_RETURN expressao;
