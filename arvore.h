@@ -66,6 +66,8 @@
 #define NODE_NEW_TYPE 63
 #define NODE_CLASS 64
 
+#define NODE_SIZE 65 // [10], [20]
+
 #define NODE_ROOT 100
 #define NODE_INT_TYPE 101
 #define NODE_CHAR_TYPE 102
@@ -89,9 +91,9 @@ typedef struct ast_node {
    // Type, one of the #defines
    int type;
    union {
-      int   int_literal;    // Valid when type == NODE_INT_LITERAL
+      int   int_literal;    // Valid when type == (NODE_INT_LITERAL | NODE_SIZE)
       float float_literal;  // Valid when type == NODE_FLOAT_LITERAL
-      char* string_literal; // Valid when type == NODE_STRING_LITERAL
+      char* string_literal; // Valid when type == (NODE_STRING_LITERAL | NODE_IDENTIFIER)
       char  char_literal;   // Valid when type == NODE_CHAR_LITERAL
       int   bool_literal;   // Valid when type == NODE_BOOL_LITERAL
    };

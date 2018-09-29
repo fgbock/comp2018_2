@@ -1,0 +1,12 @@
+// Variaveis globais
+
+nome tipo_user;
+nome static tipo_user;
+nome[10] tipo_user;
+nome[10] static tipo_user;
+nome int;
+nome static int;
+nome[10] int;
+nome[10] static int;
+
+

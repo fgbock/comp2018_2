@@ -101,6 +101,7 @@ void descompila_internal_binary_expression(ast_node* node)
 
 
 void descompila_internal(ast_node* node) {
+   int i = 0;
    if (node == NULL) {
       return;
    }
@@ -132,12 +133,17 @@ void descompila_internal(ast_node* node) {
         printf("static");
         break;
 
+      case NODE_SIZE:
+        printf("[%d]", node->int_literal);
+        break;
+
       case NODE_VAR_GLOBAL:
-        descompila_internal(node->child[0]);
-        printf(" ");
-        descompila_internal(node->child[1]);
-        printf(" ");
-        descompila_internal(node->child[2]);
+        for (int i = 0; i < MAX_CHILD_NODES && node->child[i] != NULL; i++) {
+           descompila_internal(node->child[i]);
+           if (i + 1 < MAX_CHILD_NODES && node->child[i + 1] != NULL) {
+              printf(" ");
+           }
+        }
         printf(";\n");
         break;
 

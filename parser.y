@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -159,17 +159,19 @@ opcional_encapsulamento: TK_PR_PUBLIC {$$ = make_node(NODE_PUBLIC);};
 opcional_encapsulamento: TK_PR_PROTECTED {$$ = make_node(NODE_PROTECTED);};
 
 /* fix de s/r para declarações de global e função */
-declaracao_funcao_usertype_e_var_global: TK_IDENTIFICADOR TK_IDENTIFICADOR global | TK_IDENTIFICADOR TK_IDENTIFICADOR funcao { $$ = make_node(NODE_VAR_GLOBAL); };
-global: ';';
+declaracao_funcao_usertype_e_var_global: identificador identificador ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2; };
+declaracao_funcao_usertype_e_var_global: identificador identificador funcao { };
 funcao: '(' primeiro_param_funcao ')' bloco_comandos;
 
+/* Auxiliares */
+declaracao_tamanho: '[' TK_LIT_INT ']'                                                     { $$ = make_node(NODE_SIZE);       $$->int_literal = yylval.valor_lexico_int; };
+identificador: TK_IDENTIFICADOR                                                            { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = strdup(yylval.valor_lexico_string); };
+
 /* declaração de variável global */
-//{ printf("meme"); $$ = make_node(NODE_VAR_GLOBAL); };
-identificador: TK_IDENTIFICADOR { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = strdup(yylval.valor_lexico_string); };
-declaracao_variavel_global:  identificador TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3; };
-declaracao_variavel_global:  identificador '[' TK_LIT_INT ']' tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
-declaracao_variavel_global: identificador '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'{ $$ = make_node(NODE_VAR_GLOBAL); };
-declaracao_variavel_global: identificador tipo_variavel_primitiva ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;};
+declaracao_variavel_global: identificador TK_PR_STATIC tipo_variavel ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3; };
+declaracao_variavel_global: identificador declaracao_tamanho tipo_variavel ';'              { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = $3; };
+declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $4; };
+declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                        };
 
 /* declaração de função */
 declaracao_funcao: TK_PR_STATIC tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos | tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;;
