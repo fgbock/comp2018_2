@@ -134,9 +134,11 @@ void descompila_internal(ast_node* node) {
 
       case NODE_VAR_GLOBAL:
         descompila_internal(node->child[0]);
+        printf(" ");
         descompila_internal(node->child[1]);
+        printf(" ");
         descompila_internal(node->child[2]);
-        descompila_internal(node->child[3]);
+        printf(";\n");
         break;
 
       case NODE_INT_LITERAL:
@@ -236,8 +238,6 @@ void descompila_internal(ast_node* node) {
         break;
 
    }
-
-   printf("\n");
 }
 
 void libera_internal(ast_node* node) {

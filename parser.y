@@ -89,7 +89,7 @@ programa_aux: declaracao_funcao_usertype_e_var_global programa_aux { $$ = make_n
 programa_aux: declaracao_variavel_global              programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
 programa_aux: declaracao_novo_tipo                    programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
 programa_aux: declaracao_funcao                       programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
-programa_aux: %empty {$$ = make_node(NODE_EMPTY);};
+programa_aux: %empty {$$ = NULL;};
 
 /* opcionais & auxiliares */
 literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
@@ -105,7 +105,7 @@ tipo_variavel_primitiva: TK_PR_FLOAT       {$$ = make_node(NODE_FLOAT_TYPE);};
 tipo_variavel_primitiva: TK_PR_CHAR        {$$ = make_node(NODE_CHAR_TYPE);};
 tipo_variavel_primitiva: TK_PR_BOOL        {$$ = make_node(NODE_BOOL_TYPE);};
 tipo_variavel_primitiva: TK_PR_STRING      {$$ = make_node(NODE_STRING_TYPE);};
-tipo_variavel_usuario:   TK_IDENTIFICADOR  {$$ = make_node(NODE_IDENTIFIER);};
+tipo_variavel_usuario:   identificador     {$$ = $1; };
 tipo_variavel: tipo_variavel_usuario {$$ = $1;};
 tipo_variavel: tipo_variavel_primitiva {$$ = $1;};
 
