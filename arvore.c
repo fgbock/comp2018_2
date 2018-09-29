@@ -104,12 +104,18 @@ void descompila_internal(ast_node* node) {
    if (node == NULL) {
       return;
    }
+   printf("type %d\n", node->type);
    switch(node->type) {
 
       case NODE_PROGRAM:
-        descompila_internal_unary_expression(node->child[0]);
-        descompila_internal_unary_expression(node->child[1]);
+        descompila_internal(node->child[0]);
+        descompila_internal(node->child[1]);
         break;
+
+      case NODE_VAR_GLOBAL:
+        printf("variavel_global");
+        break;
+
       case NODE_INT_LITERAL:
         printf("%d", node->int_literal);
         break;

@@ -82,7 +82,7 @@ extern void *arvore;
 
 
 
-programa: programa_aux { arvore = make_node(NODE_PROGRAM); };
+programa: programa_aux { arvore = make_node(NODE_PROGRAM); ((ast_node*)arvore)->child[0] = $1; };
 
 
 programa_aux: declaracao_funcao_usertype_e_var_global programa_aux { $$ = make_node(NODE_PROGRAM); $$->child[0] = $1; $$->child[1] = $2; };
@@ -150,15 +150,16 @@ declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiv
 opcional_encapsulamento: %empty | TK_PR_PRIVATE | TK_PR_PUBLIC | TK_PR_PROTECTED;
 
 /* fix de s/r para declarações de global e função */
-declaracao_funcao_usertype_e_var_global: TK_IDENTIFICADOR TK_IDENTIFICADOR global | TK_IDENTIFICADOR TK_IDENTIFICADOR funcao;
+declaracao_funcao_usertype_e_var_global: TK_IDENTIFICADOR TK_IDENTIFICADOR global | TK_IDENTIFICADOR TK_IDENTIFICADOR funcao { $$ = make_node(NODE_VAR_GLOBAL); };
 global: ';';
 funcao: '(' primeiro_param_funcao ')' bloco_comandos;
 
 /* declaração de variável global */
-declaracao_variavel_global: /*TK_IDENTIFICADOR opcional_tamanho opcional_static tipo_variavel ';' |*/ TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' 
-| TK_IDENTIFICADOR '[' TK_LIT_INT ']' tipo_variavel ';' 
-| TK_IDENTIFICADOR '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'
-| TK_IDENTIFICADOR tipo_variavel_primitiva ';';
+//{ printf("meme"); $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global:  TK_IDENTIFICADOR TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global:  TK_IDENTIFICADOR '[' TK_LIT_INT ']' tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global: TK_IDENTIFICADOR '[' TK_LIT_INT ']' TK_PR_STATIC tipo_variavel ';'{ $$ = make_node(NODE_VAR_GLOBAL); };
+declaracao_variavel_global: TK_IDENTIFICADOR tipo_variavel_primitiva ';' { $$ = make_node(NODE_VAR_GLOBAL); };
 
 /* declaração de função */
 declaracao_funcao: TK_PR_STATIC tipo_variavel TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos | tipo_variavel_primitiva TK_IDENTIFICADOR '(' primeiro_param_funcao ')' bloco_comandos;;

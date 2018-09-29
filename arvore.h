@@ -61,7 +61,7 @@
 #define NODE_PIPE_COMMAND 55 // %>% ou %|%
 
 #define NODE_COMMAND_BLOCK  61
-
+#define NODE_VAR_GLOBAL     62
 
 typedef struct ast_node {
 
