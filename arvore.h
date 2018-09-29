@@ -3,7 +3,6 @@
 
 #define MAX_CHILD_NODES 1024
 
-
 #define NODE_INT_LITERAL    0
 #define NODE_FLOAT_LITERAL  1
 #define NODE_STRING_LITERAL 2
@@ -54,6 +53,9 @@
 #define NODE_FUNCTION_CALL  51      // abc(x1, x2, x3, ...)
 #define NODE_FUNCTION_DEFINITION 52 // abc(int x1, char x2, ...)
 
+#define NODE_ARGUMENT 53 // (expression, ...)
+#define NODE_ARGUMENT_PLACEHOLDER 54 // .
+#define NODE_PIPE_COMMAND 55 // %>% ou %|%
 
 #define NODE_COMMAND_BLOCK  61
 
