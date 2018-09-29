@@ -45,12 +45,17 @@
 #define NODE_EXP            32  // '^'
 
 
-#define NODE_IF             40
-#define NODE_ELSE           41
-#define NODE_TERNARY        42
+#define NODE_IF             40  // if (x) { }
+#define NODE_ELSE           41  // else { }
+#define NODE_TERNARY        42  // .. ? .. : ..
 
 
-#define NODE_COMMAND_BLOCK  43
+#define NODE_IDENTIFIER     50      // abc, aaa01
+#define NODE_FUNCTION_CALL  51      // abc(x1, x2, x3, ...)
+#define NODE_FUNCTION_DEFINITION 52 // abc(int x1, char x2, ...)
+
+
+#define NODE_COMMAND_BLOCK  61
 
 
 typedef struct ast_node {

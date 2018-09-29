@@ -181,6 +181,20 @@ void descompila_internal(ast_node* node) {
         printf("};");
         break;
 
+      case NODE_IDENTIFIER:
+        printf("%s", node->string_literal);
+        break;
+
+      case NODE_FUNCTION_CALL:
+        descompila_internal(node->child[0]); // identifier
+        descompila_internal(node->child[1]); // arguments
+        break;
+
+      case NODE_FUNCTION_DEFINITION:
+        descompila_internal(node->child[0]); // identifier
+        descompila_internal(node->child[1]); // parameters
+        break;
+
    }
 
    printf("\n");

@@ -63,7 +63,7 @@ void yyerror (char const *s);
 %token TOKEN_ERRO
 
 
-%type<node> expressao;
+%type<node> expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -128,11 +128,12 @@ expressao: expressao TK_OC_NE  expressao { $$ = make_node(NODE_NE);         $$->
 expressao: expressao TK_OC_AND expressao { $$ = make_node(NODE_AND);        $$->child[0] = $1; $$->child[1] = $3; };
 expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->child[0] = $1; $$->child[1] = $3; };
 
-expressao: literal {};
-expressao: acesso_variavel {};
-expressao: chamada_funcao {};
-expressao: '(' expressao ')' {};
-expressao: expressao '?' expressao ':' expressao {};
+/* Outros */
+expressao: literal           { $$ = $1; };
+expressao: acesso_variavel   { $$ = $1; };
+expressao: chamada_funcao    { $$ = $1; };
+expressao: '(' expressao ')' { $$ = $2; };
+expressao: expressao '?' expressao ':' expressao { $$ = make_node(NODE_TERNARY); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; };
 
 /* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS TK_IDENTIFICADOR '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';';
@@ -198,7 +199,7 @@ comando_continue: TK_PR_CONTINUE;
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
-comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional;
+comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
 comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
