@@ -239,10 +239,11 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_FUNCTION_DEFINITION:
-        descompila_internal(node->child[0]); // identifier
-        descompila_internal(node->child[1]); // parameters
+        descompila_internal(node->child[0]);
+        printf(" ");
+        descompila_internal(node->child[1]);
+        printf("() {}");
         break;
-
    }
 }
 
