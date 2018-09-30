@@ -54,6 +54,8 @@
 #define NODE_DO_WHILE       44  // do { } while (x)
 #define NODE_SWITCH         45  // switch (x) { }
 #define NODE_CASE           56  // case (x): {}
+#define NODE_FOR            57  // for(x) {}
+#define NODE_FOREACH        58  // foreach
 
 
 #define NODE_IDENTIFIER     50      // abc, aaa01

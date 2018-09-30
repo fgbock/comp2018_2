@@ -224,7 +224,7 @@ bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$
 atribuicao: acesso_variavel '=' expressao     { $$ = make_node(NODE_ASSIGNMENT); $$->child[0] = $1; $$->child[1] = $3; };
 atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR { $$ = make_node(NODE_EMPTY); }; // TODO: Essa regra eh necessaria?
 
-declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[0] = $1; };
+declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[1] = $1; };
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const   { $$ = $2; $$->child[2] = make_node(NODE_CONST);  };
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static { $$ = $2; $$->child[3] = make_node(NODE_STATIC); };
 declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; $$->child[1] = $2; $$->child[4] = $3; };
@@ -236,7 +236,7 @@ declaracao_variavel_local_static: declaracao_variavel_local { $$ = $1; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: acesso_propriedade declaracao_variavel_local_ou_atribuicao_id_parametro { $$ = $2; $$->child[1] = $1; }; // Atribuicao ou shift
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_IDENTIFICADOR   {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: identificador                   { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                                                                            $$->child[3] = $2; };
 
@@ -251,7 +251,7 @@ declaracao_variavel_local: TK_PR_FLOAT  identificador opcional_declaracao_valor 
 declaracao_variavel_local: TK_PR_BOOL   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_BOOL_TYPE);   $$->child[4] = $3; };
 declaracao_variavel_local: TK_PR_CHAR   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_CHAR_TYPE);   $$->child[4] = $3; };
 declaracao_variavel_local: TK_PR_STRING identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_STRING_TYPE); $$->child[4] = $3; };
-declaracao_variavel_local: TK_IDENTIFICADOR TK_IDENTIFICADOR;
+declaracao_variavel_local: identificador identificador { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; };
 
 
 /* comando simples - io */
@@ -286,7 +286,7 @@ comandos_dentro_for: atribuicao;
 comandos_dentro_for: bloco_comandos;
 comandos_dentro_for_aux: %empty;
 comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux;
-comando_foreach: TK_PR_FOREACH '(' TK_IDENTIFICADOR ':' expressao lista_expressoes ')' bloco_comandos;
+comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8;  };
 comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos;
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; };
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; };

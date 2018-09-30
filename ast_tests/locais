@@ -5,5 +5,5 @@ int f() {
    static const int i;
    int j <= 10;
    int k <= j;
-   //custom j;
+   minha_var meu_nome;
 }

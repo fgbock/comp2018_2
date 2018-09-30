@@ -105,7 +105,7 @@ void shift_or_assignment(ast_node* node, char* op) {
    descompila_internal(node->child[1]); // optional property access
    descompila_internal(node->child[2]); // optional vector access
    printf("%s", op);
-   descompila_internal(node->child[3]);
+   descompila_internal(node->child[3]); // rhs
    printf(";\n");
 }
 
@@ -115,7 +115,6 @@ void descompila_internal(ast_node* node) {
    if (node == NULL) {
       return;
    }
-   //printf("type %d\n", node->type);
    switch(node->type) {
 
       case NODE_PROGRAM:
@@ -285,6 +284,19 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]);
         break;
 
+      case NODE_FOREACH:
+        printf("foreach (");
+        descompila_internal(node->child[0]); // identifier
+        printf(":");
+        descompila_internal(node->child[1]); // first expression
+        if (node->child[2] != NULL && node->child[2]->type == NODE_EXPRESSION_LIST)
+           printf(", ");
+        descompila_internal(node->child[2]); // expression list
+        printf(")\n");
+        descompila_internal(node->child[3]); // command block
+        printf(";\n");
+        break;
+
       case NODE_IF:
         printf("\nif (");
         descompila_internal(node->child[0]); // expression
@@ -424,7 +436,9 @@ void printree(ast_node* node, int lvl){
 	return;
    }
    for(int j = 0; j < lvl; j++){printf(" ");}
-   printf("Type: %d\n", node->type);
+   printf("Type: %d", node->type);
+   if (node->type == NODE_IDENTIFIER) printf(", %s", node->string_literal);
+   printf("\n");
    for (i = 0; i < MAX_CHILD_NODES; i++) {
       if (node->child[i] != NULL) {
 	printree(node->child[i], lvl+1);
