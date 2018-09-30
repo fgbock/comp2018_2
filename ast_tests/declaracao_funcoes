@@ -1,4 +1,7 @@
 bool fun1() { }
-bool fun2(int i) { }
-bool fun3(int i, int j) { }
-bool fun4(int i, int j, int k) { }
+int fun2(int i) { }
+float fun3(int i, int j) { }
+static float fun3(int i, int j) { }
+user_type fun4(int i, int j, int k) { }
+static user_type fun4(int i, int j, int k) { }
+

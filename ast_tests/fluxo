@@ -1,27 +1,24 @@
 int f() {
 
-  if (true) then {
+  if (true) then { };
+
+  if (a == 2) then { };
+  if ((a+b) <= 10) then { };
+
+
+  if (false) then { } else {
 
   };
 
-
-  if (false) then {
-
-  } else {
-
-  };
-
-  while (true) do {
-
-  };
+  while (true) do { };
 
   do {
-
   } while (true);
 
-  switch (10) {
-     case 10: { };
-     case 20: { };
+  switch (x) {
+    case 1:
+      //y = 2;
+      break;
   };
 }
 
