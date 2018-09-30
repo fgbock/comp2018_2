@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -196,23 +196,23 @@ declaracao_parametro_unico_funcao: TK_PR_STATIC tipo_variavel identificador { $$
 declaracao_parametro_unico_funcao:              tipo_variavel identificador { $$ = make_node(NODE_ARGUMENT); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; };
 
 /* comando simples */
-um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift;
-um_comando: input;
-um_comando: output;
-um_comando: chamada_funcao;
-um_comando: comando_return;
-um_comando: comando_break;
-um_comando: comando_continue;
-um_comando: comando_do_while;
+um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift { $$ = $1; };;
+um_comando: input              { $$ = $1; };
+um_comando: output             { $$ = $1; };
+um_comando: chamada_funcao     { $$ = $1; };
+um_comando: comando_return     { $$ = $1; };
+um_comando: comando_break      { $$ = $1; };
+um_comando: comando_continue   { $$ = $1; };
+um_comando: comando_do_while   { $$ = $1; };
 um_comando: comando_if         { $$ = $1; };
 um_comando: comando_switch     { $$ = $1; };
-um_comando: comando_foreach;
-um_comando: comando_for;
+um_comando: comando_foreach    { $$ = $1; };
+um_comando: comando_for        { $$ = $1; };
 um_comando: comando_while      { $$ = $1; };
 comando_simples: %empty                              { $$ = make_node(NODE_EMPTY); };
 comando_simples: um_comando ';' comando_simples      { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $1; $$->child[1] = $3; };
-comando_simples: bloco_comandos ';' comando_simples;
-comando_simples: comando_case comando_simples;
+comando_simples: bloco_comandos ';' comando_simples  { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $1; $$->child[1] = $3; };
+comando_simples: comando_case comando_simples        { $$ = $1; $$->child[0] = $2; };
 
 
 
@@ -270,10 +270,10 @@ argumento_aux: ',' argumento              { $$ = $2;};
 
 
 /* comandos de return, break, continue e case */
-comando_return: TK_PR_RETURN expressao;
-comando_break: TK_PR_BREAK;
-comando_continue: TK_PR_CONTINUE;
-comando_case: TK_PR_CASE TK_LIT_INT ':';
+comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2; };
+comando_break: TK_PR_BREAK              { $$ = make_node(NODE_BREAK); };
+comando_continue: TK_PR_CONTINUE        { $$ = make_node(NODE_CONTINUE); };
+comando_case: TK_PR_CASE TK_LIT_INT ':' { $$ = make_node(NODE_CASE); $$->int_literal = yylval.valor_lexico_int; };
 
 /* controles de fluxo */
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };

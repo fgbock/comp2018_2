@@ -53,6 +53,7 @@
 #define NODE_WHILE          43  // while (x) do { }
 #define NODE_DO_WHILE       44  // do { } while (x)
 #define NODE_SWITCH         45  // switch (x) { }
+#define NODE_CASE           56  // case (x): {}
 
 
 #define NODE_IDENTIFIER     50      // abc, aaa01
@@ -91,6 +92,11 @@
 
 
 #define NODE_LOCAL_VAR  200
+
+
+#define NODE_RETURN    301 
+#define NODE_BREAK     302
+#define NODE_CONTINUE  303
 
 #define NODE_EMPTY 666
 

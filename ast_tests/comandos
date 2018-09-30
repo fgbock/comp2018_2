@@ -1,0 +1,6 @@
+int f() {
+
+   break;
+   continue;
+   return 10;
+}

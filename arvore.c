@@ -224,6 +224,11 @@ void descompila_internal(ast_node* node) {
         printf("\n");
         break;
 
+      case NODE_CASE:
+        printf("case %d:", node->int_literal);
+        descompila_internal(node->child[0]); // value
+        break;
+
       case NODE_ELSE:
         printf(" else ");
         descompila_internal(node->child[0]); // command block
@@ -301,6 +306,20 @@ void descompila_internal(ast_node* node) {
         printf(")");
         descompila_internal(node->child[4]); // body
         printf("\n");
+        break;
+
+      case NODE_BREAK:
+        printf("break;\n");
+        break;
+
+      case NODE_CONTINUE:
+        printf("continue;\n");
+        break;
+
+      case NODE_RETURN:
+        printf("return ");
+        descompila_internal(node->child[0]); // expression
+        printf(";\n");
         break;
    }
 }
