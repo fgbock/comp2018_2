@@ -10,5 +10,10 @@ int f() {
    x$p = 10;
    x$p[1] = 10;
    x$p[1] = x$p[2];
+
+   identificador << 10;
+   identificador$campo >> 10;
+   //identificador[x] << 10;
+   //identificador[x]$campo << 10;
    return xyz$p[10];
 }

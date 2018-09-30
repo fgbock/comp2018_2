@@ -233,17 +233,17 @@ declaracao_variavel_local_const: declaracao_variavel_local {}; // TODO
 declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local {}; // TODO
 declaracao_variavel_local_static: declaracao_variavel_local {}; // TODO
 
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao {}; // TODO
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: acesso_propriedade declaracao_variavel_local_ou_atribuicao_id_parametro { $$ = $2; $$->child[1] = $1; }; // Atribuicao ou shift
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_IDENTIFICADOR {}; // TODO
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                    $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                                                                            $$->child[3] = $2; };
 
 declaracao_variavel_local_ou_atribuicao_id_parametro: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
-declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                    $$->child[3] = $2; };
-declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao {}; // TODO Shift
-declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao {}; // TODO Shift
+declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                                                                            $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
 
 declaracao_variavel_local: TK_IDENTIFICADOR;
 declaracao_variavel_local: TK_PR_INT TK_IDENTIFICADOR opcional_declaracao_valor;

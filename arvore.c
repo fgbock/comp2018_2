@@ -99,6 +99,18 @@ void descompila_internal_binary_expression(ast_node* node)
    }
 }
 
+void shift_or_assignment(ast_node* node, char* op) {
+   if (node == NULL) return;
+   descompila_internal(node->child[0]); // identifier
+   descompila_internal(node->child[1]); // optional property access
+   descompila_internal(node->child[2]); // optional vector access
+   if (node->type == NODE_SHIFT_LEFT)  printf(" << ");
+   if (node->type == NODE_SHIFT_RIGHT) printf(" >> ");
+   if (node->type == NODE_ASSIGNMENT)  printf(" = ");
+   descompila_internal(node->child[3]);
+   printf(";\n");
+}
+
 
 void descompila_internal(ast_node* node) {
    int i = 0;
@@ -124,13 +136,14 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[2]);
         break;
 
-      case NODE_ASSIGNMENT: // TODO: Replace chils 0-3 with a NODE_VAR_ACCESS
-        descompila_internal(node->child[0]); // identifier
-        descompila_internal(node->child[1]); // optional property access
-        descompila_internal(node->child[2]); // optional vector access
-        printf(" = ");
-        descompila_internal(node->child[3]);
-        printf(";\n");
+      case NODE_SHIFT_LEFT:
+        shift_or_assignment(node, " << ");
+        break;
+      case NODE_SHIFT_RIGHT:
+        shift_or_assignment(node, " >> ");
+        break;
+      case NODE_ASSIGNMENT:
+        shift_or_assignment(node, " = ");
         break;
 
       case NODE_EXPRESSION_LIST:
