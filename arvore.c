@@ -118,6 +118,44 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]);
         break;
 
+      case NODE_VAR_ACCESS:
+        descompila_internal(node->child[0]);
+        descompila_internal(node->child[1]);
+        descompila_internal(node->child[2]);
+        break;
+
+      case NODE_EXPRESSION_LIST:
+        descompila_internal(node->child[0]);
+        if (node->child[1] != NULL && node->child[1]->type == NODE_EXPRESSION_LIST)
+           printf(", ");
+        descompila_internal(node->child[1]);
+        break;
+
+      case NODE_INPUT:
+        printf("input ");
+        descompila_internal(node->child[0]);
+        printf(";\n");
+        break;
+
+      case NODE_OUTPUT:
+        printf("output ");
+        descompila_internal(node->child[0]);
+        if (node->child[1] != NULL && node->child[1]->type == NODE_EXPRESSION_LIST)
+           printf(", ");
+        descompila_internal(node->child[1]);
+        printf(";\n");
+        break;
+
+      case NODE_VECTOR_ACCESS:
+        printf("[");
+        descompila_internal(node->child[0]);
+        printf("]");
+        break;
+
+      case NODE_PROPERTY_ACCESS:
+        printf("$%s", node->string_literal);
+        break;
+
       case NODE_INT_TYPE:
         printf("int");
         break;

@@ -2,5 +2,8 @@ int f() {
 
    break;
    continue;
-   return 10;
+   input x;
+   output x;
+   output 10, x, y;
+   return xyz$p[10];
 }

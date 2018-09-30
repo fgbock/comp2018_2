@@ -64,6 +64,7 @@
 #define NODE_ARGUMENT_LIST        54 // (int x1, char x2, ...)
 #define NODE_ARGUMENT_PLACEHOLDER 55 // .
 #define NODE_PIPE_COMMAND         56 // %>% ou %|%
+#define NODE_EXPRESSION_LIST      57
 
 #define NODE_COMMAND_LIST   60
 #define NODE_COMMAND_BLOCK  61
@@ -91,14 +92,19 @@
 #define NODE_NEW_TYPE_PROPERTY_LIST 112
 
 
-#define NODE_LOCAL_VAR  200
+#define NODE_LOCAL_VAR        200
+#define NODE_VAR_ACCESS       201
+#define NODE_PROPERTY_ACCESS  203  // variavel$property
+#define NODE_VECTOR_ACCESS    204  // variavel[x]
 
 
-#define NODE_RETURN    301 
-#define NODE_BREAK     302
-#define NODE_CONTINUE  303
+#define NODE_RETURN    301 // return x
+#define NODE_BREAK     302 // break
+#define NODE_CONTINUE  303 // continue
+#define NODE_INPUT     304 // input x;
+#define NODE_OUTPUT    305 // output x, y, z;
 
-#define NODE_EMPTY 666
+#define NODE_EMPTY 666     // no value
 
 typedef struct ast_node {
 
@@ -107,7 +113,7 @@ typedef struct ast_node {
    union {
       int   int_literal;    // Valid when type == (NODE_INT_LITERAL | NODE_SIZE)
       float float_literal;  // Valid when type == NODE_FLOAT_LITERAL
-      char* string_literal; // Valid when type == (NODE_STRING_LITERAL | NODE_IDENTIFIER)
+      char* string_literal; // Valid when type == (NODE_STRING_LITERAL | NODE_IDENTIFIER | NODE_PROPERTY_ACCESS)
       char  char_literal;   // Valid when type == NODE_CHAR_LITERAL
       int   bool_literal;   // Valid when type == NODE_BOOL_LITERAL
    };
