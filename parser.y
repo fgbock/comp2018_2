@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -92,12 +92,12 @@ programa_aux: declaracao_funcao                       programa_aux { $$ = make_n
 programa_aux: %empty {$$ = NULL;};
 
 /* opcionais & auxiliares */
-literal: TK_LIT_INT;
-literal: TK_LIT_FLOAT;
-literal: TK_LIT_FALSE { $$ = make_node(NODE_BOOL_LITERAL); $$->bool_literal = 0; };
-literal: TK_LIT_TRUE  { $$ = make_node(NODE_BOOL_LITERAL); $$->bool_literal = 1; };
-literal: TK_LIT_CHAR;
-literal: TK_LIT_STRING;
+literal: TK_LIT_INT    { $$ = make_node(NODE_INT_LITERAL);    $$->int_literal = yylval.valor_lexico_int; };
+literal: TK_LIT_FLOAT  { $$ = make_node(NODE_FLOAT_LITERAL);  $$->float_literal = yylval.valor_lexico_float; };
+literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 0; };
+literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1; };
+literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char; };
+literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = strdup(yylval.valor_lexico_string); };
 opcional_const: %empty;
 opcional_const: TK_PR_CONST;
 opcional_acesso_vetor: %empty;
@@ -205,7 +205,7 @@ um_comando: comando_break;
 um_comando: comando_continue;
 um_comando: comando_do_while;
 um_comando: comando_if         { $$ = $1; };
-um_comando: comando_switch;
+um_comando: comando_switch     { $$ = $1; };
 um_comando: comando_foreach;
 um_comando: comando_for;
 um_comando: comando_while      { $$ = $1; };
@@ -279,7 +279,7 @@ comando_case: TK_PR_CASE TK_LIT_INT ':';
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
 comando_else_opcional: %empty                                                          { $$ = make_node(NODE_EMPTY); };
 comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_ELSE); $$->child[0] = $2; };
-comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
+comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos                          { $$ = make_node(NODE_SWITCH); $$->child[0] = $3; $$->child[1] = $5; };
 
 /* comandos de iteracao */
 comandos_dentro_for: atribuicao;

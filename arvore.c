@@ -216,6 +216,14 @@ void descompila_internal(ast_node* node) {
         printf("\n");
         break;
 
+      case NODE_SWITCH:
+        printf("switch (");
+        descompila_internal(node->child[0]); // value
+        printf(")");
+        descompila_internal(node->child[1]); // command block
+        printf("\n");
+        break;
+
       case NODE_ELSE:
         printf(" else ");
         descompila_internal(node->child[0]); // command block

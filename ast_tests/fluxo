@@ -18,5 +18,9 @@ int f() {
   do {
 
   } while (true);
+
+  switch (10) {
+
+  };
 }
 
