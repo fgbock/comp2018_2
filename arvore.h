@@ -98,11 +98,12 @@
 #define NODE_VECTOR_ACCESS    204  // variavel[x]
 
 
-#define NODE_RETURN    301 // return x
-#define NODE_BREAK     302 // break
-#define NODE_CONTINUE  303 // continue
-#define NODE_INPUT     304 // input x;
-#define NODE_OUTPUT    305 // output x, y, z;
+#define NODE_RETURN     301  // return x
+#define NODE_BREAK      302  // break
+#define NODE_CONTINUE   303  // continue
+#define NODE_INPUT      304  // input x;
+#define NODE_OUTPUT     305  // output x, y, z;
+#define NODE_ASSIGNMENT 306  // x = y;
 
 #define NODE_EMPTY 666     // no value
 

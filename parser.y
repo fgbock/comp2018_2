@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes atribuicao declaracao_variavel_local_ou_atribuicao_ou_shift_id declaracao_variavel_local_ou_atribuicao_id_parametro acesso_propriedade;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -98,8 +98,8 @@ literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal =
 literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1; };
 literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char; };
 literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = strdup(yylval.valor_lexico_string); };
-opcional_const: %empty;
-opcional_const: TK_PR_CONST;
+//opcional_const: %empty;
+//opcional_const: TK_PR_CONST;
 opcional_acesso_vetor: %empty            { $$ = make_node(NODE_EMPTY); };
 opcional_acesso_vetor: '[' expressao ']' { $$ = make_node(NODE_VECTOR_ACCESS); $$->child[0] = $2; };
 opcional_declaracao_valor: %empty;
@@ -107,6 +107,7 @@ opcional_declaracao_valor: TK_OC_LE TK_IDENTIFICADOR;
 opcional_declaraco_valor: TK_OC_LE literal;
 opcional_acesso_propriedade: %empty               { $$ = make_node(NODE_EMPTY); };
 opcional_acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = strdup(yylval.valor_lexico_string); };
+acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = strdup(yylval.valor_lexico_string); };
 acesso_variavel: identificador opcional_acesso_propriedade opcional_acesso_vetor { $$ = make_node(NODE_VAR_ACCESS); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $3; };
 
 /* tipo de variável */
@@ -185,9 +186,9 @@ declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_v
 declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
 
 /* declaração de função */
-declaracao_funcao_usertype_e_var_global: identificador identificador              '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
-declaracao_funcao:                       TK_PR_STATIC tipo_variavel identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
-declaracao_funcao:                       tipo_variavel_primitiva    identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
+declaracao_funcao_usertype_e_var_global:              identificador           identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
+declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
+declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
 primeiro_param_funcao: %empty                                               { $$ = make_node(NODE_ARGUMENT_LIST); };
 primeiro_param_funcao: declaracao_parametro_unico_funcao param_funcao       { $$ = make_node(NODE_ARGUMENT_LIST); $$->child[0] = $1; $$->child[1] = $2; };
 param_funcao: %empty                                                        { $$ = make_node(NODE_EMPTY); };
@@ -220,29 +221,29 @@ comando_simples: comando_case comando_simples        { $$ = $1; $$->child[0] = $
 bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2;  };
 
 /* comandos simples - atribuições */
-atribuicao: acesso_variavel '=' expressao;
-atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR;
+atribuicao: acesso_variavel '=' expressao     { $$ = make_node(NODE_ASSIGNMENT); $$->child[0] = $1; $$->child[1] = $3; };
+atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR { $$ = make_node(NODE_EMPTY); }; // TODO: Essa regra eh necessaria?
 
-declaracao_variavel_local_ou_atribuicao_ou_shift: TK_IDENTIFICADOR declaracao_variavel_local_ou_atribuicao_ou_shift_id;
-declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const;
-declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static;
-declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor;
+declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[0] = $1; };
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva TK_IDENTIFICADOR opcional_declaracao_valor {}; // TODO
 
-declaracao_variavel_local_const: declaracao_variavel_local;
-declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local;
-declaracao_variavel_local_static: declaracao_variavel_local;
+declaracao_variavel_local_const: declaracao_variavel_local {}; // TODO
+declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local {}; // TODO
+declaracao_variavel_local_static: declaracao_variavel_local {}; // TODO
 
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao; // Shift
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao; // Shift
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao; // Atribuicao
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: '$' TK_IDENTIFICADOR declaracao_variavel_local_ou_atribuicao_id_parametro; // Atribuicao
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_IDENTIFICADOR;
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao; // Atribuicao
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: acesso_propriedade declaracao_variavel_local_ou_atribuicao_id_parametro { $$ = $2; $$->child[1] = $1; }; // Atribuicao ou shift
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_IDENTIFICADOR {}; // TODO
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                    $$->child[3] = $2; };
 
-declaracao_variavel_local_ou_atribuicao_id_parametro: '[' expressao ']' '=' expressao;
-declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao;
-declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao; // Shift
-declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao; // Shift
+declaracao_variavel_local_ou_atribuicao_id_parametro: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
+declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao                   { $$ = make_node(NODE_ASSIGNMENT);                    $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao {}; // TODO Shift
+declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao {}; // TODO Shift
 
 declaracao_variavel_local: TK_IDENTIFICADOR;
 declaracao_variavel_local: TK_PR_INT TK_IDENTIFICADOR opcional_declaracao_valor;

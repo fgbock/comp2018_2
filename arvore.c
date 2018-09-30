@@ -124,6 +124,15 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[2]);
         break;
 
+      case NODE_ASSIGNMENT: // TODO: Replace chils 0-3 with a NODE_VAR_ACCESS
+        descompila_internal(node->child[0]); // identifier
+        descompila_internal(node->child[1]); // optional property access
+        descompila_internal(node->child[2]); // optional vector access
+        printf(" = ");
+        descompila_internal(node->child[3]);
+        printf(";\n");
+        break;
+
       case NODE_EXPRESSION_LIST:
         descompila_internal(node->child[0]);
         if (node->child[1] != NULL && node->child[1]->type == NODE_EXPRESSION_LIST)

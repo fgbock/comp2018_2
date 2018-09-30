@@ -5,5 +5,10 @@ int f() {
    input x;
    output x;
    output 10, x, y;
+   x = 10;
+   x[1] = 10;
+   x$p = 10;
+   x$p[1] = 10;
+   x$p[1] = x$p[2];
    return xyz$p[10];
 }
