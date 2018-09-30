@@ -3,5 +3,7 @@ int f() {
    const int i;
    static int i;
    static const int i;
+   int j <= 10;
+   int k <= j;
    //custom j;
 }

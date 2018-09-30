@@ -104,9 +104,7 @@ void shift_or_assignment(ast_node* node, char* op) {
    descompila_internal(node->child[0]); // identifier
    descompila_internal(node->child[1]); // optional property access
    descompila_internal(node->child[2]); // optional vector access
-   if (node->type == NODE_SHIFT_LEFT)  printf(" << ");
-   if (node->type == NODE_SHIFT_RIGHT) printf(" >> ");
-   if (node->type == NODE_ASSIGNMENT)  printf(" = ");
+   printf("%s", op);
    descompila_internal(node->child[3]);
    printf(";\n");
 }
@@ -157,9 +155,12 @@ void descompila_internal(ast_node* node) {
         printf(" ");
         descompila_internal(node->child[2]); // Const or empty
         printf(" ");
-        descompila_internal(node->child[0]); // Type
+        descompila_internal(node->child[1]); // Type
         printf(" ");
-        descompila_internal(node->child[1]); // Identifier
+        descompila_internal(node->child[0]); // Identifier
+        if (node->child[4] != NULL && node->child[4]->type != NODE_EMPTY)
+           printf(" <= ");
+        descompila_internal(node->child[4]); // Init value
         printf(";\n");
         break;
 
