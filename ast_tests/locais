@@ -1,0 +1,7 @@
+int f() {
+   int i;
+   const int i;
+   static int i;
+   static const int i;
+   //custom j;
+}

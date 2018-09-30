@@ -139,11 +139,28 @@ void descompila_internal(ast_node* node) {
       case NODE_SHIFT_LEFT:
         shift_or_assignment(node, " << ");
         break;
+
       case NODE_SHIFT_RIGHT:
         shift_or_assignment(node, " >> ");
         break;
+
       case NODE_ASSIGNMENT:
         shift_or_assignment(node, " = ");
+        break;
+
+      case NODE_CONST:
+        printf("const");
+        break;
+
+      case NODE_LOCAL_VAR:
+        descompila_internal(node->child[3]); // Static or empty
+        printf(" ");
+        descompila_internal(node->child[2]); // Const or empty
+        printf(" ");
+        descompila_internal(node->child[0]); // Type
+        printf(" ");
+        descompila_internal(node->child[1]); // Identifier
+        printf(";\n");
         break;
 
       case NODE_EXPRESSION_LIST:
