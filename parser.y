@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -188,10 +188,12 @@ declaracao_variavel_global: identificador tipo_variavel_primitiva ';'           
 declaracao_funcao_usertype_e_var_global: identificador identificador              '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $4; };
 declaracao_funcao:                       TK_PR_STATIC tipo_variavel identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; };
 declaracao_funcao:                       tipo_variavel_primitiva    identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = NULL;                   $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; };
-primeiro_param_funcao: %empty                                                     { $$ = make_node(NODE_ARGUMENT_LIST); };
-primeiro_param_funcao: opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao { $$ = make_node(NODE_ARGUMENT_LIST); };
-param_funcao: %empty;
-param_funcao: ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
+primeiro_param_funcao: %empty                                               { $$ = make_node(NODE_ARGUMENT_LIST); };
+primeiro_param_funcao: declaracao_parametro_unico_funcao param_funcao       { $$ = make_node(NODE_ARGUMENT_LIST); $$->child[0] = $1; $$->child[1] = $2; };
+param_funcao: %empty                                                        { $$ = make_node(NODE_EMPTY); };
+param_funcao: ',' declaracao_parametro_unico_funcao param_funcao            { $$ = make_node(NODE_EMPTY); };
+declaracao_parametro_unico_funcao: TK_PR_STATIC tipo_variavel identificador { $$ = make_node(NODE_ARGUMENT); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; };
+declaracao_parametro_unico_funcao:              tipo_variavel identificador { $$ = make_node(NODE_ARGUMENT); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; };
 
 /* comando simples */
 um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift;
@@ -260,11 +262,11 @@ lista_expressoes: ',' expressao lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL);         $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $3; $$->child[2] = $5; };
-argumento: %empty {$$ = make_node(NODE_EMPTY);};
-argumento: expressao argumento_aux { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = $1; $$->child[1] = $2;};
-argumento: '.' argumento_aux {$$ = make_node(NODE_ARGUMENT);         $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER); $$->child[0] = $2;};
-argumento_aux: %empty {$$ = make_node(NODE_EMPTY);};
-argumento_aux: ',' argumento {$$ = $2;};
+argumento: %empty                         { $$ = make_node(NODE_EMPTY);};
+argumento: expressao argumento_aux        { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = $1;                                   $$->child[1] = $2;};
+argumento: '.' argumento_aux              { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER); $$->child[0] = $2;};
+argumento_aux: %empty                     { $$ = make_node(NODE_EMPTY);};
+argumento_aux: ',' argumento              { $$ = $2;};
 
 
 /* comandos de return, break, continue e case */

@@ -212,7 +212,7 @@ void descompila_internal(ast_node* node) {
 
       case NODE_ELSE:
         printf("\nelse");
-        descompila_internal(node->child[0]);
+        descompila_internal(node->child[0]); // command block
         break;
 
       case NODE_TERNARY:
@@ -238,20 +238,30 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]); // arguments
         break;
 
+      case NODE_ARGUMENT:
+        descompila_internal(node->child[0]); // static or empty
+        printf(" ");
+        descompila_internal(node->child[1]); // type
+        printf(" ");
+        descompila_internal(node->child[2]); // identifier
+        break;
+
       case NODE_ARGUMENT_LIST:
-        printf("argumentos"); // TODO: Fix me later
+        descompila_internal(node->child[0]); // first argument (head)
+        descompila_internal(node->child[1]); // next arguments (tail)
         break;
 
       case NODE_FUNCTION_DEFINITION:
+        printf("\n");
         descompila_internal(node->child[0]); // static or empty
         printf(" ");
         descompila_internal(node->child[1]); // return type
         printf(" ");
         descompila_internal(node->child[2]); // identifier
         printf("(");
-        descompila_internal(node->child[3]); // parameters
-        printf(")\n");
-        printf("{\n}\n"); // body
+        descompila_internal(node->child[3]); // argument list
+        printf(")");
+        printf(" {\n}"); // body
         break;
    }
 }

@@ -1,2 +1,2 @@
-bool fun() {
-}
+bool fun() { }
+bool fun2(int i) { }
