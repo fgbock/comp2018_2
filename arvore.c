@@ -133,6 +133,13 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[2]);
         break;
 
+      case NODE_ASSIGNMENT_2:
+        descompila_internal(node->child[0]); // lhs
+        printf(" = ");
+        descompila_internal(node->child[1]); // rhs
+        printf(";\n");
+        break;
+
       case NODE_SHIFT_LEFT:
         shift_or_assignment(node, " << ");
         break;
@@ -269,6 +276,8 @@ void descompila_internal(ast_node* node) {
       case NODE_SUB:
       case NODE_MUL:
       case NODE_DIV:
+      case NODE_LESS:
+      case NODE_GREATER:
       case NODE_LE:
       case NODE_GE:
       case NODE_EQ:
@@ -284,10 +293,24 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]);
         break;
 
+      case NODE_FOR:
+        printf("for (");
+        descompila_internal(node->child[0]); // first init command
+        descompila_internal(node->child[1]); // init command list
+        printf(" : ");
+        descompila_internal(node->child[2]); // conditional
+        printf(" : ");
+        descompila_internal(node->child[3]); // first exec command
+        descompila_internal(node->child[4]); // exec command list
+        printf(")");
+        descompila_internal(node->child[5]); // body
+        printf(";\n");
+        break;
+
       case NODE_FOREACH:
         printf("foreach (");
         descompila_internal(node->child[0]); // identifier
-        printf(":");
+        printf(" : ");
         descompila_internal(node->child[1]); // first expression
         if (node->child[2] != NULL && node->child[2]->type == NODE_EXPRESSION_LIST)
            printf(", ");

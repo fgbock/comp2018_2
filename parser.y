@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes atribuicao declaracao_variavel_local_ou_atribuicao_ou_shift_id declaracao_variavel_local_ou_atribuicao_id_parametro acesso_propriedade declaracao_variavel_local declaracao_variavel_local_const declaracao_variavel_local_static opcional_declaracao_valor;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes atribuicao declaracao_variavel_local_ou_atribuicao_ou_shift_id declaracao_variavel_local_ou_atribuicao_id_parametro acesso_propriedade declaracao_variavel_local declaracao_variavel_local_const declaracao_variavel_local_static opcional_declaracao_valor comandos_dentro_for comandos_dentro_for_aux ;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -221,7 +221,7 @@ comando_simples: comando_case comando_simples        { $$ = $1; $$->child[0] = $
 bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2;  };
 
 /* comandos simples - atribuições */
-atribuicao: acesso_variavel '=' expressao     { $$ = make_node(NODE_ASSIGNMENT); $$->child[0] = $1; $$->child[1] = $3; };
+atribuicao: acesso_variavel '=' expressao     { $$ = make_node(NODE_ASSIGNMENT_2); $$->child[0] = $1; $$->child[1] = $3; };
 atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR { $$ = make_node(NODE_EMPTY); }; // TODO: Essa regra eh necessaria?
 
 declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[1] = $1; };
@@ -282,12 +282,12 @@ comando_else_opcional: TK_PR_ELSE bloco_comandos                                
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos                          { $$ = make_node(NODE_SWITCH); $$->child[0] = $3; $$->child[1] = $5; };
 
 /* comandos de iteracao */
-comandos_dentro_for: atribuicao;
-comandos_dentro_for: bloco_comandos;
-comandos_dentro_for_aux: %empty;
-comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux;
+comandos_dentro_for: atribuicao     { $$ = $1; };
+comandos_dentro_for: bloco_comandos { $$ = $1; };
+comandos_dentro_for_aux: %empty     { $$ = make_node(NODE_EMPTY); };
+comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $2; $$->child[1] = $3; };
 comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8;  };
-comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos;
+comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos { $$ = make_node(NODE_FOR); $$->child[0] = $3; $$->child[1] = $4; $$->child[2] = $6; $$->child[3] = $8; $$->child[4] = $9; $$->child[5] = $11; };
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; };
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; };
 
