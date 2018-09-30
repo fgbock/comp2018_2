@@ -207,7 +207,8 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[0]); // expression
         printf(") then");
         descompila_internal(node->child[1]); // then block
-        descompila_internal(node->child[2]); // optional else
+        descompila_internal(node->child[2]); // optional else 
+        printf("\n");
         break;
 
       case NODE_ELSE:
@@ -224,9 +225,10 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_COMMAND_BLOCK:
-        printf("\n{");
+        printf(" {\n");
         descompila_internal(node->child[0]);
-        printf("};");
+        descompila_internal(node->child[1]);
+        printf("}");
         break;
 
       case NODE_IDENTIFIER:
@@ -268,7 +270,8 @@ void descompila_internal(ast_node* node) {
         printf("(");
         descompila_internal(node->child[3]); // argument list
         printf(")");
-        printf(" {\n}"); // body
+        descompila_internal(node->child[4]); // body
+        printf("\n");
         break;
    }
 }

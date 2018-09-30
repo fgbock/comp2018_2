@@ -85,6 +85,9 @@
 #define NODE_NEW_TYPE_PROPERTY 111
 #define NODE_NEW_TYPE_PROPERTY_LIST 112
 
+
+#define NODE_LOCAL_VAR  200
+
 #define NODE_EMPTY 666
 
 typedef struct ast_node {

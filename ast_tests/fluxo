@@ -1,0 +1,6 @@
+int f() {
+
+  if (true) then {
+
+  };
+}

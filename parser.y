@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -94,8 +94,8 @@ programa_aux: %empty {$$ = NULL;};
 /* opcionais & auxiliares */
 literal: TK_LIT_INT;
 literal: TK_LIT_FLOAT;
-literal: TK_LIT_FALSE;
-literal: TK_LIT_TRUE;
+literal: TK_LIT_FALSE { $$ = make_node(NODE_BOOL_LITERAL); $$->bool_literal = 0; };
+literal: TK_LIT_TRUE  { $$ = make_node(NODE_BOOL_LITERAL); $$->bool_literal = 1; };
 literal: TK_LIT_CHAR;
 literal: TK_LIT_STRING;
 opcional_const: %empty;
@@ -110,14 +110,14 @@ opcional_acesso_propriedade: '$' TK_IDENTIFICADOR;
 acesso_variavel: TK_IDENTIFICADOR opcional_acesso_propriedade opcional_acesso_vetor;
 
 /* tipo de variável */
-tipo_variavel_primitiva: TK_PR_INT         {$$ = make_node(NODE_INT_TYPE);};
-tipo_variavel_primitiva: TK_PR_FLOAT       {$$ = make_node(NODE_FLOAT_TYPE);};
-tipo_variavel_primitiva: TK_PR_CHAR        {$$ = make_node(NODE_CHAR_TYPE);};
-tipo_variavel_primitiva: TK_PR_BOOL        {$$ = make_node(NODE_BOOL_TYPE);};
-tipo_variavel_primitiva: TK_PR_STRING      {$$ = make_node(NODE_STRING_TYPE);};
-tipo_variavel_usuario:   identificador     {$$ = $1; };
-tipo_variavel: tipo_variavel_usuario {$$ = $1;};
-tipo_variavel: tipo_variavel_primitiva {$$ = $1;};
+tipo_variavel_primitiva: TK_PR_INT         { $$ = make_node(NODE_INT_TYPE);    };
+tipo_variavel_primitiva: TK_PR_FLOAT       { $$ = make_node(NODE_FLOAT_TYPE);  };
+tipo_variavel_primitiva: TK_PR_CHAR        { $$ = make_node(NODE_CHAR_TYPE);   };
+tipo_variavel_primitiva: TK_PR_BOOL        { $$ = make_node(NODE_BOOL_TYPE);   };
+tipo_variavel_primitiva: TK_PR_STRING      { $$ = make_node(NODE_STRING_TYPE); };
+tipo_variavel_usuario:   identificador     { $$ = $1; };
+tipo_variavel: tipo_variavel_usuario       { $$ = $1; };
+tipo_variavel: tipo_variavel_primitiva     { $$ = $1; };
 
 
 /* Expressões */
@@ -185,9 +185,9 @@ declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_v
 declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
 
 /* declaração de função */
-declaracao_funcao_usertype_e_var_global: identificador identificador              '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = $1;                     $$->child[1] = $2; $$->child[2] = $4; };
-declaracao_funcao:                       TK_PR_STATIC tipo_variavel identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; };
-declaracao_funcao:                       tipo_variavel_primitiva    identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; };
+declaracao_funcao_usertype_e_var_global: identificador identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1;   $$->child[1] = $2; $$->child[2] = $4; $$->child[3] = $4; $$->child[4] = $6; };
+declaracao_funcao:                       TK_PR_STATIC tipo_variavel identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
+declaracao_funcao:                       tipo_variavel_primitiva    identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
 primeiro_param_funcao: %empty                                               { $$ = make_node(NODE_ARGUMENT_LIST); };
 primeiro_param_funcao: declaracao_parametro_unico_funcao param_funcao       { $$ = make_node(NODE_ARGUMENT_LIST); $$->child[0] = $1; $$->child[1] = $2; };
 param_funcao: %empty                                                        { $$ = make_node(NODE_EMPTY); };
@@ -204,20 +204,20 @@ um_comando: comando_return;
 um_comando: comando_break;
 um_comando: comando_continue;
 um_comando: comando_do_while;
-um_comando: comando_if;
+um_comando: comando_if           { $$ = $1; };
 um_comando: comando_switch;
 um_comando: comando_foreach;
 um_comando: comando_for;
 um_comando: comando_while;
-comando_simples: %empty;
-comando_simples: um_comando ';' comando_simples ;
+comando_simples: %empty                            { $$ = make_node(NODE_EMPTY); };
+comando_simples: um_comando ';' comando_simples    { $$ = $1; };
 comando_simples: bloco_comandos ';' comando_simples;
 comando_simples: comando_case comando_simples;
 
 
 
 /* comandos simples - bloco de comandos */
-bloco_comandos: '{' comando_simples '}';
+bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2;  };
 
 /* comandos simples - atribuições */
 atribuicao: acesso_variavel '=' expressao;
@@ -277,7 +277,8 @@ comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
 comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
-comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
+comando_else_opcional: %empty                                                          { $$ = make_node(NODE_EMPTY); };
+comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_EMPTY); }; // TODO: Not done
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
 /* comandos de iteracao */
