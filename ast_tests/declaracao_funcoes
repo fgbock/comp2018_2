@@ -1,2 +1,4 @@
-bool fun() { }
+bool fun1() { }
 bool fun2(int i) { }
+bool fun3(int i, int j) { }
+bool fun4(int i, int j, int k) { }

@@ -240,7 +240,9 @@ void descompila_internal(ast_node* node) {
 
       case NODE_ARGUMENT:
         descompila_internal(node->child[0]); // static or empty
-        printf(" ");
+        if (node->child[0] != NULL && node->child[0]->type == NODE_STATIC) {
+           printf(" ");
+        }
         descompila_internal(node->child[1]); // type
         printf(" ");
         descompila_internal(node->child[2]); // identifier
@@ -248,13 +250,18 @@ void descompila_internal(ast_node* node) {
 
       case NODE_ARGUMENT_LIST:
         descompila_internal(node->child[0]); // first argument (head)
+        if (node->child[1] != NULL && node->child[1]->type == NODE_ARGUMENT_LIST) {
+           printf(", ");
+        }
         descompila_internal(node->child[1]); // next arguments (tail)
         break;
 
       case NODE_FUNCTION_DEFINITION:
         printf("\n");
         descompila_internal(node->child[0]); // static or empty
-        printf(" ");
+        if (node->child[0] != NULL && node->child[0]->type == NODE_STATIC) { 
+           printf(" ");
+        }
         descompila_internal(node->child[1]); // return type
         printf(" ");
         descompila_internal(node->child[2]); // identifier
