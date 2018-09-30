@@ -92,11 +92,21 @@ programa_aux: declaracao_funcao                       programa_aux { $$ = make_n
 programa_aux: %empty {$$ = NULL;};
 
 /* opcionais & auxiliares */
-literal: TK_LIT_INT | TK_LIT_FLOAT | TK_LIT_FALSE | TK_LIT_TRUE | TK_LIT_CHAR | TK_LIT_STRING;
-opcional_const: %empty | TK_PR_CONST;
-opcional_acesso_vetor: %empty | '[' expressao ']';
-opcional_declaracao_valor: %empty | TK_OC_LE TK_IDENTIFICADOR | TK_OC_LE literal;
-opcional_acesso_propriedade: %empty | '$' TK_IDENTIFICADOR;
+literal: TK_LIT_INT;
+literal: TK_LIT_FLOAT;
+literal: TK_LIT_FALSE;
+literal: TK_LIT_TRUE;
+literal: TK_LIT_CHAR;
+literal: TK_LIT_STRING;
+opcional_const: %empty;
+opcional_const: TK_PR_CONST;
+opcional_acesso_vetor: %empty;
+opcional_acesso_vetor: '[' expressao ']';
+opcional_declaracao_valor: %empty;
+opcional_declaracao_valor: TK_OC_LE TK_IDENTIFICADOR;
+opcional_declaraco_valor: TK_OC_LE literal;
+opcional_acesso_propriedade: %empty;
+opcional_acesso_propriedade: '$' TK_IDENTIFICADOR;
 acesso_variavel: TK_IDENTIFICADOR opcional_acesso_propriedade opcional_acesso_vetor;
 
 /* tipo de variável */
@@ -180,14 +190,27 @@ declaracao_funcao:                       TK_PR_STATIC tipo_variavel identificado
 declaracao_funcao:                       tipo_variavel_primitiva    identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = NULL;                   $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; };
 primeiro_param_funcao: %empty                                                     { $$ = make_node(NODE_ARGUMENT_LIST); };
 primeiro_param_funcao: opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao { $$ = make_node(NODE_ARGUMENT_LIST); };
-param_funcao: %empty | ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
+param_funcao: %empty;
+param_funcao: ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift | input | output | chamada_funcao | comando_return | comando_break | comando_continue | comando_do_while | comando_if | comando_switch | comando_foreach | comando_for | comando_while;
-comando_simples: %empty 
-| um_comando ';' comando_simples 
-| bloco_comandos ';' comando_simples
-| comando_case comando_simples;
+um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift
+um_comando: input;
+um_comando: output;
+um_comando: chamada_funcao;
+um_comando: comando_return;
+um_comando: comando_break;
+um_comando: comando_continue;
+um_comando: comando_do_while;
+um_comando: comando_if;
+um_comando: comando_switch;
+um_comando: comando_foreach;
+um_comando: comando_for;
+um_comando: comando_while;
+comando_simples: %empty;
+comando_simples: um_comando ';' comando_simples ;
+comando_simples: bloco_comandos ';' comando_simples;
+comando_simples: comando_case comando_simples;
 
 
 
@@ -195,7 +218,8 @@ comando_simples: %empty
 bloco_comandos: '{' comando_simples '}';
 
 /* comandos simples - atribuições */
-atribuicao: acesso_variavel '=' expressao | TK_IDENTIFICADOR TK_IDENTIFICADOR;
+atribuicao: acesso_variavel '=' expressao;
+atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR;
 
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_IDENTIFICADOR declaracao_variavel_local_ou_atribuicao_ou_shift_id;
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const;
@@ -231,7 +255,8 @@ declaracao_variavel_local: TK_IDENTIFICADOR TK_IDENTIFICADOR;
 /* comando simples - io */
 input: TK_PR_INPUT expressao;
 output: TK_PR_OUTPUT expressao lista_expressoes;
-lista_expressoes: %empty | ',' expressao lista_expressoes;
+lista_expressoes: %empty;
+lista_expressoes: ',' expressao lista_expressoes;
 
 /* comando simples - função */
 chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL);         $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $3; $$->child[2] = $5; };
@@ -254,8 +279,10 @@ comando_else_opcional: %empty | TK_PR_ELSE bloco_comandos;
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
 /* comandos de iteracao */
-comandos_dentro_for: atribuicao | bloco_comandos;
-comandos_dentro_for_aux: %empty | ',' comandos_dentro_for comandos_dentro_for_aux;
+comandos_dentro_for: atribuicao;
+comandos_dentro_for: bloco_comandos;
+comandos_dentro_for_aux: %empty;
+comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux;
 comando_foreach: TK_PR_FOREACH '(' TK_IDENTIFICADOR ':' expressao lista_expressoes ')' bloco_comandos;
 comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos;
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
