@@ -194,7 +194,7 @@ param_funcao: %empty;
 param_funcao: ',' opcional_const tipo_variavel TK_IDENTIFICADOR param_funcao;
 
 /* comando simples */
-um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift
+um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift;
 um_comando: input;
 um_comando: output;
 um_comando: chamada_funcao;
