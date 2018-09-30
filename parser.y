@@ -209,8 +209,8 @@ um_comando: comando_switch;
 um_comando: comando_foreach;
 um_comando: comando_for;
 um_comando: comando_while;
-comando_simples: %empty                            { $$ = make_node(NODE_EMPTY); };
-comando_simples: um_comando ';' comando_simples    { $$ = $1; };
+comando_simples: %empty                              { $$ = make_node(NODE_EMPTY); };
+comando_simples: um_comando ';' comando_simples      { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $1; $$->child[1] = $3; };
 comando_simples: bloco_comandos ';' comando_simples;
 comando_simples: comando_case comando_simples;
 
@@ -276,9 +276,9 @@ comando_continue: TK_PR_CONTINUE;
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
-comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
+comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF);   $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
 comando_else_opcional: %empty                                                          { $$ = make_node(NODE_EMPTY); };
-comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_EMPTY); }; // TODO: Not done
+comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_ELSE); $$->child[0] = $2; };
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
 
 /* comandos de iteracao */

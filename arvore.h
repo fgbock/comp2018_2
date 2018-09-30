@@ -61,6 +61,7 @@
 #define NODE_ARGUMENT_PLACEHOLDER 55 // .
 #define NODE_PIPE_COMMAND         56 // %>% ou %|%
 
+#define NODE_COMMAND_LIST   60
 #define NODE_COMMAND_BLOCK  61
 #define NODE_VAR_GLOBAL     62
 

@@ -113,6 +113,11 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]);
         break;
 
+      case NODE_COMMAND_LIST:
+        descompila_internal(node->child[0]);
+        descompila_internal(node->child[1]);
+        break;
+
       case NODE_INT_TYPE:
         printf("int");
         break;
@@ -212,7 +217,7 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_ELSE:
-        printf("\nelse");
+        printf(" else ");
         descompila_internal(node->child[0]); // command block
         break;
 

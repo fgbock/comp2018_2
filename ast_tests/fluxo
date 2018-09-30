@@ -3,4 +3,12 @@ int f() {
   if (true) then {
 
   };
+
+
+  if (false) then {
+
+  } else {
+
+  };
 }
+
