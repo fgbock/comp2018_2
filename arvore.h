@@ -56,9 +56,10 @@
 #define NODE_FUNCTION_CALL  51      // abc(x1, x2, x3, ...)
 #define NODE_FUNCTION_DEFINITION 52 // abc(int x1, char x2, ...)
 
-#define NODE_ARGUMENT 53 // (expression, ...)
-#define NODE_ARGUMENT_PLACEHOLDER 54 // .
-#define NODE_PIPE_COMMAND 55 // %>% ou %|%
+#define NODE_ARGUMENT             53 // (int x1)
+#define NODE_ARGUMENT_LIST        54 // (int x1, char x2, ...)
+#define NODE_ARGUMENT_PLACEHOLDER 55 // .
+#define NODE_PIPE_COMMAND         56 // %>% ou %|%
 
 #define NODE_COMMAND_BLOCK  61
 #define NODE_VAR_GLOBAL     62

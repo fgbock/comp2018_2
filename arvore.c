@@ -238,11 +238,20 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]); // arguments
         break;
 
+      case NODE_ARGUMENT_LIST:
+        printf("argumentos"); // TODO: Fix me later
+        break;
+
       case NODE_FUNCTION_DEFINITION:
-        descompila_internal(node->child[0]);
+        descompila_internal(node->child[0]); // static or empty
         printf(" ");
-        descompila_internal(node->child[1]);
-        printf("() {}");
+        descompila_internal(node->child[1]); // return type
+        printf(" ");
+        descompila_internal(node->child[2]); // identifier
+        printf("(");
+        descompila_internal(node->child[3]); // parameters
+        printf(")\n");
+        printf("{\n}\n"); // body
         break;
    }
 }
@@ -254,8 +263,6 @@ void libera_internal(ast_node* node) {
    for (int i = 0; i < MAX_CHILD_NODES; i++) {
       if (node->child[i] != NULL) {
          libera_internal(node->child[i]);
-      } else {
-         break;
       }
    }
 
@@ -275,8 +282,6 @@ void printree(ast_node* node, int lvl){
    for (i = 0; i < MAX_CHILD_NODES; i++) {
       if (node->child[i] != NULL) {
 	printree(node->child[i], lvl+1);
-      } else {
-         break;
       }
    }	
 }
