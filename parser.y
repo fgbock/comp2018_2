@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -204,11 +204,11 @@ um_comando: comando_return;
 um_comando: comando_break;
 um_comando: comando_continue;
 um_comando: comando_do_while;
-um_comando: comando_if           { $$ = $1; };
+um_comando: comando_if         { $$ = $1; };
 um_comando: comando_switch;
 um_comando: comando_foreach;
 um_comando: comando_for;
-um_comando: comando_while;
+um_comando: comando_while      { $$ = $1; };
 comando_simples: %empty                              { $$ = make_node(NODE_EMPTY); };
 comando_simples: um_comando ';' comando_simples      { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $1; $$->child[1] = $3; };
 comando_simples: bloco_comandos ';' comando_simples;
@@ -276,7 +276,7 @@ comando_continue: TK_PR_CONTINUE;
 comando_case: TK_PR_CASE TK_LIT_INT ':';
 
 /* controles de fluxo */
-comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF);   $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
+comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
 comando_else_opcional: %empty                                                          { $$ = make_node(NODE_EMPTY); };
 comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_ELSE); $$->child[0] = $2; };
 comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos;
@@ -288,8 +288,8 @@ comandos_dentro_for_aux: %empty;
 comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux;
 comando_foreach: TK_PR_FOREACH '(' TK_IDENTIFICADOR ':' expressao lista_expressoes ')' bloco_comandos;
 comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos;
-comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos;
-comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')';
+comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; };
+comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; };
 
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE {$$ = make_node(NODE_FORWARD_PIPE); };

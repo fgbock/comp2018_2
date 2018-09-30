@@ -10,5 +10,13 @@ int f() {
   } else {
 
   };
+
+  while (true) do {
+
+  };
+
+  do {
+
+  } while (true);
 }
 

@@ -221,6 +221,22 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[0]); // command block
         break;
 
+      case NODE_WHILE:
+        printf("while (");
+        descompila_internal(node->child[0]); // conditional
+        printf(") do ");
+        descompila_internal(node->child[1]); // command block
+        printf("\n");
+        break;
+
+      case NODE_DO_WHILE:
+        printf("do");
+        descompila_internal(node->child[0]); // command block
+        printf(" while(");
+        descompila_internal(node->child[1]); // conditional
+        printf(");\n");
+        break;
+
       case NODE_TERNARY:
         descompila_internal(node->child[0]);
         printf(" ? ");

@@ -47,9 +47,11 @@
 #define NODE_EXP            32  // '^'
 
 
-#define NODE_IF             40  // if (x) { }
+#define NODE_IF             40  // if (x) then { }
 #define NODE_ELSE           41  // else { }
 #define NODE_TERNARY        42  // .. ? .. : ..
+#define NODE_WHILE          43  // while (x) do { }
+#define NODE_DO_WHILE       44  // do { } while (x)
 
 
 #define NODE_IDENTIFIER     50      // abc, aaa01
