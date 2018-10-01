@@ -236,6 +236,53 @@ void descompila_internal(ast_node* node) {
         printf(";\n");
         break;
 
+      case NODE_NEW_TYPE:
+	descompila_internal(node->child[0]);
+        printf(" ");
+	descompila_internal(node->child[1]);
+	printf(" ");
+	printf("[");
+	descompila_internal(node->child[2]);
+	descompila_internal(node->child[3]);
+	printf("]");
+	printf(";");
+        printf("$%s", node->string_literal);
+	printf("\n");
+        break;
+
+     case NODE_NEW_TYPE_PROPERTY_LIST:
+	printf(":");
+	descompila_internal(node->child[0]);
+        printf(" ");
+	descompila_internal(node->child[1]);
+	break;
+
+     case NODE_NEW_TYPE_PROPERTY:
+	descompila_internal(node->child[0]);
+        printf(" ");
+	descompila_internal(node->child[1]);
+	printf(" ");
+	descompila_internal(node->child[2]);
+	break;
+
+     case NODE_CLASS:
+        printf("class");
+        break;
+
+     case NODE_PUBLIC:
+        printf("public");
+        break;
+     case NODE_PRIVATE:
+        printf("private");
+        break;
+     case NODE_PROTECTED:
+        printf("protected");
+        break;
+
+     case NODE_EMPTY:
+        printf("");
+        break;
+
       case NODE_INT_LITERAL:
         printf("%d", node->int_literal);
         break;

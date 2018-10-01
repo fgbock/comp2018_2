@@ -1,0 +1,1437 @@
+
+
+1
+2d1
+< 
+
+
+2
+2d1
+< 
+
+
+3
+1,3c1
+< v1[2] int;
+< 
+< 
+---
+> v1 [2] int;
+
+
+4
+1,3c1
+< v1[2] static int;
+< 
+< 
+---
+> v1 [2] static int;
+
+
+5
+
+
+6
+
+
+7
+
+
+8
+
+
+9
+1d0
+< class ASL_t [ public int x ];
+
+
+10
+
+
+11
+1,4c1
+< func1(int param1)
+< {
+< 
+< }
+---
+> error on line 2: syntax error, unexpected '('
+
+
+12
+1,2d0
+< int func1(static char param1)
+< {
+3a2
+> int func1(static char param1) {
+
+
+13
+1,4c1
+< const int func1()
+< {
+< 
+< }
+---
+> error on line 2: syntax error, unexpected TK_PR_CONST, expecting $end
+
+
+14
+1c1
+< int func1(bool param1);
+---
+> error on line 2: syntax error, unexpected ';', expecting '{'
+
+
+15
+1,4c1
+< int func1(int param1[5])
+< {
+< 
+< }
+---
+> error on line 1: syntax error, unexpected '[', expecting ')'
+
+
+16
+1,4c1
+< int func1[5]()
+< {
+< 
+< }
+---
+> error on line 2: syntax error, unexpected '[', expecting '('
+
+
+17
+1c1
+< class Teste [ class Marcador teste ];
+---
+> error on line 2: syntax error, unexpected TK_PR_CLASS
+
+
+18
+1c1
+< class Teste [ char marcador ]
+---
+> error on line 2: syntax error, unexpected $end, expecting ';'
+
+
+19
+1c1
+< class Teste [ marcador ];
+---
+> error on line 2: syntax error, unexpected TK_IDENTIFICADOR
+
+
+20
+1,8c1
+< static class
+< minhaClasse [
+< int id
+< : static string nome
+< : public const int idade
+< : private static float saldo
+< : const bool morto
+< ];
+---
+> error on line 2: syntax error, unexpected TK_PR_CLASS
+
+
+21
+1c1
+< a int
+---
+> error on line 4: syntax error, unexpected $end, expecting ';'
+
+
+22
+1,4c1
+< class
+< minhaClasse [
+< public const int idade
+< ];
+---
+> error on line 4: syntax error, unexpected TK_PR_CONST
+
+
+23
+1,4c1
+< class
+< minhaClasse [
+< public static int idade
+< ];
+---
+> error on line 4: syntax error, unexpected TK_PR_STATIC
+
+
+24
+1,4c1
+< class
+< minhaClasse [
+< static public int idade
+< ];
+---
+> error on line 4: syntax error, unexpected TK_PR_STATIC
+
+
+25
+1,4c1
+< class
+< minhaClasse [
+< const public int idade
+< ];
+---
+> error on line 4: syntax error, unexpected TK_PR_CONST
+
+
+26
+
+
+27
+1,4c1
+< int func1(char param1)
+< {
+< char teste = 'a';
+< }
+---
+> error on line 4: syntax error, unexpected '=', expecting ';'
+
+
+28
+1,4c1
+< int func1(char param1) {
+< float a;
+< a <= 3.5;
+< }
+---
+> error on line 4: syntax error, unexpected TK_OC_LE
+
+
+29
+0a1
+> 
+2,3c3,4
+< MinhaClasse a;
+< a$nome[0] = 3.5;
+---
+>   a a;
+> a[0] = 3.500000;
+
+
+30
+1,4c1
+< int func1(char param1) {
+< MinhaClasse a;
+< a$pessoa$nome = "Francis";
+< }
+---
+> error on line 4: syntax error, unexpected '$', expecting TK_OC_SL or TK_OC_SR or '=' or '['
+
+
+31
+1,4c1
+< int func1()
+< {
+< input;
+< }
+---
+> error on line 4: syntax error, unexpected ';'
+
+
+32
+1c1
+< int a <= 0;
+---
+> error on line 3: syntax error, unexpected TK_OC_LE, expecting '('
+
+
+33
+1,4c1
+< int func1()
+< {
+< output 1 + 2, ;
+< }
+---
+> error on line 4: syntax error, unexpected ';'
+
+
+34
+1,4c1
+< int func1()
+< {
+< 12 << 1 + 2;
+< }
+---
+> error on line 4: syntax error, unexpected TK_LIT_INT, expecting '}'
+
+
+35
+1,6c1
+< int main()
+< {
+< while ( true ) {
+< int x;
+< };
+< }
+---
+> error on line 4: syntax error, unexpected '{', expecting TK_PR_DO
+
+
+36
+1,6c1
+< int main()
+< {
+< while ( ) do {
+< int x;
+< };
+< }
+---
+> error on line 4: syntax error, unexpected ')'
+
+
+37
+1,6c1
+< int main()
+< {
+< {
+< int x;
+< } while ( true );
+< }
+---
+> error on line 6: syntax error, unexpected TK_PR_WHILE, expecting ';'
+
+
+38
+1,4c1
+< int main()
+< {
+< return;
+< }
+---
+> error on line 4: syntax error, unexpected ';'
+
+
+39
+1,2c1,2
+< int main()
+< {
+---
+> 
+> int main() {
+4,5c4
+< case 1:
+< y = 2;
+---
+> case 1:y = 2;
+7c6
+< };
+---
+> }
+
+
+40
+1,7c1
+< int main()
+< {
+< switch ( ) {
+< case 'a':
+< y = 2;
+< };
+< }
+---
+> error on line 4: syntax error, unexpected ')'
+
+
+41
+1,6c1
+< int main()
+< {
+< if true then {
+< int x;
+< };
+< }
+---
+> error on line 4: syntax error, unexpected TK_LIT_TRUE, expecting '('
+
+
+42
+1,6c1
+< int main()
+< {
+< if (true) {
+< int x;
+< };
+< }
+---
+> error on line 4: syntax error, unexpected '{', expecting TK_PR_THEN
+
+
+43
+1d0
+< class ASL_t [ public int a ];
+
+
+44
+1,5c1
+< int main()
+< {
+< if (true) then
+< x = 2;
+< }
+---
+> error on line 5: syntax error, unexpected TK_IDENTIFICADOR, expecting '{'
+
+
+45
+1,5c1
+< int main() {
+< foreach( ) {
+< 
+< };
+< }
+---
+> error on line 3: syntax error, unexpected ')', expecting TK_IDENTIFICADOR
+
+
+46
+1,5c1
+< int main() {
+< foreach( x: ) {
+< 
+< };
+< }
+---
+> error on line 3: syntax error, unexpected ')'
+
+
+47
+1,5c1
+< int main() {
+< for (::) {
+< int x;
+< };
+< }
+---
+> error on line 3: syntax error, unexpected ':', expecting TK_IDENTIFICADOR or '{'
+
+
+48
+1,3c1
+< int main() {
+< x + 1;
+< }
+---
+> error on line 3: syntax error, unexpected '+'
+
+
+49
+1,3c1
+< int main() {
+< x = (1 Makefile README.md arvore.c arvore.h arvore.o ast_tests e2tests e3results etapa3 lex.yy.c lex.yy.o main.c main.o new original parser.output parser.tab.c parser.tab.h parser.tab.o parser.y parser_tests scanner.l scanner_tests test test.sh test_e2.py yyerror.c yyerror.o ) 3;
+< }
+---
+> error on line 3: syntax error, unexpected ')'
+
+
+50
+1,3c1
+< int main() {
+< x = 1 + (2;
+< }
+---
+> error on line 3: syntax error, unexpected ';'
+
+
+51
+1,3c1
+< int main() {
+< int x <= 1 + 2;
+< }
+---
+> error on line 6: syntax error, unexpected '+', expecting ';'
+
+
+52
+1,4c1
+< int f ()
+< {
+< class ASL_t [ public int a ];
+< }
+---
+> error on line 5: syntax error, unexpected TK_PR_CLASS, expecting '}'
+
+
+53
+1c1
+< class AST_t [ ];
+---
+> error on line 3: syntax error, unexpected ']'
+
+
+54
+1d0
+< class AST_t [ public int a : public int b ];
+
+
+55
+1c1
+< class ASL_t [ public int a ; public int b ];
+---
+> error on line 3: syntax error, unexpected ';', expecting ']'
+
+
+56
+1d0
+< class AST_t [ int a ];
+
+
+57
+1d0
+< class AST_t [ private int a ];
+
+
+58
+1d0
+< class AST_t [ protected int a ];
+
+
+59
+1c1
+< class AST_t [ inconsequente int a ];
+---
+> error on line 3: syntax error, unexpected TK_IDENTIFICADOR
+
+
+60
+1c1
+< class AST_t [ public int a ]
+---
+> error on line 4: syntax error, unexpected $end, expecting ';'
+
+
+61
+1,2c1
+< class FIRST_t [ public int a ];
+< class ASL_t [ public FIRST_t b ];
+---
+> error on line 6: syntax error, unexpected TK_IDENTIFICADOR
+
+
+62
+1,3c1,2
+< class ASL_t [ public int a ];
+< ASL_t f (ASL_t xis)
+< {
+---
+> 
+> ASL_t f(ASL_t xis) {
+
+
+63
+1,2c1,2
+< int f ()
+< {
+---
+> 
+> int f() {
+
+
+64
+1,3c1,4
+< int f ()
+< {
+< };
+---
+> error on line 6: syntax error, unexpected ';', expecting $end
+> 
+> int f() {
+> }
+
+
+65
+1,2c1,2
+< static int f ()
+< {
+---
+> 
+> static int f() {
+
+
+66
+1,2c1,2
+< int f (int a, int b)
+< {
+---
+> 
+> int f(int a, int b) {
+
+
+67
+1,3c1
+< int f (int a[23])
+< {
+< }
+---
+> error on line 4: syntax error, unexpected '[', expecting ')'
+
+
+68
+1,3c1
+< int f (const int a)
+< {
+< }
+---
+> error on line 3: syntax error, unexpected TK_PR_CONST, expecting ')'
+
+
+69
+1,4c1,4
+< int f ()
+< {
+< {};
+< }
+---
+> 
+> int f() {
+>  {
+> }}
+
+
+70
+1,8c1,6
+< int f ()
+< {
+< {
+< {
+< {};
+< };
+< };
+< }
+---
+> 
+> int f() {
+>  {
+>  {
+>  {
+> }}}}
+
+
+71
+1,3c1,3
+< int f()
+< {
+< int a;
+---
+> 
+> int f() {
+>   a int;
+
+
+72
+1,5c1
+< int f ()
+< {
+< int a
+< int b
+< }
+---
+> error on line 8: syntax error, unexpected TK_PR_INT, expecting ';'
+
+
+73
+1,3c1,3
+< int f()
+< {
+< static int a;
+---
+> 
+> int f() {
+> static  int a;
+
+
+74
+1,3c1,3
+< int f()
+< {
+< float a;
+---
+> 
+> int f() {
+>   a float;
+
+
+75
+1,3c1,3
+< int f()
+< {
+< char a;
+---
+> 
+> int f() {
+>   a char;
+
+
+76
+1,3c1,3
+< int f()
+< {
+< bool a;
+---
+> 
+> int f() {
+>   a bool;
+
+
+77
+1,3c1,3
+< int f()
+< {
+< string a;
+---
+> 
+> int f() {
+>   a string;
+
+
+78
+1,4c1
+< int f ()
+< {
+< int v[100];
+< }
+---
+> error on line 6: syntax error, unexpected '[', expecting ';'
+
+
+79
+1,3c1,3
+< int f ()
+< {
+< const int a;
+---
+> 
+> int f() {
+>  const int a;
+
+
+80
+1,2c1,2
+< int f ()
+< {
+---
+> 
+> int f() {
+
+
+81
+1,3c1,3
+< int f()
+< {
+< int a <= 2;
+---
+> 
+> int f() {
+>   a int <= 2;
+
+
+82
+1,4c1,4
+< int f()
+< {
+< int b <= 10;
+< int a <= b;
+---
+> 
+> int f() {
+>   b int <= 10;
+>   a int <= b;
+
+
+83
+1,5c1
+< class ASL_t [ public int a ];
+< int f()
+< {
+< ASL_t b <= 10;
+< }
+---
+> error on line 6: syntax error, unexpected TK_OC_LE, expecting ';'
+
+
+84
+1,3c1,3
+< int f()
+< {
+< int a;
+---
+> 
+> int f() {
+>   a int;
+
+
+85
+1,3c1,3
+< a[10] int;
+< int f()
+< {
+---
+> a [10] int;
+> 
+> int f() {
+
+
+86
+1,4c1,4
+< a[10] int;
+< int f()
+< {
+< int c;
+---
+> a [10] int;
+> 
+> int f() {
+>   c int;
+
+
+87
+1,5c1,4
+< class ASL_t [ public int a ];
+< int f()
+< {
+< AST_t xis;
+< xis$a = 2;
+---
+> 
+> int f() {
+>   xis xis;
+> xis = 2;
+
+
+88
+1,3c1,3
+< int f()
+< {
+< int c;
+---
+> 
+> int f() {
+>   c int;
+
+
+89
+1,5c1,5
+< int f()
+< {
+< int a;
+< int b;
+< int c;
+---
+> 
+> int f() {
+>   a int;
+>   b int;
+>   c int;
+
+
+90
+1,6c1,6
+< int f()
+< {
+< int a;
+< int b;
+< int c;
+< output a,b,c;
+---
+> 
+> int f() {
+>   a int;
+>   b int;
+>   c int;
+> output a, b, c;
+
+
+91
+1,4c1,3
+< int f()
+< {
+< f();
+< }
+---
+> 
+> int f() {
+> (null)}
+
+
+92
+1,6c1,5
+< int f(int a, int b)
+< {
+< int x;
+< int y;
+< f(x, y);
+< }
+---
+> 
+> int f(int a, int b) {
+>   x int;
+>   y int;
+> (null)xy  }
+
+
+93
+1,5c1,4
+< int f(int a, int b)
+< {
+< int x;
+< f(x, .);
+< }
+---
+> 
+> int f(int a, int b) {
+>   x int;
+> (null)x  }
+
+
+94
+1,3c1,3
+< int f()
+< {
+< int x;
+---
+> 
+> int f() {
+>   x int;
+
+
+95
+1,4c1,4
+< int f()
+< {
+< int x;
+< x >> 4;
+---
+> 
+> int f() {
+>   x int;
+> x << 4;
+
+
+96
+1,3c1,3
+< int f()
+< {
+< int x;
+---
+> 
+> int f() {
+>   x int;
+
+
+97
+1,2c1,2
+< int f()
+< {
+---
+> 
+> int f() {
+
+
+98
+1,2c1,2
+< int f()
+< {
+---
+> 
+> int f() {
+
+
+99
+1,4c1,3
+< int f()
+< {
+< case 245:
+< }
+---
+> 
+> int f() {
+> case 245:}
+
+
+100
+1,4c1,6
+< int f()
+< {
+< int c;
+< if (c) then { };
+---
+> 
+> int f() {
+>   c int;
+> 
+> if (c) then {
+> }
+
+
+101
+1,7c1,7
+< int f()
+< {
+< int c;
+< if (c) then
+< {
+< }else{
+< };
+---
+> 
+> int f() {
+>   c int;
+> 
+> if (c) then {
+> } else  {
+> }
+
+
+102
+1,5c1,6
+< int f()
+< {
+< int x;
+< int i;
+< foreach(i : x, x, x) {
+---
+> 
+> int f() {
+>   x int;
+>   i int;
+> foreach (i : x, x, x)
+>  {
+
+
+103
+1,6c1,10
+< int f()
+< {
+< int x;
+< int i;
+< int j;
+< for(i = 0, j = 0 : i : i = 2, j = 3) {
+---
+> 
+> int f() {
+>   x int;
+>   i int;
+>   j int;
+> for (i = 0;
+> j = 0;
+>  : i : i = 2;
+> j = 3;
+> ) {
+
+
+104
+1,6c1,7
+< int f()
+< {
+< int x;
+< int i;
+< int j;
+< while (i) do { };
+---
+> 
+> int f() {
+>   x int;
+>   i int;
+>   j int;
+> while (i) do  {
+> }
+
+
+105
+1,4c1,5
+< int f()
+< {
+< int x;
+< do { } while (i);
+---
+> 
+> int f() {
+>   x int;
+> do {
+> } while(i);
+
+
+106
+1,4c1
+< int f()
+< {
+< for (output x, y : x : x = x+1) { };
+< }
+---
+> error on line 6: syntax error, unexpected TK_PR_OUTPUT, expecting TK_IDENTIFICADOR or '{'
+
+
+107
+1,4c1
+< int f()
+< {
+< for (case 123: : x : x = x+1) { };
+< }
+---
+> error on line 6: syntax error, unexpected TK_PR_CASE, expecting TK_IDENTIFICADOR or '{'
+
+
+108
+1,3c1,3
+< int f()
+< {
+< int x;
+---
+> 
+> int f() {
+>   x int;
+6d5
+< };
+8c7
+< 
+---
+> }
+
+
+109
+1,6c1
+< int f()
+< {
+< int x;
+< x = 2;
+< do { } while (x)
+< }
+---
+> error on line 10: syntax error, unexpected '}', expecting ';'
+
+
+110
+1,5c1,4
+< int f()
+< {
+< int a;
+< f() %>% g(., a);
+< }
+---
+> 
+> int f() {
+>   a int;
+> (null)}
+
+
+111
+1,5c1,4
+< int f()
+< {
+< int a;
+< f() %|% g(., a);
+< }
+---
+> 
+> int f() {
+>   a int;
+> (null)}
+
+
+112
+1,5c1,4
+< int f()
+< {
+< int a;
+< f() %>% g(., a) %>% z(.);
+< }
+---
+> 
+> int f() {
+>   a int;
+> (null)}
+
+
+113
+1,4c1,4
+< int f()
+< {
+< int a;
+< a = f() %>% g(., a) %|% z(.);
+---
+> 
+> int f() {
+>   a int;
+> a = (null);
+
+
+114
+1,5c1,5
+< int f()
+< {
+< int a;
+< int b;
+< int c;
+---
+> 
+> int f() {
+>   a int;
+>   b int;
+>   c int;
+
+
+115
+1,2c1,2
+< int f()
+< {
+---
+> 
+> int f() {
+
+
+116
+1,3c1,3
+< int f(int a)
+< {
+< c[5] = 3 Makefile README.md arvore.c arvore.h arvore.o ast_tests e2tests e3results etapa3 lex.yy.c lex.yy.o main.c main.o new original parser.output parser.tab.c parser.tab.h parser.tab.o parser.y parser_tests scanner.l scanner_tests test test.sh test_e2.py yyerror.c yyerror.o f(a) + a;
+---
+> 
+> int f(int a) {
+> c[5] = 3*(null)a +a;
+
+
+117
+1,4c1,4
+< int f()
+< {
+< int a;
+< a = 2*(c+k);
+---
+> 
+> int f() {
+>   a int;
+> a = 2*c+k;
+
+
+118
+1,4c1,8
+< int f()
+< {
+< if (a == 2) then { };
+< if ((a+b) <= 10) then { };
+---
+> 
+> int f() {
+> 
+> if (a==2) then {
+> }
+> 
+> if (a+b<=10) then {
+> }
+
+
+119
+2,4c2,4
+< int f1 (float k, int l)
+< {
+< int a;
+---
+> 
+> int f1(float k, int l) {
+>   a int;
+6c6
+< v2[ 100 ] int;
+---
+> v2 [100] int;
+
+
+120
+1c1
+< int;
+---
+> error on line 2: syntax error, unexpected ';', expecting TK_IDENTIFICADOR
+
+
+121
+1c1,4
+< int minha_funcao(){};
+---
+> error on line 2: syntax error, unexpected ';', expecting $end
+> 
+> int minha_funcao() {
+> }
+
+
+122
+1,4c1
+< int minha_funcao ()
+< float local;
+< {
+< }
+---
+> error on line 3: syntax error, unexpected TK_PR_FLOAT, expecting '{'
+
+
+123
+1,4c1
+< int minha_funcao ()
+< {
+< ;;;
+< }
+---
+> error on line 4: syntax error, unexpected ';', expecting '}'
+
+
+124
+1c1
+< int f (float f, int i,){int a;}
+---
+> error on line 2: syntax error, unexpected ')'
+
+
+125
+1,7c1
+< int f()
+< {
+< int a;
+< }
+< a = 10;
+< }
+< char c;
+---
+> error on line 6: syntax error, unexpected '='
+
+
+126
+1,5c1
+< int f()
+< {
+< int a;
+< if (a == 0) then { x = 2; } else
+< }
+---
+> error on line 6: syntax error, unexpected '}', expecting '{'
+
+
+127
+1,4c1
+< int f()
+< {
+< output;
+< }
+---
+> error on line 4: syntax error, unexpected ';'
+
+
+128
+1,7c1
+< int f()
+< {
+< int a;
+< int b;
+< int c;
+< input a,b,c;
+< }
+---
+> error on line 7: syntax error, unexpected ',', expecting ';'
+
+
+129
+1,7c1
+< int f()
+< {
+< int a;
+< int b;
+< int c;
+< return a,b,c;
+< }
+---
+> error on line 7: syntax error, unexpected ',', expecting ';'
+
+
+130
+1,4c1
+< int f()
+< {
+< v[a+1]=5[10];
+< }
+---
+> error on line 4: syntax error, unexpected '[', expecting ';'
+
+
+131
+1,4c1
+< int f()
+< {
+< f(3)=f(2);
+< }
+---
+> error on line 4: syntax error, unexpected '=', expecting ';'
+
+
+132
+1,4c1
+< int f()
+< {
+< while (a != 4 do { v[a+1] = f(2) };
+< }
+---
+> error on line 4: syntax error, unexpected TK_PR_DO
+
+
+133
+1,6c1
+< class ASL_t [ public int a ];
+< int f()
+< {
+< AST_t xis;
+< xis.a = 2;
+< }
+---
+> error on line 10: syntax error, unexpected '.'
+
+
+134
+1,5c1,4
+< class ASL_t [ public int a ];
+< int f()
+< {
+< AST_t xis;
+< xis$a << 2;
+---
+> 
+> int f() {
+>   xis xis;
+> xis << 2;
+
+
+135
+1,4c1,3
+< class ASL_t [ public int a ];
+< int f()
+< {
+< int b;
+---
+> 
+> int f() {
+>   b int;
+6,7c5,6
+< AST_t xis;
+< xis$a >> b+2;
+---
+>   xis xis;
+> xis >> b+2;
+
+
+136
+1c1
+< aux_murilo_n[] int;
+---
+> error on line 2: syntax error, unexpected ']', expecting TK_LIT_INT
+
+
+137
+1c1
+< aux_murilo_n int[5];
+---
+> error on line 2: syntax error, unexpected '[', expecting ';'
