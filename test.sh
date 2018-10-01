@@ -1,6 +1,8 @@
+rm e3results
 for filename in ./e2tests/*
 do
-    rm e3results
+    "$filename" | grep -vE '/' >> edited
     (cat "$filename" | ./etapa3) > out 
-    (diff "$filename" out) >> e3results
+    (diff edited out) >> e3results
+    rm edited
 done

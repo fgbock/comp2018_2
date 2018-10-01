@@ -470,7 +470,7 @@ void printree(ast_node* node, int lvl){
 }
 
 void descompila(void *arvore) {
-   printree((ast_node*)arvore, 0);
+   //printree((ast_node*)arvore, 0);
    descompila_internal((ast_node*)arvore);
 }
 
