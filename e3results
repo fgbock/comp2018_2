@@ -31,420 +31,372 @@
 
 
 11
-1,4c1
-< func1(int param1)
-< {
-< 
-< }
+1c1
+< func1(intparam1){}
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected '('
+> erroronline2:syntaxerror,unexpected'('
+\ No newline at end of file
 
 
 12
-1,2d0
-< int func1(static char param1)
-< {
-3a2
-> int func1(static char param1) {
 
 
 13
-1,4c1
-< const int func1()
-< {
-< 
-< }
+1c1
+< constintfunc1(){}
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected TK_PR_CONST, expecting $end
+> erroronline2:syntaxerror,unexpectedTK_PR_CONST,expecting$end
+\ No newline at end of file
 
 
 14
 1c1
-< int func1(bool param1);
+< intfunc1(boolparam1);
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected ';', expecting '{'
+> erroronline2:syntaxerror,unexpected';',expecting'{'
+\ No newline at end of file
 
 
 15
-1,4c1
-< int func1(int param1[5])
-< {
-< 
-< }
+1c1
+< intfunc1(intparam1[5]){}
+\ No newline at end of file
 ---
-> error on line 1: syntax error, unexpected '[', expecting ')'
+> erroronline1:syntaxerror,unexpected'[',expecting')'
+\ No newline at end of file
 
 
 16
-1,4c1
-< int func1[5]()
-< {
-< 
-< }
+1c1
+< intfunc1[5](){}
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected '[', expecting '('
+> erroronline2:syntaxerror,unexpected'[',expecting'('
+\ No newline at end of file
 
 
 17
 1c1
-< class Teste [ class Marcador teste ];
+< classTeste[classMarcadorteste];
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected TK_PR_CLASS
+> erroronline2:syntaxerror,unexpectedTK_PR_CLASS
+\ No newline at end of file
 
 
 18
 1c1
-< class Teste [ char marcador ]
+< classTeste[charmarcador]
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected $end, expecting ';'
+> erroronline2:syntaxerror,unexpected$end,expecting';'
+\ No newline at end of file
 
 
 19
 1c1
-< class Teste [ marcador ];
+< classTeste[marcador];
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected TK_IDENTIFICADOR
+> erroronline2:syntaxerror,unexpectedTK_IDENTIFICADOR
+\ No newline at end of file
 
 
 20
-1,8c1
-< static class
-< minhaClasse [
-< int id
-< : static string nome
-< : public const int idade
-< : private static float saldo
-< : const bool morto
-< ];
+1c1
+< staticclassminhaClasse[intid:staticstringnome:publicconstintidade:privatestaticfloatsaldo:constboolmorto];
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected TK_PR_CLASS
+> erroronline2:syntaxerror,unexpectedTK_PR_CLASS
+\ No newline at end of file
 
 
 21
 1c1
-< a int
+< aint
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected $end, expecting ';'
+> erroronline4:syntaxerror,unexpected$end,expecting';'
+\ No newline at end of file
 
 
 22
-1,4c1
-< class
-< minhaClasse [
-< public const int idade
-< ];
+1c1
+< classminhaClasse[publicconstintidade];
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_PR_CONST
+> erroronline4:syntaxerror,unexpectedTK_PR_CONST
+\ No newline at end of file
 
 
 23
-1,4c1
-< class
-< minhaClasse [
-< public static int idade
-< ];
+1c1
+< classminhaClasse[publicstaticintidade];
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_PR_STATIC
+> erroronline4:syntaxerror,unexpectedTK_PR_STATIC
+\ No newline at end of file
 
 
 24
-1,4c1
-< class
-< minhaClasse [
-< static public int idade
-< ];
+1c1
+< classminhaClasse[staticpublicintidade];
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_PR_STATIC
+> erroronline4:syntaxerror,unexpectedTK_PR_STATIC
+\ No newline at end of file
 
 
 25
-1,4c1
-< class
-< minhaClasse [
-< const public int idade
-< ];
+1c1
+< classminhaClasse[constpublicintidade];
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_PR_CONST
+> erroronline4:syntaxerror,unexpectedTK_PR_CONST
+\ No newline at end of file
 
 
 26
 
 
 27
-1,4c1
-< int func1(char param1)
-< {
-< char teste = 'a';
-< }
+1c1
+< intfunc1(charparam1){charteste='a';}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '=', expecting ';'
+> erroronline4:syntaxerror,unexpected'=',expecting';'
+\ No newline at end of file
 
 
 28
-1,4c1
-< int func1(char param1) {
-< float a;
-< a <= 3.5;
-< }
+1c1
+< intfunc1(charparam1){floata;a<=3.5;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_OC_LE
+> erroronline4:syntaxerror,unexpectedTK_OC_LE
+\ No newline at end of file
 
 
 29
-2,3c3,4
-< MinhaClasse a;
-< a$nome[0] = 3.5;
+1c1
+< intfunc1(charparam1){MinhaClassea;a$nome[0]=3.5;}
+\ No newline at end of file
 ---
->   a a;
-> a[0] = 3.500000;
+> intfunc1(charparam1){aa;a[0]=3.500000;}
+\ No newline at end of file
 
 
 30
-1,4c1
-< int func1(char param1) {
-< MinhaClasse a;
-< a$pessoa$nome = "Francis";
-< }
+1c1
+< intfunc1(charparam1){MinhaClassea;a$pessoa$nome="Francis";}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '$', expecting TK_OC_SL or TK_OC_SR or '=' or '['
+> erroronline4:syntaxerror,unexpected'$',expectingTK_OC_SLorTK_OC_SRor'='or'['
+\ No newline at end of file
 
 
 31
-1,4c1
-< int func1()
-< {
-< input;
-< }
+1c1
+< intfunc1(){input;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ';'
+> erroronline4:syntaxerror,unexpected';'
+\ No newline at end of file
 
 
 32
 1c1
-< int a <= 0;
+< inta<=0;
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected TK_OC_LE, expecting '('
+> erroronline3:syntaxerror,unexpectedTK_OC_LE,expecting'('
+\ No newline at end of file
 
 
 33
-1,4c1
-< int func1()
-< {
-< output 1 + 2, ;
-< }
+1c1
+< intfunc1(){output1+2,;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ';'
+> erroronline4:syntaxerror,unexpected';'
+\ No newline at end of file
 
 
 34
-1,4c1
-< int func1()
-< {
-< 12 << 1 + 2;
-< }
+1c1
+< intfunc1(){12<<1+2;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_LIT_INT, expecting '}'
+> erroronline4:syntaxerror,unexpectedTK_LIT_INT,expecting'}'
+\ No newline at end of file
 
 
 35
-1,6c1
-< int main()
-< {
-< while ( true ) {
-< int x;
-< };
-< }
+1c1
+< intmain(){while(true){intx;};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '{', expecting TK_PR_DO
+> erroronline4:syntaxerror,unexpected'{',expectingTK_PR_DO
+\ No newline at end of file
 
 
 36
-1,6c1
-< int main()
-< {
-< while ( ) do {
-< int x;
-< };
-< }
+1c1
+< intmain(){while()do{intx;};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ')'
+> erroronline4:syntaxerror,unexpected')'
+\ No newline at end of file
 
 
 37
-1,6c1
-< int main()
-< {
-< {
-< int x;
-< } while ( true );
-< }
+1c1
+< intmain(){{intx;}while(true);}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected TK_PR_WHILE, expecting ';'
+> erroronline6:syntaxerror,unexpectedTK_PR_WHILE,expecting';'
+\ No newline at end of file
 
 
 38
-1,4c1
-< int main()
-< {
-< return;
-< }
+1c1
+< intmain(){return;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ';'
+> erroronline4:syntaxerror,unexpected';'
+\ No newline at end of file
 
 
 39
-1,2c1,2
-< int main()
-< {
+1c1
+< intmain(){switch(x){case1:y=2;break;};}
+\ No newline at end of file
 ---
-> 
-> int main() {
-4,5c4
-< case 1:
-< y = 2;
----
-> case 1:y = 2;
-7c6
-< };
----
-> }
+> intmain(){switch(x){case1:y=2;break;}}
+\ No newline at end of file
 
 
 40
-1,7c1
-< int main()
-< {
-< switch ( ) {
-< case 'a':
-< y = 2;
-< };
-< }
+1c1
+< intmain(){switch(){case'a':y=2;};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ')'
+> erroronline4:syntaxerror,unexpected')'
+\ No newline at end of file
 
 
 41
-1,6c1
-< int main()
-< {
-< if true then {
-< int x;
-< };
-< }
+1c1
+< intmain(){iftruethen{intx;};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_LIT_TRUE, expecting '('
+> erroronline4:syntaxerror,unexpectedTK_LIT_TRUE,expecting'('
+\ No newline at end of file
 
 
 42
-1,6c1
-< int main()
-< {
-< if (true) {
-< int x;
-< };
-< }
+1c1
+< intmain(){if(true){intx;};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '{', expecting TK_PR_THEN
+> erroronline4:syntaxerror,unexpected'{',expectingTK_PR_THEN
+\ No newline at end of file
 
 
 43
 
 
 44
-1,5c1
-< int main()
-< {
-< if (true) then
-< x = 2;
-< }
+1c1
+< intmain(){if(true)thenx=2;}
+\ No newline at end of file
 ---
-> error on line 5: syntax error, unexpected TK_IDENTIFICADOR, expecting '{'
+> erroronline5:syntaxerror,unexpectedTK_IDENTIFICADOR,expecting'{'
+\ No newline at end of file
 
 
 45
-1,5c1
-< int main() {
-< foreach( ) {
-< 
-< };
-< }
+1c1
+< intmain(){foreach(){};}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ')', expecting TK_IDENTIFICADOR
+> erroronline3:syntaxerror,unexpected')',expectingTK_IDENTIFICADOR
+\ No newline at end of file
 
 
 46
-1,5c1
-< int main() {
-< foreach( x: ) {
-< 
-< };
-< }
+1c1
+< intmain(){foreach(x:){};}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ')'
+> erroronline3:syntaxerror,unexpected')'
+\ No newline at end of file
 
 
 47
-1,5c1
-< int main() {
-< for (::) {
-< int x;
-< };
-< }
+1c1
+< intmain(){for(::){intx;};}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ':', expecting TK_IDENTIFICADOR or '{'
+> erroronline3:syntaxerror,unexpected':',expectingTK_IDENTIFICADORor'{'
+\ No newline at end of file
 
 
 48
-1,3c1
-< int main() {
-< x + 1;
-< }
+1c1
+< intmain(){x+1;}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected '+'
+> erroronline3:syntaxerror,unexpected'+'
+\ No newline at end of file
 
 
 49
-1,3c1
-< int main() {
-< x = (1 Makefile README.md arvore.c arvore.h arvore.o ast_tests e2tests e3results etapa3 lex.yy.c lex.yy.o main.c main.o new original parser.output parser.tab.c parser.tab.h parser.tab.o parser.y parser_tests scanner.l scanner_tests test test.sh test_e2.py yyerror.c yyerror.o ) 3;
-< }
+1c1
+< intmain(){x=(1MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pyyyerror.cyyerror.o)3;}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ')'
+> erroronline3:syntaxerror,unexpected')'
+\ No newline at end of file
 
 
 50
-1,3c1
-< int main() {
-< x = 1 + (2;
-< }
+1c1
+< intmain(){x=1+(2;}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ';'
+> erroronline3:syntaxerror,unexpected';'
+\ No newline at end of file
 
 
 51
-1,3c1
-< int main() {
-< int x <= 1 + 2;
-< }
+1c1
+< intmain(){intx<=1+2;}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected '+', expecting ';'
+> erroronline6:syntaxerror,unexpected'+',expecting';'
+\ No newline at end of file
 
 
 52
-1,4c1
-< int f ()
-< {
-< class ASL_t [ public int a ];
-< }
+1c1
+< intf(){classASL_t[publicinta];}
+\ No newline at end of file
 ---
-> error on line 5: syntax error, unexpected TK_PR_CLASS, expecting '}'
+> erroronline5:syntaxerror,unexpectedTK_PR_CLASS,expecting'}'
+\ No newline at end of file
 
 
 53
 1c1
-< class AST_t [ ];
+< classAST_t[];
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ']'
+> erroronline3:syntaxerror,unexpected']'
+\ No newline at end of file
 
 
 54
@@ -452,9 +404,11 @@
 
 55
 1c1
-< class ASL_t [ public int a ; public int b ];
+< classASL_t[publicinta;publicintb];
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected ';', expecting ']'
+> erroronline3:syntaxerror,unexpected';',expecting']'
+\ No newline at end of file
 
 
 56
@@ -468,917 +422,638 @@
 
 59
 1c1
-< class AST_t [ inconsequente int a ];
+< classAST_t[inconsequenteinta];
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected TK_IDENTIFICADOR
+> erroronline3:syntaxerror,unexpectedTK_IDENTIFICADOR
+\ No newline at end of file
 
 
 60
 1c1
-< class AST_t [ public int a ]
+< classAST_t[publicinta]
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected $end, expecting ';'
+> erroronline4:syntaxerror,unexpected$end,expecting';'
+\ No newline at end of file
 
 
 61
-1,2c1
-< class FIRST_t [ public int a ];
-< class ASL_t [ public FIRST_t b ];
+1c1
+< classFIRST_t[publicinta];classASL_t[publicFIRST_tb];
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected TK_IDENTIFICADOR
+> erroronline6:syntaxerror,unexpectedTK_IDENTIFICADOR
+\ No newline at end of file
 
 
 62
-2,3c2,3
-< ASL_t f (ASL_t xis)
-< {
----
-> 
-> ASL_t f(ASL_t xis) {
 
 
 63
-1,2c1,2
-< int f ()
-< {
----
-> 
-> int f() {
 
 
 64
-1,3c1,4
-< int f ()
-< {
-< };
+1c1
+< intf(){};
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected ';', expecting $end
-> 
-> int f() {
-> }
+> erroronline6:syntaxerror,unexpected';',expecting$endintf(){}
+\ No newline at end of file
 
 
 65
-1,2c1,2
-< static int f ()
-< {
----
-> 
-> static int f() {
 
 
 66
-1,2c1,2
-< int f (int a, int b)
-< {
----
-> 
-> int f(int a, int b) {
 
 
 67
-1,3c1
-< int f (int a[23])
-< {
-< }
+1c1
+< intf(inta[23]){}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '[', expecting ')'
+> erroronline4:syntaxerror,unexpected'[',expecting')'
+\ No newline at end of file
 
 
 68
-1,3c1
-< int f (const int a)
-< {
-< }
+1c1
+< intf(constinta){}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected TK_PR_CONST, expecting ')'
+> erroronline3:syntaxerror,unexpectedTK_PR_CONST,expecting')'
+\ No newline at end of file
 
 
 69
-1c1,2
-< int f ()
+1c1
+< intf(){{};}
+\ No newline at end of file
 ---
-> 
-> int f() {
-3,4c4
-< {};
-< }
----
-> }}
+> intf(){{}}
+\ No newline at end of file
 
 
 70
-1c1,2
-< int f ()
+1c1
+< intf(){{{{};};};}
+\ No newline at end of file
 ---
-> 
-> int f() {
-5,8c6
-< {};
-< };
-< };
-< }
----
-> }}}}
+> intf(){{{{}}}}
+\ No newline at end of file
 
 
 71
-1,3c1,3
-< int f()
-< {
-< int a;
+1c1
+< intf(){inta;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
+> intf(){aint;}
+\ No newline at end of file
 
 
 72
-1,5c1
-< int f ()
-< {
-< int a
-< int b
-< }
+1c1
+< intf(){intaintb}
+\ No newline at end of file
 ---
-> error on line 8: syntax error, unexpected TK_PR_INT, expecting ';'
+> erroronline8:syntaxerror,unexpectedTK_PR_INT,expecting';'
+\ No newline at end of file
 
 
 73
-1,2c1,2
-< int f()
-< {
----
-> 
-> int f() {
 
 
 74
-1,3c1,3
-< int f()
-< {
-< float a;
+1c1
+< intf(){floata;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a float;
+> intf(){afloat;}
+\ No newline at end of file
 
 
 75
-1,3c1,3
-< int f()
-< {
-< char a;
+1c1
+< intf(){chara;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a char;
+> intf(){achar;}
+\ No newline at end of file
 
 
 76
-1,3c1,3
-< int f()
-< {
-< bool a;
+1c1
+< intf(){boola;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a bool;
+> intf(){abool;}
+\ No newline at end of file
 
 
 77
-1,3c1,3
-< int f()
-< {
-< string a;
+1c1
+< intf(){stringa;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a string;
+> intf(){astring;}
+\ No newline at end of file
 
 
 78
-1,4c1
-< int f ()
-< {
-< int v[100];
-< }
+1c1
+< intf(){intv[100];}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected '[', expecting ';'
+> erroronline6:syntaxerror,unexpected'[',expecting';'
+\ No newline at end of file
 
 
 79
-1,2c1,2
-< int f ()
-< {
----
-> 
-> int f() {
 
 
 80
-1,2c1,2
-< int f ()
-< {
----
-> 
-> int f() {
 
 
 81
-1,3c1,3
-< int f()
-< {
-< int a <= 2;
+1c1
+< intf(){inta<=2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int <= 2;
+> intf(){aint<=2;}
+\ No newline at end of file
 
 
 82
-1,4c1,4
-< int f()
-< {
-< int b <= 10;
-< int a <= b;
+1c1
+< intf(){intb<=10;inta<=b;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   b int <= 10;
->   a int <= b;
+> intf(){bint<=10;aint<=b;}
+\ No newline at end of file
 
 
 83
-1,5c1
-< class ASL_t [ public int a ];
-< int f()
-< {
-< ASL_t b <= 10;
-< }
+1c1
+< classASL_t[publicinta];intf(){ASL_tb<=10;}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected TK_OC_LE, expecting ';'
+> erroronline6:syntaxerror,unexpectedTK_OC_LE,expecting';'
+\ No newline at end of file
 
 
 84
-1,3c1,3
-< int f()
-< {
-< int a;
+1c1
+< intf(){inta;a=2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
+> intf(){aint;a=2;}
+\ No newline at end of file
 
 
 85
-2,3c2,3
-< int f()
-< {
----
-> 
-> int f() {
 
 
 86
-2,4c2,4
-< int f()
-< {
-< int c;
+1c1
+< a[10]int;intf(){intc;c=2;a[c+c]=2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   c int;
+> a[10]int;intf(){cint;c=2;a[c+c]=2;}
+\ No newline at end of file
 
 
 87
-2,5c2,5
-< int f()
-< {
-< AST_t xis;
-< xis$a = 2;
+1c1
+< classASL_t[publicinta];intf(){AST_txis;xis$a=2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   xis xis;
-> xis = 2;
+> classASL_t[publicinta];intf(){xisxis;xis=2;}
+\ No newline at end of file
 
 
 88
-1,3c1,3
-< int f()
-< {
-< int c;
+1c1
+< intf(){intc;inputc;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   c int;
+> intf(){cint;inputc;}
+\ No newline at end of file
 
 
 89
-1,5c1,5
-< int f()
-< {
-< int a;
-< int b;
-< int c;
+1c1
+< intf(){inta;intb;intc;outputa;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
->   b int;
->   c int;
+> intf(){aint;bint;cint;outputa;}
+\ No newline at end of file
 
 
 90
-1,5c1,5
-< int f()
-< {
-< int a;
-< int b;
-< int c;
+1c1
+< intf(){inta;intb;intc;outputa,b,c;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
->   b int;
->   c int;
+> intf(){aint;bint;cint;outputa,b,c;}
+\ No newline at end of file
 
 
 91
-1,4c1,3
-< int f()
-< {
-< f();
-< }
+1c1
+< intf(){f();}
+\ No newline at end of file
 ---
-> 
-> int f() {
-> (null)}
+> intf(){(null)}
+\ No newline at end of file
 
 
 92
-1,6c1,5
-< int f(int a, int b)
-< {
-< int x;
-< int y;
-< f(x, y);
-< }
+1c1
+< intf(inta,intb){intx;inty;f(x,y);}
+\ No newline at end of file
 ---
-> 
-> int f(int a, int b) {
->   x int;
->   y int;
-> (null)xy  }
+> intf(inta,intb){xint;yint;(null)xy}
+\ No newline at end of file
 
 
 93
-1,5c1,4
-< int f(int a, int b)
-< {
-< int x;
-< f(x, .);
-< }
+1c1
+< intf(inta,intb){intx;f(x,.);}
+\ No newline at end of file
 ---
-> 
-> int f(int a, int b) {
->   x int;
-> (null)x  }
+> intf(inta,intb){xint;(null)x}
+\ No newline at end of file
 
 
 94
-1,3c1,3
-< int f()
-< {
-< int x;
+1c1
+< intf(){intx;x<<2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
+> intf(){xint;x<<2;}
+\ No newline at end of file
 
 
 95
-1,4c1,4
-< int f()
-< {
-< int x;
-< x >> 4;
+1c1
+< intf(){intx;x>>4;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
-> x << 4;
+> intf(){xint;x<<4;}
+\ No newline at end of file
 
 
 96
-1,3c1,3
-< int f()
-< {
-< int x;
+1c1
+< intf(){intx;returnx;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
+> intf(){xint;returnx;}
+\ No newline at end of file
 
 
 97
-1,2c1,2
-< int f()
-< {
----
-> 
-> int f() {
 
 
 98
-1,2c1,2
-< int f()
-< {
----
-> 
-> int f() {
 
 
 99
-1,4c1,3
-< int f()
-< {
-< case 245:
-< }
----
-> 
-> int f() {
-> case 245:}
 
 
 100
-1,4c1,6
-< int f()
-< {
-< int c;
-< if (c) then { };
+1c1
+< intf(){intc;if(c)then{};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   c int;
-> 
-> if (c) then {
-> }
+> intf(){cint;if(c)then{}}
+\ No newline at end of file
 
 
 101
-1,5c1,5
-< int f()
-< {
-< int c;
-< if (c) then
-< {
+1c1
+< intf(){intc;if(c)then{}else{};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   c int;
-> 
-> if (c) then {
-7c7
-< };
----
-> }
+> intf(){cint;if(c)then{}else{}}
+\ No newline at end of file
 
 
 102
-1c1,5
-< int f()
+1c1
+< intf(){intx;inti;foreach(i:x,x,x){};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
->   i int;
-> foreach (i : x, x, x)
-3,5d6
-< int x;
-< int i;
-< foreach(i : x, x, x) {
+> intf(){xint;iint;foreach(i:x,x,x){};}
+\ No newline at end of file
 
 
 103
-1,6c1,10
-< int f()
-< {
-< int x;
-< int i;
-< int j;
-< for(i = 0, j = 0 : i : i = 2, j = 3) {
+1c1
+< intf(){intx;inti;intj;for(i=0,j=0:i:i=2,j=3){};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
->   i int;
->   j int;
-> for (i = 0;
-> j = 0;
->  : i : i = 2;
-> j = 3;
-> ) {
+> intf(){xint;iint;jint;for(i=0;j=0;:i:i=2;j=3;){};}
+\ No newline at end of file
 
 
 104
-1,6c1,7
-< int f()
-< {
-< int x;
-< int i;
-< int j;
-< while (i) do { };
+1c1
+< intf(){intx;inti;intj;while(i)do{};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
->   i int;
->   j int;
-> while (i) do  {
-> }
+> intf(){xint;iint;jint;while(i)do{}}
+\ No newline at end of file
 
 
 105
-1,4c1,5
-< int f()
-< {
-< int x;
-< do { } while (i);
+1c1
+< intf(){intx;do{}while(i);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
-> do {
-> } while(i);
+> intf(){xint;do{}while(i);}
+\ No newline at end of file
 
 
 106
-1,4c1
-< int f()
-< {
-< for (output x, y : x : x = x+1) { };
-< }
+1c1
+< intf(){for(outputx,y:x:x=x+1){};}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected TK_PR_OUTPUT, expecting TK_IDENTIFICADOR or '{'
+> erroronline6:syntaxerror,unexpectedTK_PR_OUTPUT,expectingTK_IDENTIFICADORor'{'
+\ No newline at end of file
 
 
 107
-1,4c1
-< int f()
-< {
-< for (case 123: : x : x = x+1) { };
-< }
+1c1
+< intf(){for(case123::x:x=x+1){};}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected TK_PR_CASE, expecting TK_IDENTIFICADOR or '{'
+> erroronline6:syntaxerror,unexpectedTK_PR_CASE,expectingTK_IDENTIFICADORor'{'
+\ No newline at end of file
 
 
 108
-1,3c1,3
-< int f()
-< {
-< int x;
+1c1
+< intf(){intx;x=3;switch(x){};}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   x int;
-6d5
-< };
-8c7
-< 
----
-> }
+> intf(){xint;x=3;switch(x){}}
+\ No newline at end of file
 
 
 109
-1,6c1
-< int f()
-< {
-< int x;
-< x = 2;
-< do { } while (x)
-< }
+1c1
+< intf(){intx;x=2;do{}while(x)}
+\ No newline at end of file
 ---
-> error on line 10: syntax error, unexpected '}', expecting ';'
+> erroronline10:syntaxerror,unexpected'}',expecting';'
+\ No newline at end of file
 
 
 110
-1,5c1,4
-< int f()
-< {
-< int a;
-< f() %>% g(., a);
-< }
+1c1
+< intf(){inta;f()%>%g(.,a);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
-> (null)}
+> intf(){aint;(null)}
+\ No newline at end of file
 
 
 111
-1,5c1,4
-< int f()
-< {
-< int a;
-< f() %|% g(., a);
-< }
+1c1
+< intf(){inta;f()%|%g(.,a);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
-> (null)}
+> intf(){aint;(null)}
+\ No newline at end of file
 
 
 112
-1,5c1,4
-< int f()
-< {
-< int a;
-< f() %>% g(., a) %>% z(.);
-< }
+1c1
+< intf(){inta;f()%>%g(.,a)%>%z(.);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
-> (null)}
+> intf(){aint;(null)}
+\ No newline at end of file
 
 
 113
-1,4c1,4
-< int f()
-< {
-< int a;
-< a = f() %>% g(., a) %|% z(.);
+1c1
+< intf(){inta;a=f()%>%g(.,a)%|%z(.);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
-> a = (null);
+> intf(){aint;a=(null);}
+\ No newline at end of file
 
 
 114
-1,5c1,5
-< int f()
-< {
-< int a;
-< int b;
-< int c;
+1c1
+< intf(){inta;intb;intc;a=2*c+a/b;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
->   b int;
->   c int;
+> intf(){aint;bint;cint;a=2*c+a/b;}
+\ No newline at end of file
 
 
 115
-1,2c1,2
-< int f()
-< {
----
-> 
-> int f() {
 
 
 116
-1,3c1,3
-< int f(int a)
-< {
-< c[5] = 3 Makefile README.md arvore.c arvore.h arvore.o ast_tests e2tests e3results etapa3 lex.yy.c lex.yy.o main.c main.o new original parser.output parser.tab.c parser.tab.h parser.tab.o parser.y parser_tests scanner.l scanner_tests test test.sh test_e2.py yyerror.c yyerror.o f(a) + a;
+1c1
+< intf(inta){c[5]=3MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pyyyerror.cyyerror.of(a)+a;}
+\ No newline at end of file
 ---
-> 
-> int f(int a) {
-> c[5] = 3*(null)a +a;
+> intf(inta){c[5]=3*(null)a+a;}
+\ No newline at end of file
 
 
 117
-1,4c1,4
-< int f()
-< {
-< int a;
-< a = 2*(c+k);
+1c1
+< intf(){inta;a=2*(c+k);}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   a int;
-> a = 2*c+k;
+> intf(){aint;a=2*c+k;}
+\ No newline at end of file
 
 
 118
-1,4c1,8
-< int f()
-< {
-< if (a == 2) then { };
-< if ((a+b) <= 10) then { };
+1c1
+< intf(){if(a==2)then{};if((a+b)<=10)then{};}
+\ No newline at end of file
 ---
-> 
-> int f() {
-> 
-> if (a==2) then {
-> }
-> 
-> if (a+b<=10) then {
-> }
+> intf(){if(a==2)then{}if(a+b<=10)then{}}
+\ No newline at end of file
 
 
 119
-2,4c2,4
-< int f1 (float k, int l)
-< {
-< int a;
+1c1
+< v1int;intf1(floatk,intl){inta;}v2[100]int;v3char;
+\ No newline at end of file
 ---
-> 
-> int f1(float k, int l) {
->   a int;
+> v1int;intf1(floatk,intl){aint;}v2[100]int;v3char;
+\ No newline at end of file
 
 
 120
 1c1
 < int;
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected ';', expecting TK_IDENTIFICADOR
+> erroronline2:syntaxerror,unexpected';',expectingTK_IDENTIFICADOR
+\ No newline at end of file
 
 
 121
-1c1,4
-< int minha_funcao(){};
+1c1
+< intminha_funcao(){};
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected ';', expecting $end
-> 
-> int minha_funcao() {
-> }
+> erroronline2:syntaxerror,unexpected';',expecting$endintminha_funcao(){}
+\ No newline at end of file
 
 
 122
-1,4c1
-< int minha_funcao ()
-< float local;
-< {
-< }
+1c1
+< intminha_funcao()floatlocal;{}
+\ No newline at end of file
 ---
-> error on line 3: syntax error, unexpected TK_PR_FLOAT, expecting '{'
+> erroronline3:syntaxerror,unexpectedTK_PR_FLOAT,expecting'{'
+\ No newline at end of file
 
 
 123
-1,4c1
-< int minha_funcao ()
-< {
-< ;;;
-< }
+1c1
+< intminha_funcao(){;;;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ';', expecting '}'
+> erroronline4:syntaxerror,unexpected';',expecting'}'
+\ No newline at end of file
 
 
 124
 1c1
-< int f (float f, int i,){int a;}
+< intf(floatf,inti,){inta;}
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected ')'
+> erroronline2:syntaxerror,unexpected')'
+\ No newline at end of file
 
 
 125
-1,7c1
-< int f()
-< {
-< int a;
-< }
-< a = 10;
-< }
-< char c;
+1c1
+< intf(){inta;}a=10;}charc;
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected '='
+> erroronline6:syntaxerror,unexpected'='
+\ No newline at end of file
 
 
 126
-1,5c1
-< int f()
-< {
-< int a;
-< if (a == 0) then { x = 2; } else
-< }
+1c1
+< intf(){inta;if(a==0)then{x=2;}else}
+\ No newline at end of file
 ---
-> error on line 6: syntax error, unexpected '}', expecting '{'
+> erroronline6:syntaxerror,unexpected'}',expecting'{'
+\ No newline at end of file
 
 
 127
-1,4c1
-< int f()
-< {
-< output;
-< }
+1c1
+< intf(){output;}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected ';'
+> erroronline4:syntaxerror,unexpected';'
+\ No newline at end of file
 
 
 128
-1,7c1
-< int f()
-< {
-< int a;
-< int b;
-< int c;
-< input a,b,c;
-< }
+1c1
+< intf(){inta;intb;intc;inputa,b,c;}
+\ No newline at end of file
 ---
-> error on line 7: syntax error, unexpected ',', expecting ';'
+> erroronline7:syntaxerror,unexpected',',expecting';'
+\ No newline at end of file
 
 
 129
-1,7c1
-< int f()
-< {
-< int a;
-< int b;
-< int c;
-< return a,b,c;
-< }
+1c1
+< intf(){inta;intb;intc;returna,b,c;}
+\ No newline at end of file
 ---
-> error on line 7: syntax error, unexpected ',', expecting ';'
+> erroronline7:syntaxerror,unexpected',',expecting';'
+\ No newline at end of file
 
 
 130
-1,4c1
-< int f()
-< {
-< v[a+1]=5[10];
-< }
+1c1
+< intf(){v[a+1]=5[10];}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '[', expecting ';'
+> erroronline4:syntaxerror,unexpected'[',expecting';'
+\ No newline at end of file
 
 
 131
-1,4c1
-< int f()
-< {
-< f(3)=f(2);
-< }
+1c1
+< intf(){f(3)=f(2);}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected '=', expecting ';'
+> erroronline4:syntaxerror,unexpected'=',expecting';'
+\ No newline at end of file
 
 
 132
-1,4c1
-< int f()
-< {
-< while (a != 4 do { v[a+1] = f(2) };
-< }
+1c1
+< intf(){while(a!=4do{v[a+1]=f(2)};}
+\ No newline at end of file
 ---
-> error on line 4: syntax error, unexpected TK_PR_DO
+> erroronline4:syntaxerror,unexpectedTK_PR_DO
+\ No newline at end of file
 
 
 133
-1,6c1
-< class ASL_t [ public int a ];
-< int f()
-< {
-< AST_t xis;
-< xis.a = 2;
-< }
+1c1
+< classASL_t[publicinta];intf(){AST_txis;xis.a=2;}
+\ No newline at end of file
 ---
-> error on line 10: syntax error, unexpected '.'
+> erroronline10:syntaxerror,unexpected'.'
+\ No newline at end of file
 
 
 134
-2,5c2,5
-< int f()
-< {
-< AST_t xis;
-< xis$a << 2;
+1c1
+< classASL_t[publicinta];intf(){AST_txis;xis$a<<2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   xis xis;
-> xis << 2;
+> classASL_t[publicinta];intf(){xisxis;xis<<2;}
+\ No newline at end of file
 
 
 135
-2,4c2,4
-< int f()
-< {
-< int b;
+1c1
+< classASL_t[publicinta];intf(){intb;b=3;AST_txis;xis$a>>b+2;}
+\ No newline at end of file
 ---
-> 
-> int f() {
->   b int;
-6,7c6,7
-< AST_t xis;
-< xis$a >> b+2;
----
->   xis xis;
-> xis >> b+2;
+> classASL_t[publicinta];intf(){bint;b=3;xisxis;xis>>b+2;}
+\ No newline at end of file
 
 
 136
 1c1
-< aux_murilo_n[] int;
+< aux_murilo_n[]int;
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected ']', expecting TK_LIT_INT
+> erroronline2:syntaxerror,unexpected']',expectingTK_LIT_INT
+\ No newline at end of file
 
 
 137
 1c1
-< aux_murilo_n int[5];
+< aux_murilo_nint[5];
+\ No newline at end of file
 ---
-> error on line 2: syntax error, unexpected '[', expecting ';'
+> erroronline2:syntaxerror,unexpected'[',expecting';'
+\ No newline at end of file
