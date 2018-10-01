@@ -6,4 +6,8 @@ int f() {
    int j <= 10;
    int k <= j;
    minha_var meu_nome;
+   string kay;
+   kay = "nome";
+   char kay2;
+   kay2 = 'l';
 }

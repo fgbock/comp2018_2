@@ -245,11 +245,11 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_STRING_LITERAL:
-        printf("\"%s\"", node->string_literal);
+        printf("%s", node->string_literal);
         break;
 
       case NODE_CHAR_LITERAL:
-        printf("'%c'", node->char_literal);
+        printf("%s", node->string_literal);
         break;
 
       case NODE_BOOL_LITERAL:

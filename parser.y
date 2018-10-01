@@ -96,7 +96,7 @@ literal: TK_LIT_INT    { $$ = make_node(NODE_INT_LITERAL);    $$->int_literal = 
 literal: TK_LIT_FLOAT  { $$ = make_node(NODE_FLOAT_LITERAL);  $$->float_literal = yylval.valor_lexico_float; };
 literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 0; };
 literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1; };
-literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char; };
+literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->string_literal = strdup(yylval.valor_lexico_string); };
 literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = strdup(yylval.valor_lexico_string); };
 //opcional_const: %empty;
 //opcional_const: TK_PR_CONST;

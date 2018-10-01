@@ -67,7 +67,7 @@ int lineCount = 1;
 
 [0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {yylval.valor_lexico_float = atof(yytext); return TK_LIT_FLOAT;}
 
-'[^']'          {return TK_LIT_CHAR;}
+'[^']'          {yylval.valor_lexico_string = strdup(yytext); return TK_LIT_CHAR;}
 \"[^"]*\"       {yylval.valor_lexico_string = strdup(yytext); return TK_LIT_STRING;}
 
 .		{return TOKEN_ERRO;}
