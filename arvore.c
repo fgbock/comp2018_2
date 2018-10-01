@@ -246,7 +246,6 @@ void descompila_internal(ast_node* node) {
 	descompila_internal(node->child[3]);
 	printf("]");
 	printf(";");
-        printf("$%s", node->string_literal);
 	printf("\n");
         break;
 
@@ -277,10 +276,6 @@ void descompila_internal(ast_node* node) {
         break;
      case NODE_PROTECTED:
         printf("protected");
-        break;
-
-     case NODE_EMPTY:
-        printf("");
         break;
 
       case NODE_INT_LITERAL:
