@@ -1,5 +1,5 @@
 rm e3results
-counter=0
+counter=1
 for filename in ./e2tests/*
 do
     touch original
