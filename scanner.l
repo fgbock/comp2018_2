@@ -3,6 +3,7 @@
 #include "parser.tab.h"
 
 int lineCount = 1;
+char *straux;
 %}
 
 %x comment
@@ -67,8 +68,8 @@ int lineCount = 1;
 
 [0-9]+\.[0-9]+((e|E)(\+|\-)?[0-9]+)? {yylval.valor_lexico_float = atof(yytext); return TK_LIT_FLOAT;}
 
-'[^']'          {yylval.valor_lexico_string = strdup(yytext); return TK_LIT_CHAR;}
-\"[^"]*\"       {yylval.valor_lexico_string = strdup(yytext); return TK_LIT_STRING;}
+'[^']'          {yylval.valor_lexico_char = strdup(yytext)[1]; return TK_LIT_CHAR;}
+\"[^"]*\"       {straux = strdup(yytext+1); straux[strlen(straux)-1] = 0; yylval.valor_lexico_string = strdup(straux); return TK_LIT_STRING;}
 
 .		{return TOKEN_ERRO;}
 
