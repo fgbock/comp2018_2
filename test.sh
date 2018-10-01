@@ -1,8 +1,16 @@
 rm e3results
+counter=0
 for filename in ./e2tests/*
 do
-    (cat "$filename" | ./etapa3) > out 
+    touch original
+    grep -v "^/" $filename | while read LINE
+    do
+        echo $LINE >> original
+    done
+    (cat "$filename" | ./etapa3) > new
     echo "\n" >> e3results
-    (diff "$filename" out) >> e3results
-    rm edited
+    echo "$counter" >> e3results
+    (diff original new) >> e3results
+    rm original
+    counter=$((counter+1))
 done
