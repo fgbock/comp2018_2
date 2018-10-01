@@ -1,31 +1,15 @@
 
 
 1
-2d1
-< 
 
 
 2
-2d1
-< 
 
 
 3
-1,3c1
-< v1[2] int;
-< 
-< 
----
-> v1 [2] int;
 
 
 4
-1,3c1
-< v1[2] static int;
-< 
-< 
----
-> v1 [2] static int;
 
 
 5
@@ -41,8 +25,6 @@
 
 
 9
-1d0
-< class ASL_t [ public int x ];
 
 
 10
@@ -209,8 +191,6 @@
 
 
 29
-0a1
-> 
 2,3c3,4
 < MinhaClasse a;
 < a$nome[0] = 3.5;
@@ -368,8 +348,6 @@
 
 
 43
-1d0
-< class ASL_t [ public int a ];
 
 
 44
@@ -470,8 +448,6 @@
 
 
 54
-1d0
-< class AST_t [ public int a : public int b ];
 
 
 55
@@ -482,18 +458,12 @@
 
 
 56
-1d0
-< class AST_t [ int a ];
 
 
 57
-1d0
-< class AST_t [ private int a ];
 
 
 58
-1d0
-< class AST_t [ protected int a ];
 
 
 59
@@ -519,8 +489,7 @@
 
 
 62
-1,3c1,2
-< class ASL_t [ public int a ];
+2,3c2,3
 < ASL_t f (ASL_t xis)
 < {
 ---
@@ -586,34 +555,30 @@
 
 
 69
-1,4c1,4
+1c1,2
 < int f ()
-< {
-< {};
-< }
 ---
 > 
 > int f() {
->  {
+3,4c4
+< {};
+< }
+---
 > }}
 
 
 70
-1,8c1,6
+1c1,2
 < int f ()
-< {
-< {
-< {
+---
+> 
+> int f() {
+5,8c6
 < {};
 < };
 < };
 < }
 ---
-> 
-> int f() {
->  {
->  {
->  {
 > }}}}
 
 
@@ -640,14 +605,12 @@
 
 
 73
-1,3c1,3
+1,2c1,2
 < int f()
 < {
-< static int a;
 ---
 > 
 > int f() {
-> static  int a;
 
 
 74
@@ -705,14 +668,12 @@
 
 
 79
-1,3c1,3
+1,2c1,2
 < int f ()
 < {
-< const int a;
 ---
 > 
 > int f() {
->  const int a;
 
 
 80
@@ -771,32 +732,27 @@
 
 
 85
-1,3c1,3
-< a[10] int;
+2,3c2,3
 < int f()
 < {
 ---
-> a [10] int;
 > 
 > int f() {
 
 
 86
-1,4c1,4
-< a[10] int;
+2,4c2,4
 < int f()
 < {
 < int c;
 ---
-> a [10] int;
 > 
 > int f() {
 >   c int;
 
 
 87
-1,5c1,4
-< class ASL_t [ public int a ];
+2,5c2,5
 < int f()
 < {
 < AST_t xis;
@@ -835,20 +791,18 @@
 
 
 90
-1,6c1,6
+1,5c1,5
 < int f()
 < {
 < int a;
 < int b;
 < int c;
-< output a,b,c;
 ---
 > 
 > int f() {
 >   a int;
 >   b int;
 >   c int;
-> output a, b, c;
 
 
 91
@@ -974,38 +928,37 @@
 
 
 101
-1,7c1,7
+1,5c1,5
 < int f()
 < {
 < int c;
 < if (c) then
 < {
-< }else{
-< };
 ---
 > 
 > int f() {
 >   c int;
 > 
 > if (c) then {
-> } else  {
+7c7
+< };
+---
 > }
 
 
 102
-1,5c1,6
+1c1,5
 < int f()
-< {
-< int x;
-< int i;
-< foreach(i : x, x, x) {
 ---
 > 
 > int f() {
 >   x int;
 >   i int;
 > foreach (i : x, x, x)
->  {
+3,5d6
+< int x;
+< int i;
+< foreach(i : x, x, x) {
 
 
 103
@@ -1239,10 +1192,6 @@
 > 
 > int f1(float k, int l) {
 >   a int;
-6c6
-< v2[ 100 ] int;
----
-> v2 [100] int;
 
 
 120
@@ -1392,8 +1341,7 @@
 
 
 134
-1,5c1,4
-< class ASL_t [ public int a ];
+2,5c2,5
 < int f()
 < {
 < AST_t xis;
@@ -1406,8 +1354,7 @@
 
 
 135
-1,4c1,3
-< class ASL_t [ public int a ];
+2,4c2,4
 < int f()
 < {
 < int b;
@@ -1415,7 +1362,7 @@
 > 
 > int f() {
 >   b int;
-6,7c5,6
+6,7c6,7
 < AST_t xis;
 < xis$a >> b+2;
 ---

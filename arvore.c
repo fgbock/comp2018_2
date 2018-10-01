@@ -257,11 +257,13 @@ void descompila_internal(ast_node* node) {
 	break;
 
      case NODE_NEW_TYPE_PROPERTY:
+	printf(" ");
 	descompila_internal(node->child[0]);
         printf(" ");
 	descompila_internal(node->child[1]);
 	printf(" ");
 	descompila_internal(node->child[2]);
+	printf(" ");
 	break;
 
      case NODE_CLASS:

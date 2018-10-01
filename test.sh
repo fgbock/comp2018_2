@@ -10,7 +10,7 @@ do
     (cat "$filename" | ./etapa3) > new
     echo "\n" >> e3results
     echo "$counter" >> e3results
-    (diff original new) >> e3results
+    (diff -wbB original new) >> e3results
     rm original
     counter=$((counter+1))
 done
