@@ -11,8 +11,8 @@ do
     (cat new.txt | tr -d " \t\n\r") > new
     (cat original.txt | tr -d " \t\n\r") > original
     echo "\n" >> e3results
-    echo "$counter" >> e3results
-    (diff original new) >> e3results
+    echo $filename >> e3results
+    (diff -wbBEZ original new) >> e3results
     rm original
     rm new.txt
     rm original.txt

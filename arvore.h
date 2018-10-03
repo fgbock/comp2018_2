@@ -71,6 +71,7 @@
 #define NODE_COMMAND_LIST   60
 #define NODE_COMMAND_BLOCK  61
 #define NODE_VAR_GLOBAL     62
+#define NODE_FUNCTION_BODY  59
 
 #define NODE_NEW_TYPE 63
 #define NODE_CLASS 64

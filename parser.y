@@ -67,7 +67,7 @@ extern void *arvore;
 %token TOKEN_ERRO
 
 
-%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes atribuicao declaracao_variavel_local_ou_atribuicao_ou_shift_id declaracao_variavel_local_ou_atribuicao_id_parametro acesso_propriedade declaracao_variavel_local declaracao_variavel_local_const declaracao_variavel_local_static opcional_declaracao_valor comandos_dentro_for comandos_dentro_for_aux ;
+%type<node> programa programa_aux declaracao_funcao_usertype_e_var_global declaracao_variavel_global declaracao_novo_tipo declaracao_funcao expressao acesso_variavel chamada_funcao literal comando_if comando_else_opcional bloco_comandos argumento argumento_aux optional_pipe_command comando_pipe pipe tipo_variavel_primitiva tipo_variavel_usuario tipo_variavel opcional_encapsulamento declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades identificador declaracao_tamanho primeiro_param_funcao  declaracao_parametro_unico_funcao param_funcao um_comando comando_simples comando_while comando_do_while comando_switch comando_case comando_foreach comando_for comando_continue comando_break comando_return output input declaracao_variavel_local_ou_atribuicao_ou_shift opcional_acesso_vetor opcional_acesso_propriedade lista_expressoes atribuicao declaracao_variavel_local_ou_atribuicao_ou_shift_id declaracao_variavel_local_ou_atribuicao_id_parametro acesso_propriedade declaracao_variavel_local declaracao_variavel_local_const declaracao_variavel_local_static opcional_declaracao_valor comandos_dentro_for comandos_dentro_for_aux function_body;
 
 %left '+' '-'
 %left '*' '/' '%'
@@ -186,9 +186,12 @@ declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_v
 declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
 
 /* declaração de função */
-declaracao_funcao_usertype_e_var_global:              identificador           identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
-declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
-declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' bloco_comandos { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
+function_body: '{' comando_simples '}' { $$ = make_node(NODE_FUNCTION_BODY); $$->child[0] = $2; ; };
+//bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2;  };
+
+declaracao_funcao_usertype_e_var_global:              identificador           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
+declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
+declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
 primeiro_param_funcao: %empty                                               { $$ = make_node(NODE_ARGUMENT_LIST); };
 primeiro_param_funcao: declaracao_parametro_unico_funcao param_funcao       { $$ = make_node(NODE_ARGUMENT_LIST); $$->child[0] = $1; $$->child[1] = $2; };
 param_funcao: %empty                                                        { $$ = make_node(NODE_EMPTY); };
@@ -197,7 +200,7 @@ declaracao_parametro_unico_funcao: TK_PR_STATIC tipo_variavel identificador { $$
 declaracao_parametro_unico_funcao:              tipo_variavel identificador { $$ = make_node(NODE_ARGUMENT); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; };
 
 /* comando simples */
-um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift { $$ = $1; };;
+um_comando: declaracao_variavel_local_ou_atribuicao_ou_shift { $$ = $1; };
 um_comando: input              { $$ = $1; };
 um_comando: output             { $$ = $1; };
 um_comando: chamada_funcao     { $$ = $1; };
@@ -228,7 +231,7 @@ declaracao_variavel_local_ou_atribuicao_ou_shift: identificador identificador {$
 declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[1] = $1; };
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const   { $$ = $2; $$->child[2] = make_node(NODE_CONST);  };
 declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static { $$ = $2; $$->child[3] = make_node(NODE_STATIC); };
-declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; $$->child[1] = $2; $$->child[4] = $3; };
+declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; $$->child[4] = $3; };
 
 declaracao_variavel_local_const: declaracao_variavel_local { $$ = $1; };
 declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local { $$ = $2; $$->child[2] = make_node(NODE_CONST);  };

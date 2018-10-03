@@ -164,6 +164,7 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]); // Type
         printf(" ");
         descompila_internal(node->child[0]); // Identifier
+        
         if (node->child[4] != NULL && node->child[4]->type != NODE_EMPTY)
            printf(" <= ");
         descompila_internal(node->child[4]); // Init value
@@ -361,7 +362,6 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[2]); // expression list
         printf(")\n");
         descompila_internal(node->child[3]); // command block
-        printf(";\n");
         break;
 
       case NODE_IF:
@@ -419,8 +419,16 @@ void descompila_internal(ast_node* node) {
         printf(" {\n");
         descompila_internal(node->child[0]);
         descompila_internal(node->child[1]);
+        printf("};");
+        break;
+
+      case NODE_FUNCTION_BODY:
+        printf(" {\n");
+        descompila_internal(node->child[0]);
+        descompila_internal(node->child[1]);
         printf("}");
         break;
+
 
       case NODE_IDENTIFIER:
         printf("%s", node->string_literal);

@@ -15,6 +15,7 @@ int main (int argc, char **argv)
 {
   int ret = yyparse();
   descompila (arvore);
+  //printree(arvore, 0);
   libera(arvore);
   arvore = NULL;
   return ret;
