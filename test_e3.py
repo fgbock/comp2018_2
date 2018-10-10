@@ -7,6 +7,8 @@ import subprocess
 tests_path = "./e3tests/"
 incorrect = [ ]
 onlyfiles = [f for f in listdir(tests_path) if isfile(join(tests_path, f))]
+count1 = 0;
+count2 = 0;
 for f in onlyfiles:
     if f not in incorrect:
         p = subprocess.Popen("cat " + tests_path + f + " | ./etapa3", stdout=subprocess.PIPE, shell=True)
@@ -21,10 +23,12 @@ for f in onlyfiles:
 		filedata=myfile.read().replace('\n', '')
 		filedata_aux = message.split()
         if (message and (f not in incorrect) and (msg_aux != filedata_aux)):
-            print(f + " incorrect output: - " + message)
+        	print(f + " incorrect output: - " + message)
+		count1 += 1
 	else : print(f + " had no error on descompila")
 	if (message and (f not in incorrect) and (msg_aux2 != msg_aux)):
-            print(f + " incorrect 2nd descompila: - " + message2)
+        	print(f + " incorrect 2nd descompila: - " + message2)
+		count2 += 1
 	else : print(f + " had no error on 2nd descompila")
 	print("Original: ")
  	print(filedata_aux)
@@ -34,5 +38,8 @@ for f in onlyfiles:
 	print(msg_aux2)
 	print("\n\n")
 	os.remove("2ndtest") 
-
+print("Total errors in Descompila: ")
+print(count1)
+print("\nTotal errors in 2nd Descompila: ")
+print(count2)
 
