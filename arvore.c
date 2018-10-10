@@ -440,13 +440,17 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_ARGUMENT:
-        descompila_internal(node->child[0]); // static or empty
+        descompila_internal(node->child[0]); // const or empty
         if (node->child[0] != NULL && node->child[0]->type == NODE_STATIC) {
            printf(" ");
         }
-        descompila_internal(node->child[1]); // type
+        descompila_internal(node->child[1]); // static or empty
+        if (node->child[1] != NULL && node->child[1]->type == NODE_STATIC) {
+           printf(" ");
+        }
+        descompila_internal(node->child[2]); // type
         printf(" ");
-        descompila_internal(node->child[2]); // identifier
+        descompila_internal(node->child[3]); // identifier
         break;
 
       case NODE_ARGUMENT_LIST:
