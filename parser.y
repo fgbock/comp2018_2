@@ -241,7 +241,7 @@ declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local { $$ = $
 declaracao_variavel_local_static: declaracao_variavel_local { $$ = $1; };
 
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SL expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
-declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_LEFT); $$->child[3] = $2; };
+declaracao_variavel_local_ou_atribuicao_ou_shift_id: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_RIGHT); $$->child[3] = $2; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: acesso_propriedade declaracao_variavel_local_ou_atribuicao_id_parametro { $$ = $2; $$->child[2] = $1; }; // Atribuicao ou shift
 //declaracao_variavel_local_ou_atribuicao_ou_shift_id: identificador                   { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; };
 declaracao_variavel_local_ou_atribuicao_ou_shift_id: '[' expressao ']' '=' expressao { $$ = make_node(NODE_ASSIGNMENT); $$->child[2] = make_node(NODE_VECTOR_ACCESS); $$->child[2]->child[0] = $2; $$->child[3] = $5; };
