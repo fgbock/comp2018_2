@@ -429,6 +429,9 @@ void descompila_internal(ast_node* node) {
         printf("}");
         break;
 
+      case NODE_ARGUMENT_PLACEHOLDER:
+        printf(".");
+        break;
 
       case NODE_IDENTIFIER:
         printf("%s", node->string_literal);
@@ -436,7 +439,10 @@ void descompila_internal(ast_node* node) {
 
       case NODE_FUNCTION_CALL:
         descompila_internal(node->child[0]); // identifier
+        printf("(");
         descompila_internal(node->child[1]); // arguments
+        printf(")");
+        printf(";");
         break;
 
       case NODE_ARGUMENT:
@@ -526,7 +532,6 @@ void printree(ast_node* node, int lvl){
 }
 
 void descompila(void *arvore) {
-   //printree((ast_node*)arvore, 0);
    descompila_internal((ast_node*)arvore);
 }
 

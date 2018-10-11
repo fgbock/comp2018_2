@@ -268,13 +268,12 @@ lista_expressoes: %empty                         { $$ = make_node(NODE_EMPTY);  
 lista_expressoes: ',' expressao lista_expressoes { $$ = make_node(NODE_EXPRESSION_LIST); $$->child[0] = $2; $$->child[1] = $3; };
 
 /* comando simples - função */
-chamada_funcao: TK_IDENTIFICADOR '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL);         $$->child[0] = make_node(NODE_IDENTIFIER); $$->child[1] = $3; $$->child[2] = $5; };
-argumento: %empty                         { $$ = make_node(NODE_EMPTY);};
-argumento: expressao argumento_aux        { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = $1;                                   $$->child[1] = $2;};
-argumento: '.' argumento_aux              { $$ = make_node(NODE_ARGUMENT);         $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER); $$->child[0] = $2;};
-argumento_aux: %empty                     { $$ = make_node(NODE_EMPTY);};
-argumento_aux: ',' argumento              { $$ = $2;};
-
+chamada_funcao: identificador '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; };
+argumento: %empty                           { $$ = make_node(NODE_EMPTY);};
+argumento: expressao argumento_aux          { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $1;                                    $$->child[1] = $2;};
+argumento: '.' argumento_aux                { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER);  $$->child[1] = $2;};
+argumento_aux: %empty                       { $$ = make_node(NODE_EMPTY);};
+argumento_aux: ',' argumento argumento_aux  { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $2; $$->child[1] = $3; };
 
 /* comandos de return, break, continue e case */
 comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2; };
