@@ -106,7 +106,6 @@ void shift_or_assignment(ast_node* node, char* op) {
    descompila_internal(node->child[2]); // optional vector access
    printf("%s", op);
    descompila_internal(node->child[3]); // rhs
-   printf(";\n");
 }
 
 
@@ -124,6 +123,7 @@ void descompila_internal(ast_node* node) {
 
       case NODE_COMMAND_LIST:
         descompila_internal(node->child[0]);
+        printf(";\n");
         descompila_internal(node->child[1]);
         break;
 
@@ -137,7 +137,7 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[0]); // lhs
         printf(" = ");
         descompila_internal(node->child[1]); // rhs
-        printf(";\n");
+        printf("\n");
         break;
 
       case NODE_SHIFT_LEFT:
@@ -168,7 +168,6 @@ void descompila_internal(ast_node* node) {
         if (node->child[4] != NULL && node->child[4]->type != NODE_EMPTY)
            printf(" <= ");
         descompila_internal(node->child[4]); // Init value
-        printf(";\n");
         break;
 
       case NODE_EXPRESSION_LIST:
@@ -181,7 +180,6 @@ void descompila_internal(ast_node* node) {
       case NODE_INPUT:
         printf("input ");
         descompila_internal(node->child[0]);
-        printf(";\n");
         break;
 
       case NODE_OUTPUT:
@@ -190,7 +188,6 @@ void descompila_internal(ast_node* node) {
         if (node->child[1] != NULL && node->child[1]->type == NODE_EXPRESSION_LIST)
            printf(", ");
         descompila_internal(node->child[1]);
-        printf(";\n");
         break;
 
       case NODE_VECTOR_ACCESS:
@@ -404,7 +401,7 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[0]); // command block
         printf(" while(");
         descompila_internal(node->child[1]); // conditional
-        printf(");\n");
+        printf(")");
         break;
 
       case NODE_TERNARY:
@@ -419,7 +416,7 @@ void descompila_internal(ast_node* node) {
         printf(" {\n");
         descompila_internal(node->child[0]);
         descompila_internal(node->child[1]);
-        printf("};");
+        printf("}");
         break;
 
       case NODE_FUNCTION_BODY:
@@ -442,7 +439,6 @@ void descompila_internal(ast_node* node) {
         printf("(");
         descompila_internal(node->child[1]); // arguments
         printf(")");
-        printf(";");
         break;
 
       case NODE_ARGUMENT:
@@ -484,17 +480,16 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_BREAK:
-        printf("break;\n");
+        printf("break");
         break;
 
       case NODE_CONTINUE:
-        printf("continue;\n");
+        printf("continue");
         break;
 
       case NODE_RETURN:
         printf("return ");
         descompila_internal(node->child[0]); // expression
-        printf(";\n");
         break;
    }
 }
