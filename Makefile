@@ -19,5 +19,5 @@ debug:
 	gcc -o etapa3 main.o arvore.o yyerror.o parser.tab.o lex.yy.o
 
 clean:
-	rm -rf etapa3 lex.yy.c lex.yy.o main.o arvore.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE
+	rm -rf etapa3 lex.yy.c lex.yy.o main.o arvore.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE temp1 temp2
 	
