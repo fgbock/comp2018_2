@@ -91,10 +91,10 @@ void descompila_internal_binary_expression(ast_node* node)
         printf("<<");
         break;
       case NODE_FORWARD_PIPE:
-        printf("%s", "\%>\%");
+        printf("%s", " \%>\% ");
         break;
       case NODE_BASH_PIPE:
-        printf("%s", "\%|\%");
+        printf("%s", " \%|\% ");
         break;
    }
 }
@@ -463,12 +463,12 @@ void descompila_internal(ast_node* node) {
         printf("(");
         descompila_internal(node->child[1]); // arguments
         printf(")");
-        descompila_internal(node->child[2]); // arguments
+        descompila_internal(node->child[2]); // optional pipe
         break;
 
       case NODE_PIPE_COMMAND:
-	descompila_internal(node->child[0]); // pipe
-        descompila_internal(node->child[1]); // fun ction
+        descompila_internal(node->child[0]); // pipe
+        descompila_internal(node->child[1]); // function
 	break;
 
       case NODE_ARGUMENT:
