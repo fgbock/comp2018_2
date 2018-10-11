@@ -1,6 +1,1 @@
-
-int f(int a, int b) {
-  int x;
-  int y;
-f(x, y);
-}
+v ASL_t;

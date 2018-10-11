@@ -1,36 +1,36 @@
 
 
-1
+./e2tests/asl01
 
 
-2
+./e2tests/asl02
 
 
-3
+./e2tests/asl03
 
 
-4
+./e2tests/asl04
 
 
-5
+./e2tests/asl05
 
 
-6
+./e2tests/asl06
 
 
-7
+./e2tests/asl07
 
 
-8
+./e2tests/asl08
 
 
-9
+./e2tests/asl09
 
 
-10
+./e2tests/asl10
 
 
-11
+./e2tests/asl100
 1c1
 < func1(intparam1){}
 \ No newline at end of file
@@ -39,10 +39,10 @@
 \ No newline at end of file
 
 
-12
+./e2tests/asl101
 
 
-13
+./e2tests/asl102
 1c1
 < constintfunc1(){}
 \ No newline at end of file
@@ -51,7 +51,7 @@
 \ No newline at end of file
 
 
-14
+./e2tests/asl103
 1c1
 < intfunc1(boolparam1);
 \ No newline at end of file
@@ -60,7 +60,7 @@
 \ No newline at end of file
 
 
-15
+./e2tests/asl104
 1c1
 < intfunc1(intparam1[5]){}
 \ No newline at end of file
@@ -69,7 +69,7 @@
 \ No newline at end of file
 
 
-16
+./e2tests/asl105
 1c1
 < intfunc1[5](){}
 \ No newline at end of file
@@ -78,7 +78,7 @@
 \ No newline at end of file
 
 
-17
+./e2tests/asl106
 1c1
 < classTeste[classMarcadorteste];
 \ No newline at end of file
@@ -87,7 +87,7 @@
 \ No newline at end of file
 
 
-18
+./e2tests/asl107
 1c1
 < classTeste[charmarcador]
 \ No newline at end of file
@@ -96,7 +96,7 @@
 \ No newline at end of file
 
 
-19
+./e2tests/asl108
 1c1
 < classTeste[marcador];
 \ No newline at end of file
@@ -105,7 +105,7 @@
 \ No newline at end of file
 
 
-20
+./e2tests/asl109
 1c1
 < staticclassminhaClasse[intid:staticstringnome:publicconstintidade:privatestaticfloatsaldo:constboolmorto];
 \ No newline at end of file
@@ -114,7 +114,7 @@
 \ No newline at end of file
 
 
-21
+./e2tests/asl11
 1c1
 < aint
 \ No newline at end of file
@@ -123,7 +123,7 @@
 \ No newline at end of file
 
 
-22
+./e2tests/asl110
 1c1
 < classminhaClasse[publicconstintidade];
 \ No newline at end of file
@@ -132,7 +132,7 @@
 \ No newline at end of file
 
 
-23
+./e2tests/asl111
 1c1
 < classminhaClasse[publicstaticintidade];
 \ No newline at end of file
@@ -141,7 +141,7 @@
 \ No newline at end of file
 
 
-24
+./e2tests/asl112
 1c1
 < classminhaClasse[staticpublicintidade];
 \ No newline at end of file
@@ -150,7 +150,7 @@
 \ No newline at end of file
 
 
-25
+./e2tests/asl113
 1c1
 < classminhaClasse[constpublicintidade];
 \ No newline at end of file
@@ -159,10 +159,10 @@
 \ No newline at end of file
 
 
-26
+./e2tests/asl114
 
 
-27
+./e2tests/asl115
 1c1
 < intfunc1(charparam1){charteste='a';}
 \ No newline at end of file
@@ -171,7 +171,7 @@
 \ No newline at end of file
 
 
-28
+./e2tests/asl116
 1c1
 < intfunc1(charparam1){floata;a<=3.5;}
 \ No newline at end of file
@@ -180,7 +180,7 @@
 \ No newline at end of file
 
 
-29
+./e2tests/asl117
 1c1
 < intfunc1(charparam1){MinhaClassea;a$nome[0]=3.5;}
 \ No newline at end of file
@@ -189,7 +189,7 @@
 \ No newline at end of file
 
 
-30
+./e2tests/asl118
 1c1
 < intfunc1(charparam1){MinhaClassea;a$pessoa$nome="Francis";}
 \ No newline at end of file
@@ -198,7 +198,7 @@
 \ No newline at end of file
 
 
-31
+./e2tests/asl119
 1c1
 < intfunc1(){input;}
 \ No newline at end of file
@@ -207,7 +207,7 @@
 \ No newline at end of file
 
 
-32
+./e2tests/asl12
 1c1
 < inta<=0;
 \ No newline at end of file
@@ -216,7 +216,7 @@
 \ No newline at end of file
 
 
-33
+./e2tests/asl120
 1c1
 < intfunc1(){output1+2,;}
 \ No newline at end of file
@@ -225,7 +225,7 @@
 \ No newline at end of file
 
 
-34
+./e2tests/asl121
 1c1
 < intfunc1(){12<<1+2;}
 \ No newline at end of file
@@ -234,7 +234,7 @@
 \ No newline at end of file
 
 
-35
+./e2tests/asl122
 1c1
 < intmain(){while(true){intx;};}
 \ No newline at end of file
@@ -243,7 +243,7 @@
 \ No newline at end of file
 
 
-36
+./e2tests/asl123
 1c1
 < intmain(){while()do{intx;};}
 \ No newline at end of file
@@ -252,7 +252,7 @@
 \ No newline at end of file
 
 
-37
+./e2tests/asl124
 1c1
 < intmain(){{intx;}while(true);}
 \ No newline at end of file
@@ -261,7 +261,7 @@
 \ No newline at end of file
 
 
-38
+./e2tests/asl125
 1c1
 < intmain(){return;}
 \ No newline at end of file
@@ -270,16 +270,10 @@
 \ No newline at end of file
 
 
-39
-1c1
-< intmain(){switch(x){case1:y=2;break;};}
-\ No newline at end of file
----
-> intmain(){switch(x){case1:y=2;break;}}
-\ No newline at end of file
+./e2tests/asl126
 
 
-40
+./e2tests/asl127
 1c1
 < intmain(){switch(){case'a':y=2;};}
 \ No newline at end of file
@@ -288,7 +282,7 @@
 \ No newline at end of file
 
 
-41
+./e2tests/asl128
 1c1
 < intmain(){iftruethen{intx;};}
 \ No newline at end of file
@@ -297,7 +291,7 @@
 \ No newline at end of file
 
 
-42
+./e2tests/asl129
 1c1
 < intmain(){if(true){intx;};}
 \ No newline at end of file
@@ -306,10 +300,10 @@
 \ No newline at end of file
 
 
-43
+./e2tests/asl13
 
 
-44
+./e2tests/asl130
 1c1
 < intmain(){if(true)thenx=2;}
 \ No newline at end of file
@@ -318,7 +312,7 @@
 \ No newline at end of file
 
 
-45
+./e2tests/asl131
 1c1
 < intmain(){foreach(){};}
 \ No newline at end of file
@@ -327,7 +321,7 @@
 \ No newline at end of file
 
 
-46
+./e2tests/asl132
 1c1
 < intmain(){foreach(x:){};}
 \ No newline at end of file
@@ -336,7 +330,7 @@
 \ No newline at end of file
 
 
-47
+./e2tests/asl133
 1c1
 < intmain(){for(::){intx;};}
 \ No newline at end of file
@@ -345,7 +339,7 @@
 \ No newline at end of file
 
 
-48
+./e2tests/asl134
 1c1
 < intmain(){x+1;}
 \ No newline at end of file
@@ -354,16 +348,16 @@
 \ No newline at end of file
 
 
-49
+./e2tests/asl135
 1c1
-< intmain(){x=(1MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pyyyerror.cyyerror.o)3;}
+< intmain(){x=(1MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultse3testsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pytest_e3.pyyyerror.cyyerror.o)3;}
 \ No newline at end of file
 ---
 > erroronline3:syntaxerror,unexpected')'
 \ No newline at end of file
 
 
-50
+./e2tests/asl136
 1c1
 < intmain(){x=1+(2;}
 \ No newline at end of file
@@ -372,7 +366,7 @@
 \ No newline at end of file
 
 
-51
+./e2tests/asl137
 1c1
 < intmain(){intx<=1+2;}
 \ No newline at end of file
@@ -381,7 +375,7 @@
 \ No newline at end of file
 
 
-52
+./e2tests/asl14
 1c1
 < intf(){classASL_t[publicinta];}
 \ No newline at end of file
@@ -390,7 +384,7 @@
 \ No newline at end of file
 
 
-53
+./e2tests/asl15
 1c1
 < classAST_t[];
 \ No newline at end of file
@@ -399,10 +393,10 @@
 \ No newline at end of file
 
 
-54
+./e2tests/asl16
 
 
-55
+./e2tests/asl17
 1c1
 < classASL_t[publicinta;publicintb];
 \ No newline at end of file
@@ -411,16 +405,16 @@
 \ No newline at end of file
 
 
-56
+./e2tests/asl18
 
 
-57
+./e2tests/asl19
 
 
-58
+./e2tests/asl20
 
 
-59
+./e2tests/asl21
 1c1
 < classAST_t[inconsequenteinta];
 \ No newline at end of file
@@ -429,7 +423,7 @@
 \ No newline at end of file
 
 
-60
+./e2tests/asl22
 1c1
 < classAST_t[publicinta]
 \ No newline at end of file
@@ -438,7 +432,7 @@
 \ No newline at end of file
 
 
-61
+./e2tests/asl23
 1c1
 < classFIRST_t[publicinta];classASL_t[publicFIRST_tb];
 \ No newline at end of file
@@ -447,13 +441,13 @@
 \ No newline at end of file
 
 
-62
+./e2tests/asl24
 
 
-63
+./e2tests/asl25
 
 
-64
+./e2tests/asl26
 1c1
 < intf(){};
 \ No newline at end of file
@@ -462,13 +456,13 @@
 \ No newline at end of file
 
 
-65
+./e2tests/asl27
 
 
-66
+./e2tests/asl28
 
 
-67
+./e2tests/asl29
 1c1
 < intf(inta[23]){}
 \ No newline at end of file
@@ -477,43 +471,19 @@
 \ No newline at end of file
 
 
-68
-1c1
-< intf(constinta){}
-\ No newline at end of file
----
-> erroronline3:syntaxerror,unexpectedTK_PR_CONST,expecting')'
-\ No newline at end of file
+./e2tests/asl30
 
 
-69
-1c1
-< intf(){{};}
-\ No newline at end of file
----
-> intf(){{}}
-\ No newline at end of file
+./e2tests/asl31
 
 
-70
-1c1
-< intf(){{{{};};};}
-\ No newline at end of file
----
-> intf(){{{{}}}}
-\ No newline at end of file
+./e2tests/asl32
 
 
-71
-1c1
-< intf(){inta;}
-\ No newline at end of file
----
-> intf(){aint;}
-\ No newline at end of file
+./e2tests/asl33
 
 
-72
+./e2tests/asl34
 1c1
 < intf(){intaintb}
 \ No newline at end of file
@@ -522,46 +492,22 @@
 \ No newline at end of file
 
 
-73
+./e2tests/asl35
 
 
-74
-1c1
-< intf(){floata;}
-\ No newline at end of file
----
-> intf(){afloat;}
-\ No newline at end of file
+./e2tests/asl36
 
 
-75
-1c1
-< intf(){chara;}
-\ No newline at end of file
----
-> intf(){achar;}
-\ No newline at end of file
+./e2tests/asl37
 
 
-76
-1c1
-< intf(){boola;}
-\ No newline at end of file
----
-> intf(){abool;}
-\ No newline at end of file
+./e2tests/asl38
 
 
-77
-1c1
-< intf(){stringa;}
-\ No newline at end of file
----
-> intf(){astring;}
-\ No newline at end of file
+./e2tests/asl39
 
 
-78
+./e2tests/asl40
 1c1
 < intf(){intv[100];}
 \ No newline at end of file
@@ -570,31 +516,19 @@
 \ No newline at end of file
 
 
-79
+./e2tests/asl41
 
 
-80
+./e2tests/asl42
 
 
-81
-1c1
-< intf(){inta<=2;}
-\ No newline at end of file
----
-> intf(){aint<=2;}
-\ No newline at end of file
+./e2tests/asl43
 
 
-82
-1c1
-< intf(){intb<=10;inta<=b;}
-\ No newline at end of file
----
-> intf(){bint<=10;aint<=b;}
-\ No newline at end of file
+./e2tests/asl44
 
 
-83
+./e2tests/asl45
 1c1
 < classASL_t[publicinta];intf(){ASL_tb<=10;}
 \ No newline at end of file
@@ -603,28 +537,16 @@
 \ No newline at end of file
 
 
-84
-1c1
-< intf(){inta;a=2;}
-\ No newline at end of file
----
-> intf(){aint;a=2;}
-\ No newline at end of file
+./e2tests/asl46
 
 
-85
+./e2tests/asl47
 
 
-86
-1c1
-< a[10]int;intf(){intc;c=2;a[c+c]=2;}
-\ No newline at end of file
----
-> a[10]int;intf(){cint;c=2;a[c+c]=2;}
-\ No newline at end of file
+./e2tests/asl48
 
 
-87
+./e2tests/asl49
 1c1
 < classASL_t[publicinta];intf(){AST_txis;xis$a=2;}
 \ No newline at end of file
@@ -633,34 +555,16 @@
 \ No newline at end of file
 
 
-88
-1c1
-< intf(){intc;inputc;}
-\ No newline at end of file
----
-> intf(){cint;inputc;}
-\ No newline at end of file
+./e2tests/asl50
 
 
-89
-1c1
-< intf(){inta;intb;intc;outputa;}
-\ No newline at end of file
----
-> intf(){aint;bint;cint;outputa;}
-\ No newline at end of file
+./e2tests/asl51
 
 
-90
-1c1
-< intf(){inta;intb;intc;outputa,b,c;}
-\ No newline at end of file
----
-> intf(){aint;bint;cint;outputa,b,c;}
-\ No newline at end of file
+./e2tests/asl52
 
 
-91
+./e2tests/asl53
 1c1
 < intf(){f();}
 \ No newline at end of file
@@ -669,115 +573,85 @@
 \ No newline at end of file
 
 
-92
+./e2tests/asl54
 1c1
 < intf(inta,intb){intx;inty;f(x,y);}
 \ No newline at end of file
 ---
-> intf(inta,intb){xint;yint;(null)xy}
+> intf(inta,intb){intx;inty;(null)xy}
 \ No newline at end of file
 
 
-93
+./e2tests/asl55
 1c1
 < intf(inta,intb){intx;f(x,.);}
 \ No newline at end of file
 ---
-> intf(inta,intb){xint;(null)x}
+> intf(inta,intb){intx;(null)x}
 \ No newline at end of file
 
 
-94
-1c1
-< intf(){intx;x<<2;}
-\ No newline at end of file
----
-> intf(){xint;x<<2;}
-\ No newline at end of file
+./e2tests/asl56
 
 
-95
+./e2tests/asl57
 1c1
 < intf(){intx;x>>4;}
 \ No newline at end of file
 ---
-> intf(){xint;x<<4;}
+> intf(){intx;x<<4;}
 \ No newline at end of file
 
 
-96
-1c1
-< intf(){intx;returnx;}
-\ No newline at end of file
----
-> intf(){xint;returnx;}
-\ No newline at end of file
+./e2tests/asl58
 
 
-97
+./e2tests/asl59
 
 
-98
+./e2tests/asl60
 
 
-99
+./e2tests/asl61
 
 
-100
-1c1
-< intf(){intc;if(c)then{};}
-\ No newline at end of file
----
-> intf(){cint;if(c)then{}}
-\ No newline at end of file
+./e2tests/asl62
 
 
-101
+./e2tests/asl63
 1c1
 < intf(){intc;if(c)then{}else{};}
 \ No newline at end of file
 ---
-> intf(){cint;if(c)then{}else{}}
+> intf(){intc;if(c)then{};else{};}
 \ No newline at end of file
 
 
-102
-1c1
-< intf(){intx;inti;foreach(i:x,x,x){};}
-\ No newline at end of file
----
-> intf(){xint;iint;foreach(i:x,x,x){};}
-\ No newline at end of file
+./e2tests/asl64
 
 
-103
+./e2tests/asl65
 1c1
 < intf(){intx;inti;intj;for(i=0,j=0:i:i=2,j=3){};}
 \ No newline at end of file
 ---
-> intf(){xint;iint;jint;for(i=0;j=0;:i:i=2;j=3;){};}
+> intf(){intx;inti;intj;for(i=0;j=0;:i:i=2;j=3;){};;}
 \ No newline at end of file
 
 
-104
-1c1
-< intf(){intx;inti;intj;while(i)do{};}
-\ No newline at end of file
----
-> intf(){xint;iint;jint;while(i)do{}}
-\ No newline at end of file
+./e2tests/asl66
 
 
-105
+./e2tests/asl67
 1c1
 < intf(){intx;do{}while(i);}
 \ No newline at end of file
 ---
-> intf(){xint;do{}while(i);}
+> intf(){intx;do{};while(i);}
 \ No newline at end of file
 
 
-106
+./e2tests/asl68
 1c1
 < intf(){for(outputx,y:x:x=x+1){};}
 \ No newline at end of file
@@ -786,7 +660,7 @@
 \ No newline at end of file
 
 
-107
+./e2tests/asl69
 1c1
 < intf(){for(case123::x:x=x+1){};}
 \ No newline at end of file
@@ -795,16 +669,10 @@
 \ No newline at end of file
 
 
-108
-1c1
-< intf(){intx;x=3;switch(x){};}
-\ No newline at end of file
----
-> intf(){xint;x=3;switch(x){}}
-\ No newline at end of file
+./e2tests/asl70
 
 
-109
+./e2tests/asl71
 1c1
 < intf(){intx;x=2;do{}while(x)}
 \ No newline at end of file
@@ -813,91 +681,79 @@
 \ No newline at end of file
 
 
-110
+./e2tests/asl72
 1c1
 < intf(){inta;f()%>%g(.,a);}
 \ No newline at end of file
 ---
-> intf(){aint;(null)}
+> intf(){inta;(null)}
 \ No newline at end of file
 
 
-111
+./e2tests/asl73
 1c1
 < intf(){inta;f()%|%g(.,a);}
 \ No newline at end of file
 ---
-> intf(){aint;(null)}
+> intf(){inta;(null)}
 \ No newline at end of file
 
 
-112
+./e2tests/asl74
 1c1
 < intf(){inta;f()%>%g(.,a)%>%z(.);}
 \ No newline at end of file
 ---
-> intf(){aint;(null)}
+> intf(){inta;(null)}
 \ No newline at end of file
 
 
-113
+./e2tests/asl75
 1c1
 < intf(){inta;a=f()%>%g(.,a)%|%z(.);}
 \ No newline at end of file
 ---
-> intf(){aint;a=(null);}
+> intf(){inta;a=(null);}
 \ No newline at end of file
 
 
-114
+./e2tests/asl76
+
+
+./e2tests/asl77
+
+
+./e2tests/asl78
 1c1
-< intf(){inta;intb;intc;a=2*c+a/b;}
-\ No newline at end of file
----
-> intf(){aint;bint;cint;a=2*c+a/b;}
-\ No newline at end of file
-
-
-115
-
-
-116
-1c1
-< intf(inta){c[5]=3MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pyyyerror.cyyerror.of(a)+a;}
+< intf(inta){c[5]=3MakefileREADME.mdarvore.carvore.harvore.oast_testse2testse3detailede3resultse3testsetapa3lex.yy.clex.yy.omain.cmain.ooriginaloriginal.txtparser.outputparser.tab.cparser.tab.hparser.tab.oparser.yparser_testsscanner.lscanner_teststesttest.shtest_e2.pytest_e3.pyyyerror.cyyerror.of(a)+a;}
 \ No newline at end of file
 ---
 > intf(inta){c[5]=3*(null)a+a;}
 \ No newline at end of file
 
 
-117
+./e2tests/asl79
 1c1
 < intf(){inta;a=2*(c+k);}
 \ No newline at end of file
 ---
-> intf(){aint;a=2*c+k;}
+> intf(){inta;a=2*c+k;}
 \ No newline at end of file
 
 
-118
+./e2tests/asl80
 1c1
 < intf(){if(a==2)then{};if((a+b)<=10)then{};}
 \ No newline at end of file
 ---
-> intf(){if(a==2)then{}if(a+b<=10)then{}}
+> intf(){if(a==2)then{};if(a+b<=10)then{};}
 \ No newline at end of file
 
 
-119
-1c1
-< v1int;intf1(floatk,intl){inta;}v2[100]int;v3char;
-\ No newline at end of file
----
-> v1int;intf1(floatk,intl){aint;}v2[100]int;v3char;
-\ No newline at end of file
+./e2tests/asl81
 
 
-120
+./e2tests/asl82
 1c1
 < int;
 \ No newline at end of file
@@ -906,7 +762,7 @@
 \ No newline at end of file
 
 
-121
+./e2tests/asl83
 1c1
 < intminha_funcao(){};
 \ No newline at end of file
@@ -915,7 +771,7 @@
 \ No newline at end of file
 
 
-122
+./e2tests/asl84
 1c1
 < intminha_funcao()floatlocal;{}
 \ No newline at end of file
@@ -924,7 +780,7 @@
 \ No newline at end of file
 
 
-123
+./e2tests/asl85
 1c1
 < intminha_funcao(){;;;}
 \ No newline at end of file
@@ -933,7 +789,7 @@
 \ No newline at end of file
 
 
-124
+./e2tests/asl86
 1c1
 < intf(floatf,inti,){inta;}
 \ No newline at end of file
@@ -942,7 +798,7 @@
 \ No newline at end of file
 
 
-125
+./e2tests/asl87
 1c1
 < intf(){inta;}a=10;}charc;
 \ No newline at end of file
@@ -951,7 +807,7 @@
 \ No newline at end of file
 
 
-126
+./e2tests/asl88
 1c1
 < intf(){inta;if(a==0)then{x=2;}else}
 \ No newline at end of file
@@ -960,7 +816,7 @@
 \ No newline at end of file
 
 
-127
+./e2tests/asl89
 1c1
 < intf(){output;}
 \ No newline at end of file
@@ -969,7 +825,7 @@
 \ No newline at end of file
 
 
-128
+./e2tests/asl90
 1c1
 < intf(){inta;intb;intc;inputa,b,c;}
 \ No newline at end of file
@@ -978,7 +834,7 @@
 \ No newline at end of file
 
 
-129
+./e2tests/asl91
 1c1
 < intf(){inta;intb;intc;returna,b,c;}
 \ No newline at end of file
@@ -987,7 +843,7 @@
 \ No newline at end of file
 
 
-130
+./e2tests/asl92
 1c1
 < intf(){v[a+1]=5[10];}
 \ No newline at end of file
@@ -996,7 +852,7 @@
 \ No newline at end of file
 
 
-131
+./e2tests/asl93
 1c1
 < intf(){f(3)=f(2);}
 \ No newline at end of file
@@ -1005,7 +861,7 @@
 \ No newline at end of file
 
 
-132
+./e2tests/asl94
 1c1
 < intf(){while(a!=4do{v[a+1]=f(2)};}
 \ No newline at end of file
@@ -1014,7 +870,7 @@
 \ No newline at end of file
 
 
-133
+./e2tests/asl95
 1c1
 < classASL_t[publicinta];intf(){AST_txis;xis.a=2;}
 \ No newline at end of file
@@ -1023,7 +879,7 @@
 \ No newline at end of file
 
 
-134
+./e2tests/asl96
 1c1
 < classASL_t[publicinta];intf(){AST_txis;xis$a<<2;}
 \ No newline at end of file
@@ -1032,16 +888,16 @@
 \ No newline at end of file
 
 
-135
+./e2tests/asl97
 1c1
 < classASL_t[publicinta];intf(){intb;b=3;AST_txis;xis$a>>b+2;}
 \ No newline at end of file
 ---
-> classASL_t[publicinta];intf(){bint;b=3;xisxis;xis>>b+2;}
+> classASL_t[publicinta];intf(){intb;b=3;xisxis;xis>>b+2;}
 \ No newline at end of file
 
 
-136
+./e2tests/asl98
 1c1
 < aux_murilo_n[]int;
 \ No newline at end of file
@@ -1050,7 +906,7 @@
 \ No newline at end of file
 
 
-137
+./e2tests/asl99
 1c1
 < aux_murilo_nint[5];
 \ No newline at end of file
