@@ -121,6 +121,13 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]);
         break;
 
+      case NODE_COMMAND_LIST_COMA_SEPARATED:
+        descompila_internal(node->child[0]);
+        if (node->child[1] != NULL && node->child[1]->type == NODE_COMMAND_LIST_COMA_SEPARATED)
+           printf(",");
+        descompila_internal(node->child[1]);
+        break;
+
       case NODE_COMMAND_LIST:
         descompila_internal(node->child[0]);
         printf(";\n");
@@ -137,7 +144,6 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[0]); // lhs
         printf(" = ");
         descompila_internal(node->child[1]); // rhs
-        printf("\n");
         break;
 
       case NODE_SHIFT_LEFT:
@@ -338,15 +344,18 @@ void descompila_internal(ast_node* node) {
       case NODE_FOR:
         printf("for (");
         descompila_internal(node->child[0]); // first init command
+        if (node->child[1] != NULL && node->child[1]->type == NODE_COMMAND_LIST_COMA_SEPARATED)
+          printf(",");
         descompila_internal(node->child[1]); // init command list
         printf(" : ");
         descompila_internal(node->child[2]); // conditional
         printf(" : ");
         descompila_internal(node->child[3]); // first exec command
+        if (node->child[4] != NULL && node->child[4]->type == NODE_COMMAND_LIST_COMA_SEPARATED)
+          printf(",");
         descompila_internal(node->child[4]); // exec command list
         printf(")");
         descompila_internal(node->child[5]); // body
-        printf(";\n");
         break;
 
       case NODE_FOREACH:

@@ -291,7 +291,7 @@ comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos                   
 comandos_dentro_for: atribuicao     { $$ = $1; };
 comandos_dentro_for: bloco_comandos { $$ = $1; };
 comandos_dentro_for_aux: %empty     { $$ = make_node(NODE_EMPTY); };
-comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux { $$ = make_node(NODE_COMMAND_LIST); $$->child[0] = $2; $$->child[1] = $3; };
+comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux { $$ = make_node(NODE_COMMAND_LIST_COMA_SEPARATED); $$->child[0] = $2; $$->child[1] = $3; };
 comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8;  };
 comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos { $$ = make_node(NODE_FOR); $$->child[0] = $3; $$->child[1] = $4; $$->child[2] = $6; $$->child[3] = $8; $$->child[4] = $9; $$->child[5] = $11; };
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; };
