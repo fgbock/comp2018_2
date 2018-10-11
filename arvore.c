@@ -174,7 +174,7 @@ void descompila_internal(ast_node* node) {
         break;
 
       case NODE_CONST:
-        printf("const");
+        printf("const ");
         break;
 
       case NODE_LOCAL_VAR:
