@@ -463,7 +463,13 @@ void descompila_internal(ast_node* node) {
         printf("(");
         descompila_internal(node->child[1]); // arguments
         printf(")");
+        descompila_internal(node->child[2]); // arguments
         break;
+
+      case NODE_PIPE_COMMAND:
+	descompila_internal(node->child[0]); // pipe
+        descompila_internal(node->child[1]); // fun ction
+	break;
 
       case NODE_ARGUMENT:
         descompila_internal(node->child[0]); // const or empty
