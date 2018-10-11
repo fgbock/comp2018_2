@@ -154,6 +154,14 @@ void descompila_internal(ast_node* node) {
         shift_or_assignment(node, " >> ");
         break;
 
+      case NODE_SHIFT_LEFT_SPECIAL:
+        shift_or_assignment(node, " << ");
+        break;
+
+      case NODE_SHIFT_RIGHT_SPECIAL:
+        shift_or_assignment(node, " >> ");
+        break;
+
       case NODE_ASSIGNMENT:
         shift_or_assignment(node, " = ");
         break;

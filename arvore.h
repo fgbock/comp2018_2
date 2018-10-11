@@ -112,6 +112,9 @@
 #define NODE_SHIFT_LEFT  307  // x << y;
 #define NODE_SHIFT_RIGHT 308  // x >> y;
 #define NODE_ASSIGNMENT_2 309 // Fix with variable access
+#define NODE_SHIFT_LEFT_SPECIAL  310  // x << y;
+#define NODE_SHIFT_RIGHT_SPECIAL 311 //
+
 
 #define NODE_EMPTY 666     // no value
 
