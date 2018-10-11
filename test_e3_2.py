@@ -18,7 +18,7 @@ for f in onlyfiles:
         result2 = p2.communicate()[0]
         
         # Diff
-        diff = subprocess.Popen("diff -wbBEZ ./temp1 ./temp2", stdout=subprocess.PIPE, shell=True)
+        diff = subprocess.Popen("diff -wbBEZ ./" + tests_path + f + " ./temp2", stdout=subprocess.PIPE, shell=True)
         diff.wait()
         diff_message = diff.communicate()[0]
         print(f + ":" + diff_message)

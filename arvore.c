@@ -146,6 +146,13 @@ void descompila_internal(ast_node* node) {
         descompila_internal(node->child[1]); // rhs
         break;
 
+      case NODE_BRACKET_EXPR:
+        printf("(");
+        descompila_internal(node->child[0]); // lhs
+        printf(")");
+        break;
+
+
       case NODE_SHIFT_LEFT:
         shift_or_assignment(node, " << ");
         break;
