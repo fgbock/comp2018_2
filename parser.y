@@ -161,14 +161,14 @@ expressao: '(' expressao ')' { $$ = make_node(NODE_BRACKET_EXPR); $$->child[0] =
 expressao: expressao '?' expressao ':' expressao { $$ = make_node(NODE_TERNARY); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; set_ternary_expression_semantic($$); };
 
 /* declarações de tipo */
-declaracao_novo_tipo: TK_PR_CLASS identificador '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';' {$$ = make_node(NODE_NEW_TYPE); $$->child[0] = make_node(NODE_CLASS); $$->child[1] = $2; $$->child[2] = $4; $$->child[3] = $5;};
+declaracao_novo_tipo: TK_PR_CLASS identificador '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';' {$$ = make_node(NODE_NEW_TYPE); $$->child[0] = make_node(NODE_CLASS); $$->child[1] = $2; $$->child[2] = $4; $$->child[3] = $5; set_new_user_type_semantic($$); };
 declaracao_novo_tipo_propriedades: ':' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades {$$ = make_node(NODE_NEW_TYPE_PROPERTY_LIST); $$->child[0] = $2; $$->child[1] = $3;};
 declaracao_novo_tipo_propriedades: %empty {$$ = make_node(NODE_EMPTY);};
 declaracao_novo_tipo_propriedade: opcional_encapsulamento tipo_variavel_primitiva identificador {$$ = make_node(NODE_NEW_TYPE_PROPERTY); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $3;};
-opcional_encapsulamento: %empty          {$$ = make_node(NODE_EMPTY);};
-opcional_encapsulamento: TK_PR_PRIVATE   {$$ = make_node(NODE_PRIVATE);};
-opcional_encapsulamento: TK_PR_PUBLIC    {$$ = make_node(NODE_PUBLIC);};
-opcional_encapsulamento: TK_PR_PROTECTED {$$ = make_node(NODE_PROTECTED);};
+opcional_encapsulamento: %empty          { $$ = make_node(NODE_EMPTY);     };
+opcional_encapsulamento: TK_PR_PRIVATE   { $$ = make_node(NODE_PRIVATE);   };
+opcional_encapsulamento: TK_PR_PUBLIC    { $$ = make_node(NODE_PUBLIC);    };
+opcional_encapsulamento: TK_PR_PROTECTED { $$ = make_node(NODE_PROTECTED); };
 
 /* fix de s/r para declarações de global e função */
 
@@ -180,19 +180,19 @@ declaracao_tamanho: '[' TK_LIT_INT ']'                                          
 identificador: TK_IDENTIFICADOR                                                            { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = yylval.valor_lexico_string; };
 
 /* declaração de variável global */
-declaracao_funcao_usertype_e_var_global: identificador identificador ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
-declaracao_variavel_global: identificador TK_PR_STATIC tipo_variavel ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3;                                        };
-declaracao_variavel_global: identificador declaracao_tamanho tipo_variavel ';'              { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = $3;                                        };
-declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = make_node(NODE_STATIC); $$->child[3] = $4; };
-declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
+declaracao_funcao_usertype_e_var_global: identificador identificador ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               set_global_var_semantic($$); };
+declaracao_variavel_global: identificador TK_PR_STATIC tipo_variavel ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3;                                        set_global_var_semantic($$); };
+declaracao_variavel_global: identificador declaracao_tamanho tipo_variavel ';'              { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = $3;                                        set_global_var_semantic($$); };
+declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = make_node(NODE_STATIC); $$->child[3] = $4; set_global_var_semantic($$); };
+declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               set_global_var_semantic($$); };
 
 /* declaração de função */
 function_body: '{' comando_simples '}' { $$ = make_node(NODE_FUNCTION_BODY); $$->child[0] = $2; ; };
 //bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2;  };
 
-declaracao_funcao_usertype_e_var_global:              identificador           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
-declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; };
-declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; };
+declaracao_funcao_usertype_e_var_global:              identificador           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; set_function_definition_semantic($$); };
+declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5; $$->child[4] = $7; set_function_definition_semantic($$); };
+declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4; $$->child[4] = $6; set_function_definition_semantic($$); };
 primeiro_param_funcao: %empty                                               { $$ = make_node(NODE_ARGUMENT_LIST); };
 primeiro_param_funcao: declaracao_parametro_unico_funcao param_funcao       { $$ = make_node(NODE_ARGUMENT_LIST); $$->child[0] = $1; $$->child[1] = $2; };
 param_funcao: %empty                                                        { $$ = make_node(NODE_EMPTY); };
@@ -253,13 +253,13 @@ declaracao_variavel_local_ou_atribuicao_id_parametro: '=' expressao             
 declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SL expressao { $$ = make_node(NODE_SHIFT_LEFT_SPECIAL); $$->child[3] = $2; };
 declaracao_variavel_local_ou_atribuicao_id_parametro: TK_OC_SR expressao { $$ = make_node(NODE_SHIFT_RIGHT_SPECIAL); $$->child[3] = $2; };
 
-declaracao_variavel_local: identificador                                        { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; }; 
-declaracao_variavel_local: TK_PR_INT    identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_INT_TYPE);    $$->child[4] = $3; };
-declaracao_variavel_local: TK_PR_FLOAT  identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_FLOAT_TYPE);  $$->child[4] = $3; };
-declaracao_variavel_local: TK_PR_BOOL   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_BOOL_TYPE);   $$->child[4] = $3; };
-declaracao_variavel_local: TK_PR_CHAR   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_CHAR_TYPE);   $$->child[4] = $3; };
-declaracao_variavel_local: TK_PR_STRING identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_STRING_TYPE); $$->child[4] = $3; };
-declaracao_variavel_local: identificador identificador { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; };
+declaracao_variavel_local: identificador                                        { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $1; set_local_var_semantic($$); }; 
+declaracao_variavel_local: TK_PR_INT    identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_INT_TYPE);    $$->child[4] = $3; set_local_var_semantic($$); };
+declaracao_variavel_local: TK_PR_FLOAT  identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_FLOAT_TYPE);  $$->child[4] = $3; set_local_var_semantic($$); };
+declaracao_variavel_local: TK_PR_BOOL   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_BOOL_TYPE);   $$->child[4] = $3; set_local_var_semantic($$); };
+declaracao_variavel_local: TK_PR_CHAR   identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_CHAR_TYPE);   $$->child[4] = $3; set_local_var_semantic($$); };
+declaracao_variavel_local: TK_PR_STRING identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = make_node(NODE_STRING_TYPE); $$->child[4] = $3; set_local_var_semantic($$); };
+declaracao_variavel_local: identificador identificador { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; set_local_var_semantic($$); };
 
 
 /* comando simples - io */

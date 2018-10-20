@@ -7,7 +7,7 @@ etapa4:
 	gcc -c arvore.c
 	gcc -c semantic.c
 	gcc -c main.c
-	gcc -o etapa3 main.o arvore.o semantic.o yyerror.o parser.tab.o lex.yy.o
+	gcc -o etapa4 main.o arvore.o semantic.o yyerror.o parser.tab.o lex.yy.o
 
 debug: 
 	bison -d -v parser.y --report-file=REPORTFILE

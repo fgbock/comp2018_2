@@ -276,6 +276,36 @@ void set_semantic_do_while(ast_node* node)
     node->semantic_nature = NATUREZA_NULL;
 }
 
+void set_local_var_semantic(ast_node* node)
+{
+    assert(node->type == NODE_LOCAL_VAR);
+    node->semantic_nature = NATUREZA_NULL;
+    // TODO: Add in symbol table
+}
+
+void set_global_var_semantic(ast_node* node)
+{
+    assert(node->type == NODE_VAR_GLOBAL);
+    node->semantic_nature = NATUREZA_NULL;
+    // TODO: Add in symbol table
+}
+
+void set_new_user_type_semantic(ast_node* node)
+{
+    assert(node->type == NODE_NEW_TYPE);
+    node->semantic_nature = NATUREZA_NULL;
+    // TODO: Add in symbol table
+}
+
+void set_function_definition_semantic(ast_node* node)
+{
+    assert(node->type == NODE_FUNCTION_DEFINITION);
+    node->semantic_nature = NATUREZA_NULL;
+    // TODO: Add in symbol table
+}
+
+// Aux
+
 int can_cast_to_bool(int semantic_nature)
 {
     if (semantic_nature == NATUREZA_LITERAL_BOOL ||

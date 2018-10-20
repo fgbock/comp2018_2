@@ -11,13 +11,13 @@ typedef struct t_tipo {
 	union{
 		int tipo;
 		char *tipousuario;
-	}
+	};
 } t_tipo;
 
 typedef struct t_argumento{
 	int a_const;
 	int a_static;
-	struct tipo arg_tipo;
+	struct t_tipo arg_tipo;
 	char* identificador;
 } t_argumento;
 
@@ -33,7 +33,7 @@ typedef struct t_entrada_simbolo_funcao{
 
 typedef struct t_entrada_simbolo_tipousuario{
 	struct t_lista campos;
-} t_entrada_simbolo_funcao;
+} t_entrada_simbolo_tipousuario;
 
 typedef struct t_entrada_simbolo{
 	int loc_linha;
@@ -48,13 +48,13 @@ typedef struct t_entrada_simbolo{
 	};
 } t_entrada_simbolo;
 
-int free_lista(struct *t_lista alvo);
+int free_lista(t_lista* t_lista);
 
 int free_tabela();
 
-int get_entrada(struct *t_lista tabela, struct *t_entrada_simbolo entrada, *char chave, );
+int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada, char* chave);
 
-int set_entrada(struct *t_lista tabela, struct *t_entrada_simbolo entrada);
+int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada);
 
 #endif
 

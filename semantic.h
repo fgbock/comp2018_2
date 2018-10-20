@@ -57,6 +57,15 @@ void set_case_nature(ast_node* node);
 // intput x, y
 void set_input_semantic(ast_node* node);
 
+
+void set_local_var_semantic(ast_node* node);
+
+void set_global_var_semantic(ast_node* node);
+
+void set_new_user_type_semantic(ast_node* node);
+
+void set_function_definition_semantic(ast_node* node);
+
 // Aux
 
 int can_cast_to_bool(int semantic_nature);
