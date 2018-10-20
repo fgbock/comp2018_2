@@ -6,6 +6,9 @@ typedef struct t_lista{
 	struct t_lista* prox;
 } t_lista;
 
+
+#define T_TIPO_USUARIO 0
+#define T_TIPO_PRIMITIVO 1
 typedef struct t_tipo {
 	int a_const;
 	int a_static;

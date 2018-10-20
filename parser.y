@@ -180,11 +180,11 @@ declaracao_tamanho: '[' TK_LIT_INT ']'                                          
 identificador: TK_IDENTIFICADOR                                                            { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = yylval.valor_lexico_string; };
 
 /* declaração de variável global */
-declaracao_funcao_usertype_e_var_global: identificador identificador ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               set_global_var_semantic($$); };
-declaracao_variavel_global: identificador TK_PR_STATIC tipo_variavel ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = $3;                                        set_global_var_semantic($$); };
-declaracao_variavel_global: identificador declaracao_tamanho tipo_variavel ';'              { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = $3;                                        set_global_var_semantic($$); };
-declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                     $$->child[2] = make_node(NODE_STATIC); $$->child[3] = $4; set_global_var_semantic($$); };
-declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               set_global_var_semantic($$); };
+declaracao_funcao_usertype_e_var_global: identificador identificador ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_EMPTY);  $$->child[2] = make_node(NODE_EMPTY);  $$->child[3] = $2; set_global_var_semantic($$); };
+declaracao_variavel_global: identificador TK_PR_STATIC tipo_variavel ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_STATIC); $$->child[2] = make_node(NODE_EMPTY);  $$->child[3] = $3; set_global_var_semantic($$); };
+declaracao_variavel_global: identificador declaracao_tamanho tipo_variavel ';'              { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_EMPTY);  $$->child[2] = $2;                     $$->child[3] = $3; set_global_var_semantic($$); };
+declaracao_variavel_global: identificador declaracao_tamanho TK_PR_STATIC tipo_variavel ';' { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_EMPTY);  $$->child[2] = $2;                     $$->child[3] = $4; set_global_var_semantic($$); };
+declaracao_variavel_global: identificador tipo_variavel_primitiva ';'                       { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = make_node(NODE_EMPTY);  $$->child[2] = make_node(NODE_EMPTY);  $$->child[3] = $2; set_global_var_semantic($$); };
 
 /* declaração de função */
 function_body: '{' comando_simples '}' { $$ = make_node(NODE_FUNCTION_BODY); $$->child[0] = $2; ; };

@@ -14,10 +14,9 @@ void libera (void *arvore);
 int main (int argc, char **argv)
 {
   int ret = yyparse();
-  descompila (arvore);
+  //descompila(arvore);
   //printree(arvore, 0);
   libera(arvore);
-  arvore = NULL;
   yylex_destroy();
   return ret;
 }
