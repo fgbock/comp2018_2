@@ -1,11 +1,12 @@
 #include "semantic.h"
 
+t_lista tabela; 
+
 // Generic function to check and set semantic value of arithmetic nodes
 void set_arithmetic_semantic(ast_node* node) {
 
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
-
     
     // int, int -> int
     if (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_INT)
@@ -70,7 +71,7 @@ void set_boolean_semantic(ast_node* node)
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
 
-    if (can_cast_to_bool(lhs_nature) && can_cast_to_bool(rhs_nature))
+    if (can_cast_to_bool(node->child[0]) && can_cast_to_bool(node->child[1]))
     {
         node->semantic_nature = NATUREZA_LITERAL_BOOL;
     }
@@ -93,6 +94,30 @@ void set_boolean_semantic(ast_node* node)
     }
 }
 
+void set_lit_int_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_LITERAL_INT;
+}
+
+void set_lit_string_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_LITERAL_STRING;
+}
+
+void set_lit_float_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_LITERAL_FLOAT;
+}
+
+void set_lit_bool_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_LITERAL_BOOL;
+}
+
+void set_lit_char_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_LITERAL_CHAR;
+}
 
 void set_function_call_semantic(ast_node* node)
 {
@@ -112,9 +137,9 @@ void set_function_call_semantic(ast_node* node)
 void set_switch_semantic(ast_node* node)
 {
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_int(expression_nature))
+    if (!can_cast_to_int(node->child[0]))
     {
-        exit_with_cannot_cast_to_int_error(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -123,18 +148,18 @@ void set_while_semantic(ast_node* node)
 {
     //ASSERT(ast_node->type == NODE_WHILE);
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_bool(expression_nature))
+    if (!can_cast_to_bool(node->child[0]))
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
 }
 
 void set_do_while_semantic(ast_node* node)
 {
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_bool(expression_nature))
+    if (!can_cast_to_bool(node->child[0]))
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
 }
 
@@ -170,9 +195,9 @@ void set_ternary_expression_semantic(ast_node* node)
     int then_nature = node->child[1]->semantic_nature;
     int else_nature = node->child[2]->semantic_nature;
 
-    if (!can_cast_to_bool(expression_nature))
+    if (!can_cast_to_bool(node->child[0]))
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
 
     node->semantic_nature = NATUREZA_NULL;
@@ -182,13 +207,13 @@ void set_unary_bool_semantic(ast_node* node)
 {
     int child_nature = node->child[0]->semantic_nature;
 
-    if (can_cast_to_bool(child_nature))
+    if (can_cast_to_bool(node->child[0]))
     {
         node->semantic_nature = NATUREZA_LITERAL_BOOL;
     }
     else
     {
-        exit_with_cannot_cast_to_bool(child_nature);
+        exit_with_cannot_cast_to_error(child_nature);
     }
 }
 
@@ -222,9 +247,9 @@ void set_if_semantic(ast_node* node)
 {
     assert(node->type == NODE_IF);
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_bool(expression_nature))
+    if (!can_cast_to_bool(node->child[0]))
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -232,9 +257,9 @@ void set_if_semantic(ast_node* node)
 void set_for_semantic(ast_node* node)
 {
     int test_nature = node->child[2]->semantic_nature;
-    if (!can_cast_to_bool(test_nature))
+    if (!can_cast_to_bool(node->child[2]))
     {
-        exit_with_cannot_cast_to_bool(test_nature);
+        exit_with_cannot_cast_to_error(test_nature);
     }
 }
 
@@ -258,9 +283,9 @@ void set_semantic_while(ast_node* node)
 {
     assert(node->type == NODE_WHILE);
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_bool(expression_nature)) 
+    if (!can_cast_to_bool(node->child[0])) 
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -269,9 +294,9 @@ void set_semantic_do_while(ast_node* node)
 {
     assert(node->type == NODE_DO_WHILE);
     int expression_nature = node->child[0]->semantic_nature;
-    if (!can_cast_to_bool(expression_nature))
+    if (!can_cast_to_bool(node->child[0]))
     {
-        exit_with_cannot_cast_to_bool(expression_nature);
+        exit_with_cannot_cast_to_error(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -279,59 +304,60 @@ void set_semantic_do_while(ast_node* node)
 void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
+    t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
+    table_entry->classe_entrada = T_ENTRADA_VARIAVEL_LOCAL;
     node->semantic_nature = NATUREZA_NULL;
-    t_entrada_simbolo_tipousuario user_type;
-    //user_type.campos.conteudo
-    // TODO: Add in symbol table
+    set_entrada(&tabela, table_entry);
 }
 
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
     // Nome, Static, Tamanho, Tipo
-    t_entrada_simbolo table_entry;
+    t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     char* var_nome = node->child[0]->string_literal;
     int var_is_static = node->child[1]->type == NODE_STATIC;
     int var_declaracao_tamanho = from_node_size_to_table_size(node->child[2]);
     t_tipo type = from_node_type_to_table_type(node->child[3]);
-    type.a_const = 0;
-    type.a_static = var_is_static;
+    type.is_const = 0;
+    type.is_static = var_is_static;
     type.tamanho_vetor = var_declaracao_tamanho;
-
-    table_entry.chave = var_nome;
-    table_entry.entrada_tipo = type;
+    table_entry->classe_entrada = T_ENTRADA_VARIAVEL_GLOBAL;
+    table_entry->chave = var_nome;
+    table_entry->entrada_tipo = type;
+    set_entrada(&tabela, table_entry);
     node->semantic_nature = NATUREZA_NULL;
 }
 
 void set_new_user_type_semantic(ast_node* node)
 {
     assert(node->type == NODE_NEW_TYPE);
+    t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
+    table_entry->classe_entrada = T_ENTRADA_TIPO_USUARIO;
+    set_entrada(&tabela, table_entry);
     node->semantic_nature = NATUREZA_NULL;
-    // TODO: Add in symbol table
 }
 
 void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
-    t_entrada_simbolo table_entry;
+    t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
 
-    int return_is_static = node->child[0]->type == NODE_STATIC;
-    char* return_identifier = node->child[2]->string_literal;
+    char* function_identifier = node->child[2]->string_literal;
     ast_node* argument_list_node = node->child[3];
 
     t_tipo return_type = from_node_type_to_table_type(node->child[1]);
-
-
-    table_entry.entrada_tipo = return_type;
-    table_entry.funcao = function_definition;
-
+    return_type.is_const = 0;
+    return_type.is_static = node->child[0]->type == NODE_STATIC;
+    table_entry->chave = function_identifier;
+    table_entry->classe_entrada = T_ENTRADA_DECLARACAO_FUNCAO;
+    table_entry->entrada_tipo = return_type;
+    table_entry->funcao = function_definition;
+    set_entrada(&tabela, table_entry);
 
     node->semantic_nature = NATUREZA_NULL;
-
-    
-    // TODO: Add in symbol table
 }
 
 // Aux
@@ -353,33 +379,34 @@ t_tipo from_node_type_to_table_type(ast_node* node)
     t_tipo return_type;
     if (node->type == NODE_INT_TYPE)
     {
-        return_type.tipo = T_TIPO_PRIMITIVO;
-        return_type.tipo_tipo = NATUREZA_LITERAL_INT;
+        return_type.natureza = NATUREZA_LITERAL_INT;
     }
-    if (node->type == NODE_FLOAT_TYPE)
+    else if (node->type == NODE_FLOAT_TYPE)
     {
-        return_type.tipo = T_TIPO_PRIMITIVO;
-        return_type.tipo_tipo = NATUREZA_LITERAL_FLOAT;
+        return_type.natureza = NATUREZA_LITERAL_FLOAT;
     }
-    if (node->type == NODE_STRING_TYPE)
+    else if (node->type == NODE_STRING_TYPE)
     {
-        return_type.tipo = T_TIPO_PRIMITIVO;
-        return_type.tipo_tipo = NATUREZA_LITERAL_STRING;
+        return_type.natureza = NATUREZA_LITERAL_STRING;
     }
-    if (node->type == NODE_CHAR_TYPE)
+    else if (node->type == NODE_CHAR_TYPE)
     {
-        return_type.tipo = T_TIPO_PRIMITIVO;
-        return_type.tipo_tipo = NATUREZA_LITERAL_CHAR;
+        return_type.natureza = NATUREZA_LITERAL_CHAR;
+    }
+    else if (node->type == NODE_IDENTIFIER)
+    {
+        return_type.natureza = NATUREZA_IDENTIFICADOR;
+        return_type.user_type_name = node->string_literal;
     }
     else
     {
-        return_type.tipo = T_TIPO_USUARIO;
-        return_type.tipousuario = node->string_literal;
+        // error
     }
 }
 
-int can_cast_to_bool(int semantic_nature)
+int can_cast_to_bool(ast_node* node)
 {
+    int semantic_nature = node->semantic_nature;
     if (semantic_nature == NATUREZA_LITERAL_BOOL ||
         semantic_nature == NATUREZA_LITERAL_FLOAT ||
         semantic_nature == NATUREZA_LITERAL_INT)
@@ -388,8 +415,22 @@ int can_cast_to_bool(int semantic_nature)
     }
     else if (semantic_nature == NATUREZA_IDENTIFICADOR)
     {
-        // TODO: Check on the symbol table
-        return 0;
+        t_entrada_simbolo* entrada;
+        get_entrada(&tabela, entrada, node->string_literal);
+        if (entrada->classe_entrada == T_ENTRADA_VARIAVEL_GLOBAL ||
+            entrada->classe_entrada == T_ENTRADA_VARIAVEL_LOCAL)
+            {
+                if (entrada->entrada_tipo.natureza == NATUREZA_LITERAL_BOOL ||
+                    entrada->entrada_tipo.natureza == NATUREZA_LITERAL_INT ||
+                    entrada->entrada_tipo.natureza == NATUREZA_LITERAL_FLOAT)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+            }
     }
     else
     {
@@ -397,38 +438,42 @@ int can_cast_to_bool(int semantic_nature)
     }
 }
 
-int can_cast_to_int(int semantic_nature)
+int can_cast_to_int(ast_node* node)
 {
+    int semantic_nature = node->semantic_nature;
     if (semantic_nature == NATUREZA_LITERAL_BOOL ||
         semantic_nature == NATUREZA_LITERAL_FLOAT ||
         semantic_nature == NATUREZA_LITERAL_INT)
     {
         return 1;
     }
+    else if (semantic_nature == NATUREZA_IDENTIFICADOR)
+    {
+        t_entrada_simbolo* entrada;
+        get_entrada(&tabela, entrada, node->string_literal);
+        if (entrada == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            if (entrada->classe_entrada == T_ENTRADA_VARIAVEL_GLOBAL || 
+                entrada->classe_entrada == T_ENTRADA_VARIAVEL_LOCAL)
+            {
+                if (entrada->entrada_tipo.natureza == NATUREZA_LITERAL_INT)
+                {
+                    return 1;
+                }
+            }
+        }
+    }
     else
     {
         return 0;
     }
 }
 
-void exit_with_cannot_cast_to_int_error(int semantic_nature)
-{
-    if (semantic_nature == NATUREZA_LITERAL_CHAR)
-    {
-        exit(ERR_CHAR_TO_X);
-    }
-    else if (semantic_nature == NATUREZA_LITERAL_STRING)
-    {
-        exit(ERR_STRING_TO_X);
-    }
-    else if (semantic_nature == NATUREZA_IDENTIFICADOR)
-    {
-        // Assumes identifier cannot cast to int
-        exit(ERR_USER_TO_X);
-    }
-}
-
-void exit_with_cannot_cast_to_bool(int semantic_nature)
+void exit_with_cannot_cast_to_error(int semantic_nature)
 {
     if (semantic_nature == NATUREZA_LITERAL_CHAR)
     {

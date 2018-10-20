@@ -2,6 +2,7 @@
 #define SEMANTIC
 
 #include <assert.h>
+#include <stdlib.h>
 #include "arvore.h"
 #include "symboltable.h"
 #include "semantic_error_codes.h"
@@ -67,15 +68,23 @@ void set_new_user_type_semantic(ast_node* node);
 
 void set_function_definition_semantic(ast_node* node);
 
+void set_lit_int_semantic(ast_node* node);
+
+void set_lit_string_semantic(ast_node* node);
+
+void set_lit_float_semantic(ast_node* node);
+
+void set_lit_bool_semantic(ast_node* node);
+
+void set_lit_char_semantic(ast_node* node);
+
 // Aux
 
-int can_cast_to_bool(int semantic_nature);
+int can_cast_to_bool(ast_node* node);
 
-int can_cast_to_int(int semantic_nature);
+int can_cast_to_int(ast_node* node);
 
-void exit_with_cannot_cast_to_int_error(int semantic_nature);
-
-void exit_with_cannot_cast_to_bool(int semantic_nature);
+void exit_with_cannot_cast_to_error(int semantic_nature);
 
 t_tipo from_node_type_to_table_type(ast_node* node);
 

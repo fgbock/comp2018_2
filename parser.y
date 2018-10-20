@@ -93,12 +93,12 @@ programa_aux: declaracao_funcao                       programa_aux { $$ = make_n
 programa_aux: %empty {$$ = NULL;};
 
 /* opcionais & auxiliares */
-literal: TK_LIT_INT    { $$ = make_node(NODE_INT_LITERAL);    $$->int_literal = yylval.valor_lexico_int; };
-literal: TK_LIT_FLOAT  { $$ = make_node(NODE_FLOAT_LITERAL);  $$->float_literal = yylval.valor_lexico_float; };
-literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 0; };
-literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1; };
-literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char; };
-literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = yylval.valor_lexico_string; };
+literal: TK_LIT_INT    { $$ = make_node(NODE_INT_LITERAL);    $$->int_literal = yylval.valor_lexico_int;       set_lit_int_semantic($$);   };
+literal: TK_LIT_FLOAT  { $$ = make_node(NODE_FLOAT_LITERAL);  $$->float_literal = yylval.valor_lexico_float;   set_lit_float_semantic($$); };
+literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 0;                            set_lit_bool_semantic($$);  };
+literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1;                            set_lit_bool_semantic($$);  };
+literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char;     set_lit_char_semantic($$); };
+literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = yylval.valor_lexico_string; set_lit_string_semantic($$); };
 //opcional_const: %empty;
 //opcional_const: TK_PR_CONST;
 opcional_acesso_vetor: %empty            { $$ = make_node(NODE_EMPTY); };

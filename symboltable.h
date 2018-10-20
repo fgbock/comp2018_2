@@ -10,14 +10,11 @@ typedef struct t_lista{
 #define T_TIPO_USUARIO 0
 #define T_TIPO_PRIMITIVO 1
 typedef struct t_tipo {
-	int a_const;
-	int a_static;
-	int tipo_tipo;
+	int is_const;
+	int is_static;
+	int natureza;
 	int tamanho_vetor;
-	union{
-		int tipo;
-		char* tipousuario;
-	};
+	char* user_type_name; // Valido quando natureza == NATUREZA_IDENTIFICADOR
 } t_tipo;
 
 typedef struct t_argumento{
@@ -42,6 +39,7 @@ typedef struct t_entrada_simbolo_tipousuario{
 #define T_ENTRADA_DECLARACAO_FUNCAO 0
 #define T_ENTRADA_TIPO_USUARIO 1
 #define T_ENTRADA_VARIAVEL_GLOBAL 2
+#define T_ENTRADA_VARIAVEL_LOCAL 3
 
 typedef struct t_entrada_simbolo{
 	char *chave;
