@@ -1,7 +1,7 @@
 %{
 
 #include "arvore.h"
-//#include "semantic.h"
+#include "semantic.h"
 
 int yylex(void);
 void yyerror (char const *s);

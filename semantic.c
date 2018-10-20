@@ -116,7 +116,7 @@ void set_continue_nature(ast_node* node)
 
 void set_case_nature(ast_node* node)
 {
-    int value_nature = node->child[0];
+    int value_nature = node->child[0]->semantic_nature;
     if (value_nature != NATUREZA_LITERAL_INT)
     {
         exit(ERR_WRONG_TYPE);
