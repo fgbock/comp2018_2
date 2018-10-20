@@ -3,10 +3,12 @@
 
 typedef struct t_lista{
 	void* conteudo;
-	struct lista* next;
+	struct t_lista* prox;
 } t_lista;
 
 typedef struct t_tipo {
+	int a_const;
+	int a_static;
 	int tipo_tipo;
 	union{
 		int tipo;
@@ -15,8 +17,6 @@ typedef struct t_tipo {
 } t_tipo;
 
 typedef struct t_argumento{
-	int a_const;
-	int a_static;
 	struct t_tipo arg_tipo;
 	char* identificador;
 } t_argumento;
@@ -36,6 +36,7 @@ typedef struct t_entrada_simbolo_tipousuario{
 } t_entrada_simbolo_tipousuario;
 
 typedef struct t_entrada_simbolo{
+	char *chave;
 	int loc_linha;
 	int loc_coluna;
 	int natureza_semantica;
