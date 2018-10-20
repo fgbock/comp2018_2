@@ -39,6 +39,10 @@ typedef struct t_entrada_simbolo_tipousuario{
 	struct t_lista campos;
 } t_entrada_simbolo_tipousuario;
 
+#define T_ENTRADA_DECLARACAO_FUNCAO 0
+#define T_ENTRADA_TIPO_USUARIO 1
+#define T_ENTRADA_VARIAVEL_GLOBAL 2
+
 typedef struct t_entrada_simbolo{
 	char *chave;
 	int loc_linha;
