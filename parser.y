@@ -1,6 +1,7 @@
 %{
 
 #include "arvore.h"
+//#include "semantic.h"
 
 int yylex(void);
 void yyerror (char const *s);
@@ -124,40 +125,40 @@ tipo_variavel: tipo_variavel_primitiva     { $$ = $1; };
 /* Expressões */
 
 /* Unarias */
-expressao: '+' expressao { $$ = make_node(NODE_POSITIVE);      $$->child[0] = $2; };
-expressao: '-' expressao { $$ = make_node(NODE_MINUS);         $$->child[0] = $2; };
-expressao: '!' expressao { $$ = make_node(NODE_NOT);           $$->child[0] = $2; };
+expressao: '+' expressao { $$ = make_node(NODE_POSITIVE);      $$->child[0] = $2; set_unary_number_semantic($$); };
+expressao: '-' expressao { $$ = make_node(NODE_MINUS);         $$->child[0] = $2; set_unary_number_semantic($$); };
+expressao: '!' expressao { $$ = make_node(NODE_NOT);           $$->child[0] = $2; set_unary_bool_semantic($$);   };
 expressao: '&' expressao { $$ = make_node(NODE_DEREF_POINTER); $$->child[0] = $2; };
 expressao: '*' expressao { $$ = make_node(NODE_DEREF_VALUE);   $$->child[0] = $2; };
 expressao: '#' expressao { $$ = make_node(NODE_ACCESS);        $$->child[0] = $2; };
-expressao: '?' expressao { $$ = make_node(NODE_BOOL_EVAL);     $$->child[0] = $2; };
+expressao: '?' expressao { $$ = make_node(NODE_BOOL_EVAL);     $$->child[0] = $2; set_unary_bool_semantic($$);   };
 
 /* Binarias */
-expressao: expressao '+' expressao { $$ = make_node(NODE_ADD);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '-' expressao { $$ = make_node(NODE_SUB);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '*' expressao { $$ = make_node(NODE_MUL);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '/' expressao { $$ = make_node(NODE_DIV);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '%' expressao { $$ = make_node(NODE_MOD);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '|' expressao { $$ = make_node(NODE_BITWISE_OR);  $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '&' expressao { $$ = make_node(NODE_BITWISE_AND); $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '^' expressao { $$ = make_node(NODE_EXP);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '+' expressao { $$ = make_node(NODE_ADD);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '-' expressao { $$ = make_node(NODE_SUB);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '*' expressao { $$ = make_node(NODE_MUL);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '/' expressao { $$ = make_node(NODE_DIV);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '%' expressao { $$ = make_node(NODE_MOD);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '|' expressao { $$ = make_node(NODE_BITWISE_OR);  $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '&' expressao { $$ = make_node(NODE_BITWISE_AND); $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
+expressao: expressao '^' expressao { $$ = make_node(NODE_EXP);         $$->child[0] = $1; $$->child[1] = $3; set_arithmetic_semantic($$); };
 
 /* Relacionais */
-expressao: expressao '<'       expressao { $$ = make_node(NODE_LESS);       $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao '>'       expressao { $$ = make_node(NODE_GREATER);    $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_LE  expressao { $$ = make_node(NODE_LE);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_GE  expressao { $$ = make_node(NODE_GE);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_EQ  expressao { $$ = make_node(NODE_EQ);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_NE  expressao { $$ = make_node(NODE_NE);         $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_AND expressao { $$ = make_node(NODE_AND);        $$->child[0] = $1; $$->child[1] = $3; };
-expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->child[0] = $1; $$->child[1] = $3; };
+expressao: expressao '<'       expressao { $$ = make_node(NODE_LESS);       $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao '>'       expressao { $$ = make_node(NODE_GREATER);    $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_LE  expressao { $$ = make_node(NODE_LE);         $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_GE  expressao { $$ = make_node(NODE_GE);         $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_EQ  expressao { $$ = make_node(NODE_EQ);         $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_NE  expressao { $$ = make_node(NODE_NE);         $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_AND expressao { $$ = make_node(NODE_AND);        $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
+expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->child[0] = $1; $$->child[1] = $3; set_boolean_semantic($$); };
 
 /* Outros */
 expressao: literal           { $$ = $1; };
 expressao: acesso_variavel   { $$ = $1; };
 expressao: chamada_funcao    { $$ = $1; };
 expressao: '(' expressao ')' { $$ = make_node(NODE_BRACKET_EXPR); $$->child[0] = $2; };
-expressao: expressao '?' expressao ':' expressao { $$ = make_node(NODE_TERNARY); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; };
+expressao: expressao '?' expressao ':' expressao { $$ = make_node(NODE_TERNARY); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; set_ternary_expression_semantic($$); };
 
 /* declarações de tipo */
 declaracao_novo_tipo: TK_PR_CLASS identificador '[' declaracao_novo_tipo_propriedade declaracao_novo_tipo_propriedades ']'';' {$$ = make_node(NODE_NEW_TYPE); $$->child[0] = make_node(NODE_CLASS); $$->child[1] = $2; $$->child[2] = $4; $$->child[3] = $5;};
@@ -276,16 +277,16 @@ argumento_aux: %empty                       { $$ = make_node(NODE_EMPTY);};
 argumento_aux: ',' argumento argumento_aux  { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $2; $$->child[1] = $3; };
 
 /* comandos de return, break, continue e case */
-comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2; };
-comando_break: TK_PR_BREAK              { $$ = make_node(NODE_BREAK); };
-comando_continue: TK_PR_CONTINUE        { $$ = make_node(NODE_CONTINUE); };
-comando_case: TK_PR_CASE TK_LIT_INT ':' { $$ = make_node(NODE_CASE); $$->int_literal = yylval.valor_lexico_int; };
+comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2;                       set_return_nature($$);   };
+comando_break: TK_PR_BREAK              { $$ = make_node(NODE_BREAK);                                           set_break_nature($$);    };
+comando_continue: TK_PR_CONTINUE        { $$ = make_node(NODE_CONTINUE);                                        set_continue_nature($$); };
+comando_case: TK_PR_CASE TK_LIT_INT ':' { $$ = make_node(NODE_CASE); $$->int_literal = yylval.valor_lexico_int; set_case_nature($$);     };
 
 /* controles de fluxo */
-comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; };
+comando_if: TK_PR_IF '(' expressao ')' TK_PR_THEN bloco_comandos comando_else_opcional { $$ = make_node(NODE_IF); $$->child[0] = $3; $$->child[1] = $6; $$->child[2] = $7; set_if_semantic($$); };
 comando_else_opcional: %empty                                                          { $$ = make_node(NODE_EMPTY); };
 comando_else_opcional: TK_PR_ELSE bloco_comandos                                       { $$ = make_node(NODE_ELSE); $$->child[0] = $2; };
-comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos                          { $$ = make_node(NODE_SWITCH); $$->child[0] = $3; $$->child[1] = $5; };
+comando_switch: TK_PR_SWITCH '(' expressao ')' bloco_comandos                          { $$ = make_node(NODE_SWITCH); $$->child[0] = $3; $$->child[1] = $5; set_switch_semantic($$); };
 
 /* comandos de iteracao */
 comandos_dentro_for: atribuicao     { $$ = $1; };
@@ -294,8 +295,8 @@ comandos_dentro_for_aux: %empty     { $$ = make_node(NODE_EMPTY); };
 comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux { $$ = make_node(NODE_COMMAND_LIST_COMA_SEPARATED); $$->child[0] = $2; $$->child[1] = $3; };
 comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8;  };
 comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos { $$ = make_node(NODE_FOR); $$->child[0] = $3; $$->child[1] = $4; $$->child[2] = $6; $$->child[3] = $8; $$->child[4] = $9; $$->child[5] = $11; };
-comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; };
-comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; };
+comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; set_while_semantic($$); };
+comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; set_do_while_semantic($$); };
 
 /* comandos com pipes */
 pipe: TK_OC_FORWARD_PIPE {$$ = make_node(NODE_FORWARD_PIPE); };

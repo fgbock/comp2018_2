@@ -1,3 +1,6 @@
+#ifndef ARVORE
+#define ARVORE
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -119,10 +122,21 @@
 
 #define NODE_EMPTY 666     // no value
 
+
+#define NATUREZA_NULL               0
+#define NATUREZA_LITERAL_INT        1
+#define NATUREZA_LITERAL_FLOAT      2
+#define NATUREZA_LITERAL_CHAR       3
+#define NATUREZA_LITERAL_STRING     4
+#define NATUREZA_LITERAL_BOOL       5
+#define NATUREZA_IDENTIFICADOR      6
+
 typedef struct ast_node {
 
    // Type, one of the #defines
    int type;
+
+   int semantic_nature;
    union {
       int   int_literal;    // Valid when type == (NODE_INT_LITERAL | NODE_SIZE)
       float float_literal;  // Valid when type == NODE_FLOAT_LITERAL
@@ -151,3 +165,5 @@ void printree(ast_node* node, int lvl);
 void descompila(void *arvore);
 
 void libera(void *arvore);
+
+#endif /* ARVORE */
