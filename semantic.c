@@ -280,14 +280,27 @@ void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
     node->semantic_nature = NATUREZA_NULL;
+    t_entrada_simbolo_tipousuario user_type;
+    //user_type.campos.conteudo
     // TODO: Add in symbol table
 }
 
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
+    // Nome, Static, Tamanho, Tipo
+    t_entrada_simbolo table_entry;
+    char* var_nome = node->child[0]->string_literal;
+    int var_is_static = node->child[1]->type == NODE_STATIC;
+    int var_declaracao_tamanho = from_node_size_to_table_size(node->child[2]);
+    t_tipo type = from_node_type_to_table_type(node->child[3]);
+    type.a_const = 0;
+    type.a_static = var_is_static;
+    type.tamanho_vetor = var_declaracao_tamanho;
+
+    table_entry.chave = var_nome;
+    table_entry.entrada_tipo = type;
     node->semantic_nature = NATUREZA_NULL;
-    // TODO: Add in symbol table
 }
 
 void set_new_user_type_semantic(ast_node* node)
@@ -300,11 +313,70 @@ void set_new_user_type_semantic(ast_node* node)
 void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
+
+    t_entrada_simbolo table_entry;
+    t_entrada_simbolo_funcao function_definition;
+
+    int return_is_static = node->child[0]->type == NODE_STATIC;
+    char* return_identifier = node->child[2]->string_literal;
+    ast_node* argument_list_node = node->child[3];
+
+    t_tipo return_type = from_node_type_to_table_type(node->child[1]);
+
+
+    table_entry.entrada_tipo = return_type;
+    table_entry.funcao = function_definition;
+
+
     node->semantic_nature = NATUREZA_NULL;
+
+    
     // TODO: Add in symbol table
 }
 
 // Aux
+
+int from_node_size_to_table_size(ast_node* node)
+{
+    if (node->type == NODE_SIZE)
+    {
+        return node->int_literal;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+t_tipo from_node_type_to_table_type(ast_node* node)
+{
+    t_tipo return_type;
+    if (node->type == NODE_INT_TYPE)
+    {
+        return_type.tipo = T_TIPO_PRIMITIVO;
+        return_type.tipo_tipo = NATUREZA_LITERAL_INT;
+    }
+    if (node->type == NODE_FLOAT_TYPE)
+    {
+        return_type.tipo = T_TIPO_PRIMITIVO;
+        return_type.tipo_tipo = NATUREZA_LITERAL_FLOAT;
+    }
+    if (node->type == NODE_STRING_TYPE)
+    {
+        return_type.tipo = T_TIPO_PRIMITIVO;
+        return_type.tipo_tipo = NATUREZA_LITERAL_STRING;
+    }
+    if (node->type == NODE_CHAR_TYPE)
+    {
+        return_type.tipo = T_TIPO_PRIMITIVO;
+        return_type.tipo_tipo = NATUREZA_LITERAL_CHAR;
+    }
+    else
+    {
+        return_type.tipo = T_TIPO_USUARIO;
+        return_type.tipousuario = node->string_literal;
+    }
+}
 
 int can_cast_to_bool(int semantic_nature)
 {

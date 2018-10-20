@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include "arvore.h"
+#include "symboltable.h"
 #include "semantic_error_codes.h"
 
 #define ASSERT(X) if (!(X)) { printf("Assert Failed"); exit(-1); }
@@ -76,5 +77,8 @@ void exit_with_cannot_cast_to_int_error(int semantic_nature);
 
 void exit_with_cannot_cast_to_bool(int semantic_nature);
 
+t_tipo from_node_type_to_table_type(ast_node* node);
+
+int from_node_size_to_table_size(ast_node* node);
 
 #endif
