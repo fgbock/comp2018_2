@@ -97,7 +97,7 @@ literal: TK_LIT_FLOAT  { $$ = make_node(NODE_FLOAT_LITERAL);  $$->float_literal 
 literal: TK_LIT_FALSE  { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 0; };
 literal: TK_LIT_TRUE   { $$ = make_node(NODE_BOOL_LITERAL);   $$->bool_literal = 1; };
 literal: TK_LIT_CHAR   { $$ = make_node(NODE_CHAR_LITERAL);   $$->char_literal = yylval.valor_lexico_char; };
-literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = strdup(yylval.valor_lexico_string); };
+literal: TK_LIT_STRING { $$ = make_node(NODE_STRING_LITERAL); $$->string_literal = yylval.valor_lexico_string; };
 //opcional_const: %empty;
 //opcional_const: TK_PR_CONST;
 opcional_acesso_vetor: %empty            { $$ = make_node(NODE_EMPTY); };
@@ -106,8 +106,8 @@ opcional_declaracao_valor: %empty                    { $$ = make_node(NODE_EMPTY
 opcional_declaracao_valor: TK_OC_LE identificador    { $$ = $2; };
 opcional_declaracao_valor: TK_OC_LE literal          { $$ = $2; };
 opcional_acesso_propriedade: %empty               { $$ = make_node(NODE_EMPTY); };
-opcional_acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = strdup(yylval.valor_lexico_string); };
-acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = strdup(yylval.valor_lexico_string); };
+opcional_acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = yylval.valor_lexico_string; };
+acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = yylval.valor_lexico_string; };
 acesso_variavel: identificador opcional_acesso_propriedade opcional_acesso_vetor { $$ = make_node(NODE_VAR_ACCESS); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $3; };
 
 /* tipo de variável */
@@ -176,7 +176,7 @@ opcional_encapsulamento: TK_PR_PROTECTED {$$ = make_node(NODE_PROTECTED);};
 
 /* Auxiliares */
 declaracao_tamanho: '[' TK_LIT_INT ']'                                                     { $$ = make_node(NODE_SIZE);       $$->int_literal = yylval.valor_lexico_int; };
-identificador: TK_IDENTIFICADOR                                                            { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = strdup(yylval.valor_lexico_string); };
+identificador: TK_IDENTIFICADOR                                                            { $$ = make_node(NODE_IDENTIFIER); $$->string_literal = yylval.valor_lexico_string; };
 
 /* declaração de variável global */
 declaracao_funcao_usertype_e_var_global: identificador identificador ';'                    { $$ = make_node(NODE_VAR_GLOBAL); $$->child[0] = $1; $$->child[1] = $2;                                                                               };
@@ -273,7 +273,7 @@ argumento: %empty                           { $$ = make_node(NODE_EMPTY);};
 argumento: expressao argumento_aux          { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $1;                                    $$->child[1] = $2;};
 argumento: '.' argumento_aux                { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER);  $$->child[1] = $2;};
 argumento_aux: %empty                       { $$ = make_node(NODE_EMPTY);};
-argumento_aux: ',' argumento argumento_aux  { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $2; $$->child[1] = $3; };
+argumento_aux: ',' argumento  { $$ = $2; };
 
 /* comandos de return, break, continue e case */
 comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2; };
