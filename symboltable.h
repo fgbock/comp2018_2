@@ -10,9 +10,10 @@ typedef struct t_tipo {
 	int a_const;
 	int a_static;
 	int tipo_tipo;
+	int tamanho_vetor;
 	union{
 		int tipo;
-		char *tipousuario;
+		char* tipousuario;
 	};
 } t_tipo;
 
@@ -40,7 +41,7 @@ typedef struct t_entrada_simbolo{
 	int loc_linha;
 	int loc_coluna;
 	int natureza_semantica;
-	int tamanho;
+	int tamanho_memoria;
 	struct t_tipo entrada_tipo;
 	int classe_entrada;
 	union {
