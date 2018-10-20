@@ -1,7 +1,7 @@
 %{
 
 #include "arvore.h"
-//#include "semantic.h"
+#include "semantic.h"
 
 int yylex(void);
 void yyerror (char const *s);
@@ -263,7 +263,7 @@ declaracao_variavel_local: identificador identificador { $$ = make_node(NODE_LOC
 
 
 /* comando simples - io */
-input: TK_PR_INPUT expressao                     { $$ = make_node(NODE_INPUT);  $$->child[0] = $2;                    };
+input: TK_PR_INPUT expressao                     { $$ = make_node(NODE_INPUT);  $$->child[0] = $2; set_input_semantic($$);   };
 output: TK_PR_OUTPUT expressao lista_expressoes  { $$ = make_node(NODE_OUTPUT); $$->child[0] = $2; $$->child[1] = $3; };
 lista_expressoes: %empty                         { $$ = make_node(NODE_EMPTY);                                        };
 lista_expressoes: ',' expressao lista_expressoes { $$ = make_node(NODE_EXPRESSION_LIST); $$->child[0] = $2; $$->child[1] = $3; };
@@ -274,7 +274,7 @@ argumento: %empty                           { $$ = make_node(NODE_EMPTY);};
 argumento: expressao argumento_aux          { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $1;                                    $$->child[1] = $2;};
 argumento: '.' argumento_aux                { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER);  $$->child[1] = $2;};
 argumento_aux: %empty                       { $$ = make_node(NODE_EMPTY);};
-argumento_aux: ',' argumento  { $$ = $2; };
+argumento_aux: ',' argumento                { $$ = $2; };
 
 /* comandos de return, break, continue e case */
 comando_return: TK_PR_RETURN expressao  { $$ = make_node(NODE_RETURN); $$->child[0] = $2;                       set_return_nature($$);   };
@@ -293,8 +293,8 @@ comandos_dentro_for: atribuicao     { $$ = $1; };
 comandos_dentro_for: bloco_comandos { $$ = $1; };
 comandos_dentro_for_aux: %empty     { $$ = make_node(NODE_EMPTY); };
 comandos_dentro_for_aux: ',' comandos_dentro_for comandos_dentro_for_aux { $$ = make_node(NODE_COMMAND_LIST_COMA_SEPARATED); $$->child[0] = $2; $$->child[1] = $3; };
-comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8;  };
-comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos { $$ = make_node(NODE_FOR); $$->child[0] = $3; $$->child[1] = $4; $$->child[2] = $6; $$->child[3] = $8; $$->child[4] = $9; $$->child[5] = $11; };
+comando_foreach: TK_PR_FOREACH '(' identificador ':' expressao lista_expressoes ')' bloco_comandos { $$ = make_node(NODE_FOREACH); $$->child[0] = $3; $$->child[1] = $5; $$->child[2] = $6; $$->child[3] = $8; set_foreach_semantic($$);  };
+comando_for: TK_PR_FOR '(' comandos_dentro_for comandos_dentro_for_aux ':' expressao ':' comandos_dentro_for comandos_dentro_for_aux ')' bloco_comandos { $$ = make_node(NODE_FOR); $$->child[0] = $3; $$->child[1] = $4; $$->child[2] = $6; $$->child[3] = $8; $$->child[4] = $9; $$->child[5] = $11; set_for_semantic($$); };
 comando_while: TK_PR_WHILE '(' expressao ')' TK_PR_DO bloco_comandos    { $$ = make_node(NODE_WHILE); $$->child[0] = $3; $$->child[1] = $6; set_while_semantic($$); };
 comando_do_while: TK_PR_DO bloco_comandos TK_PR_WHILE '(' expressao ')' { $$ = make_node(NODE_DO_WHILE);   $$->child[0] = $2; $$->child[1] = $5; set_do_while_semantic($$); };
 

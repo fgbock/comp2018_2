@@ -36,6 +36,8 @@ void set_do_while_semantic(ast_node* node);
 // for (x)
 void set_for_semantic(ast_node* node);
 
+// foreach (x)
+void set_foreach_semantic(ast_node* node);
 
 // switch (x) { ... }
 void set_switch_semantic(ast_node* node);
@@ -52,11 +54,18 @@ void set_continue_nature(ast_node* node);
 // case x:
 void set_case_nature(ast_node* node);
 
+// intput x, y
+void set_input_semantic(ast_node* node);
+
 // Aux
 
 int can_cast_to_bool(int semantic_nature);
 
 int can_cast_to_int(int semantic_nature);
+
+void exit_with_cannot_cast_to_int_error(int semantic_nature);
+
+void exit_with_cannot_cast_to_bool(int semantic_nature);
 
 
 #endif
