@@ -9,7 +9,39 @@ int free_lista(struct t_lista* lista){
 	while(entrada != NULL){
 		entrada_prev = entrada;
 		entrada = entrada->prox;
+		free(entrada_prev->conteudo);
 		free(entrada_prev);
+	}
+}
+
+int free_tabela(struct t_lista* lista){
+	struct t_lista* entrada_prev;
+	struct t_lista* entrada = lista;
+	struct t_entrada_simbolo* simb;
+	struct t_entrada_simbolo_funcao aux1;
+	struct t_entrada_simbolo_tipousuario aux2;
+	while(entrada != NULL){
+		entrada_prev = entrada;
+		entrada = entrada->prox;
+		simb = entrada_prev->conteudo;
+		switch (simb->classe_entrada){
+			case T_ENTRADA_DECLARACAO_FUNCAO:
+				aux1 = simb->funcao;
+				free_lista(&(aux1.t_argumentos));
+				free(simb);
+				free(entrada_prev);
+				break;
+			case T_ENTRADA_TIPO_USUARIO:
+				aux2 = simb->tipo_usuario;
+				free_lista(&(aux2.campos));
+				free(simb);
+				free(entrada_prev);
+				break;
+			default:
+				free(simb);
+				free(entrada_prev);
+				break;
+		}
 	}
 }
 
