@@ -41,6 +41,23 @@ void set_arithmetic_semantic(ast_node* node) {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
     }
 
+    // Errors:
+    else if ((lhs_nature == NATUREZA_LITERAL_CHAR || rhs_nature == NATUREZA_LITERAL_CHAR))
+    {
+        exit(ERR_CHAR_TO_X);
+    }
+
+    else if ((lhs_nature == NATUREZA_LITERAL_STRING || rhs_nature == NATUREZA_LITERAL_STRING))
+    {
+        exit(ERR_STRING_TO_X);
+    }
+
+    else if ((lhs_nature == NATUREZA_IDENTIFICADOR || rhs_nature == NATUREZA_IDENTIFICADOR))
+    {
+        // TODO: Check identifier on symbol table
+        exit(ERR_USER_TO_X);
+    }
+
     else
     {
         exit(ERR_WRONG_TYPE);
@@ -57,6 +74,19 @@ void set_boolean_semantic(ast_node* node)
     {
         node->semantic_nature = NATUREZA_LITERAL_BOOL;
     }
+    else if (lhs_nature == NATUREZA_LITERAL_CHAR || rhs_nature == NATUREZA_LITERAL_CHAR)
+    {
+        exit(ERR_CHAR_TO_X);
+    }
+    else if (lhs_nature == NATUREZA_LITERAL_STRING || rhs_nature == NATUREZA_LITERAL_STRING)
+    {
+        exit(ERR_STRING_TO_X);
+    }
+    else if (lhs_nature == NATUREZA_IDENTIFICADOR || rhs_nature == NATUREZA_IDENTIFICADOR)
+    {
+        // TODO: Check identifier on symbol table
+        exit(ERR_USER_TO_X);
+    }
     else
     {
         exit(ERR_WRONG_TYPE);
@@ -68,6 +98,7 @@ void set_function_call_semantic(ast_node* node)
 {
     ASSERT(node->type == NODE_FUNCTION_CALL);
     int conditional_nature = node->child[0]->semantic_nature;
+    node->semantic_nature = NATUREZA_NULL;
 
     //if (can_cast_to_bool(conditional_nature)) {
             // Wrong condition type
@@ -83,19 +114,28 @@ void set_switch_semantic(ast_node* node)
     int expression_nature = node->child[0]->semantic_nature;
     if (!can_cast_to_int(expression_nature))
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_int_error(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
 
 void set_while_semantic(ast_node* node)
 {
-    // TODO:
+    //ASSERT(ast_node->type == NODE_WHILE);
+    int expression_nature = node->child[0]->semantic_nature;
+    if (!can_cast_to_bool(expression_nature))
+    {
+        exit_with_cannot_cast_to_bool(expression_nature);
+    }
 }
 
 void set_do_while_semantic(ast_node* node)
 {
-    // TODO:
+    int expression_nature = node->child[0]->semantic_nature;
+    if (!can_cast_to_bool(expression_nature))
+    {
+        exit_with_cannot_cast_to_bool(expression_nature);
+    }
 }
 
 void set_return_nature(ast_node* node)
@@ -132,7 +172,7 @@ void set_ternary_expression_semantic(ast_node* node)
 
     if (!can_cast_to_bool(expression_nature))
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(expression_nature);
     }
 
     node->semantic_nature = NATUREZA_NULL;
@@ -148,7 +188,7 @@ void set_unary_bool_semantic(ast_node* node)
     }
     else
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(child_nature);
     }
 }
 
@@ -184,7 +224,7 @@ void set_if_semantic(ast_node* node)
     int expression_nature = node->child[0]->semantic_nature;
     if (!can_cast_to_bool(expression_nature))
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -194,8 +234,24 @@ void set_for_semantic(ast_node* node)
     int test_nature = node->child[2]->semantic_nature;
     if (!can_cast_to_bool(test_nature))
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(test_nature);
     }
+}
+
+void set_input_semantic(ast_node* node)
+{
+    int input_nature = node->child[0]->semantic_nature;
+    if (input_nature != NATUREZA_IDENTIFICADOR)
+    {
+        // TODO: Check if is in symbol table
+        exit(ERR_WRONG_PAR_INPUT);
+    }
+    node->semantic_nature = NATUREZA_NULL;
+}
+
+void set_foreach_semantic(ast_node* node)
+{
+    node->semantic_nature = NATUREZA_NULL;
 }
 
 void set_semantic_while(ast_node* node)
@@ -204,7 +260,7 @@ void set_semantic_while(ast_node* node)
     int expression_nature = node->child[0]->semantic_nature;
     if (!can_cast_to_bool(expression_nature)) 
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -215,7 +271,7 @@ void set_semantic_do_while(ast_node* node)
     int expression_nature = node->child[0]->semantic_nature;
     if (!can_cast_to_bool(expression_nature))
     {
-        exit(ERR_WRONG_TYPE);
+        exit_with_cannot_cast_to_bool(expression_nature);
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -227,6 +283,11 @@ int can_cast_to_bool(int semantic_nature)
         semantic_nature == NATUREZA_LITERAL_INT)
     {
         return 1;
+    }
+    else if (semantic_nature == NATUREZA_IDENTIFICADOR)
+    {
+        // TODO: Check on the symbol table
+        return 0;
     }
     else
     {
@@ -245,5 +306,39 @@ int can_cast_to_int(int semantic_nature)
     else
     {
         return 0;
+    }
+}
+
+void exit_with_cannot_cast_to_int_error(int semantic_nature)
+{
+    if (semantic_nature == NATUREZA_LITERAL_CHAR)
+    {
+        exit(ERR_CHAR_TO_X);
+    }
+    else if (semantic_nature == NATUREZA_LITERAL_STRING)
+    {
+        exit(ERR_STRING_TO_X);
+    }
+    else if (semantic_nature == NATUREZA_IDENTIFICADOR)
+    {
+        // Assumes identifier cannot cast to int
+        exit(ERR_USER_TO_X);
+    }
+}
+
+void exit_with_cannot_cast_to_bool(int semantic_nature)
+{
+    if (semantic_nature == NATUREZA_LITERAL_CHAR)
+    {
+        exit(ERR_CHAR_TO_X);
+    }
+    else if (semantic_nature == NATUREZA_LITERAL_STRING)
+    {
+        exit(ERR_STRING_TO_X);
+    }
+    else if (semantic_nature == NATUREZA_IDENTIFICADOR)
+    {
+        // Assumes identifier cannot cast to int
+        exit(ERR_USER_TO_X);
     }
 }
