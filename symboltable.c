@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-int free_lista(struct t_lista* lista){
-	struct t_lista* entrada_prev;
-	struct t_lista* entrada = lista;
+int free_lista(t_lista* lista) {
+	t_lista* entrada_prev;
+	t_lista* entrada = lista;
 	while(entrada != NULL){
 		entrada_prev = entrada;
 		entrada = entrada->prox;
@@ -14,12 +14,12 @@ int free_lista(struct t_lista* lista){
 	}
 }
 
-int free_tabela(struct t_lista* lista){
-	struct t_lista* entrada_prev;
-	struct t_lista* entrada = lista;
-	struct t_entrada_simbolo* simb;
-	struct t_entrada_simbolo_funcao aux1;
-	struct t_entrada_simbolo_tipousuario aux2;
+int free_tabela(t_lista* lista) {
+	t_lista* entrada_prev;
+	t_lista* entrada = lista;
+	t_entrada_simbolo* simb;
+	t_entrada_simbolo_funcao aux1;
+	t_entrada_simbolo_tipousuario aux2;
 	while(entrada != NULL){
 		entrada_prev = entrada;
 		entrada = entrada->prox;
@@ -27,7 +27,7 @@ int free_tabela(struct t_lista* lista){
 		switch (simb->classe_entrada){
 			case T_ENTRADA_DECLARACAO_FUNCAO:
 				aux1 = simb->funcao;
-				free_lista(&(aux1.t_argumentos));
+				free_lista(&(aux1.parameters));
 				free(simb);
 				free(entrada_prev);
 				break;
@@ -45,30 +45,30 @@ int free_tabela(struct t_lista* lista){
 	}
 }
 
-int get_entrada(struct t_lista* tabela, struct t_entrada_simbolo* entrada_retorno, char* chave_buscada){
-	struct t_lista* entrada = tabela;
-	struct t_entrada_simbolo* simbolo;
-	while(entrada != NULL){
+int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
+	t_lista* entrada = tabela;
+	t_entrada_simbolo* simbolo;
+	while(entrada != NULL) {
 		simbolo = entrada->conteudo;
-		if (strcmp(simbolo->chave,chave_buscada)){
+		if (strcmp(simbolo->chave,chave_buscada) == 0) {
 			entrada_retorno = simbolo;
 			return 0;
 		}
-		else{
+		else {
 			entrada = entrada->prox;
 		}
 	}
 	return -1;
 }
 
-int set_entrada(struct t_lista* tabela, struct t_entrada_simbolo* entrada_inserida){
-	struct t_lista* entrada = tabela;
-	struct t_lista* nova_entrada;
-	while(entrada->prox != NULL){
+int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
+	t_lista* entrada = tabela;
+	while(entrada->prox != NULL) {
 		entrada = entrada->prox;
 	}
-	nova_entrada->conteudo = entrada_inserida;
-	entrada->prox = nova_entrada;
+	entrada->prox = malloc(sizeof(t_lista));
+	entrada->prox->prox = NULL;
+	entrada->prox->conteudo = entrada_inserida;
 	return 0;
 }
 
