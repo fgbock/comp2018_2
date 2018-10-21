@@ -6,6 +6,7 @@
 #include "arvore.h"
 #include "symboltable.h"
 #include "semantic_error_codes.h"
+#include "list.h"
 
 #define ASSERT(X) if (!(X)) { printf("Assert Failed"); exit(-1); }
 
@@ -77,6 +78,8 @@ void set_lit_float_semantic(ast_node* node);
 void set_lit_bool_semantic(ast_node* node);
 
 void set_lit_char_semantic(ast_node* node);
+
+void set_identifier_semantic(ast_node* node);
 
 // Aux
 

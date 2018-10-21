@@ -1,18 +1,5 @@
 #include "symboltable.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-int free_lista(t_lista* lista) {
-	t_lista* entrada_prev;
-	t_lista* entrada = lista;
-	while(entrada != NULL){
-		entrada_prev = entrada;
-		entrada = entrada->prox;
-		free(entrada_prev->conteudo);
-		free(entrada_prev);
-	}
-}
 
 int free_tabela(t_lista* lista) {
 	t_lista* entrada_prev;
@@ -45,7 +32,7 @@ int free_tabela(t_lista* lista) {
 	}
 }
 
-int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
+int get_entrada(struct t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
 	t_lista* entrada = tabela;
 	t_entrada_simbolo* simbolo;
 	while(entrada != NULL) {

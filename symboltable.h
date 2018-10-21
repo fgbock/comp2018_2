@@ -1,11 +1,10 @@
 #ifndef SYMBOLTABLE
 #define SYMBOLTABLE
 
-typedef struct t_lista {
-	void* conteudo;
-	struct t_lista* prox;
-} t_lista;
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "list.h"
 
 typedef struct t_tipo {
 	int is_const;
@@ -27,7 +26,7 @@ typedef struct t_campo {
 } t_campo;
 
 typedef struct t_entrada_simbolo_funcao {
-	t_lista parameters;
+	t_lista* parameters;
 	t_tipo return_type;
 } t_entrada_simbolo_funcao;
 
@@ -56,14 +55,13 @@ typedef struct t_entrada_simbolo {
 	};
 } t_entrada_simbolo;
 
-int free_lista(t_lista* t_lista);
 
 int free_tabela();
 
 /*
 * Procura na 'tabela' pela 'chave'. Caso encontre, salva o conteudo no ponteiro 'entrada'
 */
-int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada, char* chave);
+int get_entrada(struct t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada);
 
 /*
 * Insere uma 'entrada' na tabela de simbolos 'tabela'

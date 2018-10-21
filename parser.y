@@ -109,7 +109,7 @@ opcional_declaracao_valor: TK_OC_LE literal          { $$ = $2; };
 opcional_acesso_propriedade: %empty               { $$ = make_node(NODE_EMPTY); };
 opcional_acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = yylval.valor_lexico_string; };
 acesso_propriedade: '$' TK_IDENTIFICADOR { $$ = make_node(NODE_PROPERTY_ACCESS); $$->string_literal = yylval.valor_lexico_string; };
-acesso_variavel: identificador opcional_acesso_propriedade opcional_acesso_vetor { $$ = make_node(NODE_VAR_ACCESS); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $3; };
+acesso_variavel: identificador opcional_acesso_propriedade opcional_acesso_vetor { $$ = make_node(NODE_VAR_ACCESS); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $3; set_identifier_semantic($$); };
 
 /* tipo de variável */
 tipo_variavel_primitiva: TK_PR_INT         { $$ = make_node(NODE_INT_TYPE);    };
@@ -269,7 +269,7 @@ lista_expressoes: %empty                         { $$ = make_node(NODE_EMPTY);  
 lista_expressoes: ',' expressao lista_expressoes { $$ = make_node(NODE_EXPRESSION_LIST); $$->child[0] = $2; $$->child[1] = $3; };
 
 /* comando simples - função */
-chamada_funcao: identificador '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; };
+chamada_funcao: identificador '(' argumento ')' optional_pipe_command { $$ = make_node(NODE_FUNCTION_CALL); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; set_function_call_semantic($$); };
 argumento: %empty                           { $$ = make_node(NODE_EMPTY);};
 argumento: expressao argumento_aux          { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = $1;                                    $$->child[1] = $2;};
 argumento: '.' argumento_aux                { $$ = make_node(NODE_ARGUMENT_LIST);          $$->child[0] = make_node(NODE_ARGUMENT_PLACEHOLDER);  $$->child[1] = $2;};

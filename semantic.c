@@ -345,6 +345,36 @@ void set_function_definition_semantic(ast_node* node)
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
 
+    // Create parameters list
+    if (node->child[3]->type == NODE_ARGUMENT_LIST)
+    {
+        // Create root and add first parameter
+        function_definition.parameters = create_list();
+        t_tipo* parameter_type = malloc(sizeof(t_tipo));
+        *parameter_type = from_node_type_to_table_type(node->child[3]->child[0]);
+        add_list(function_definition.parameters, parameter_type);
+
+        //function_definition.parameters->conteudo
+        ast_node* argument_list = node->child[3];
+        while (argument_list->type == NODE_ARGUMENT_LIST)
+        {
+            t_lista* list_node = malloc(sizeof(t_lista));
+            ast_node* parameter = argument_list->child[0];
+            argument_list = argument_list->child[1];
+
+            // Load parameter type from ast_node and add on the list
+            t_tipo* parameter_type = malloc(sizeof(t_tipo));
+            *parameter_type = from_node_type_to_table_type(parameter);
+            list_node->conteudo = parameter_type;
+            
+            list_node->prox = NULL;
+            
+            //->type
+            //function_definition.parameters->
+        }
+    }
+    
+
     char* function_identifier = node->child[2]->string_literal;
     ast_node* argument_list_node = node->child[3];
 
@@ -358,6 +388,11 @@ void set_function_definition_semantic(ast_node* node)
     set_entrada(&tabela, table_entry);
 
     node->semantic_nature = NATUREZA_NULL;
+}
+
+void set_identifier_semantic(ast_node* node)
+{
+
 }
 
 // Aux
