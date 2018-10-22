@@ -26,10 +26,12 @@ void add_list(t_lista* list, void* data)
 int free_lista(t_lista* list) {
 	t_lista* entrada_prev;
 	t_lista* entrada = list;
-	while(entrada != NULL){
+	while(entrada != NULL) 
+	{
 		entrada_prev = entrada;
 		entrada = entrada->prox;
 		free(entrada_prev->conteudo);
 		free(entrada_prev);
 	}
 }
+

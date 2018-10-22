@@ -1,7 +1,5 @@
 /*
-Função principal para realização da E3.
-
-Este arquivo não pode ser modificado.
+Função principal
 */
 #include <stdio.h>
 #include "arvore.h"
