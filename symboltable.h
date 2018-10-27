@@ -15,7 +15,7 @@ typedef struct t_tipo {
 } t_tipo;
 
 typedef struct t_argumento {
-	struct t_tipo arg_tipo;
+	t_tipo arg_tipo;
 	char* identificador;
 } t_argumento;
 
@@ -31,7 +31,8 @@ typedef struct t_entrada_simbolo_funcao {
 } t_entrada_simbolo_funcao;
 
 typedef struct t_entrada_simbolo_tipousuario {
-	struct t_lista campos;
+	t_lista* campos;
+	int size_in_bytes;
 } t_entrada_simbolo_tipousuario;
 
 typedef struct t_entrada_declaracao_variavel {
@@ -60,10 +61,14 @@ t_lista* make_table();
 
 int free_tabela();
 
+int get_tipousuario_tamanho(t_lista* tabela, char* chave_buscada);
+
+int set_tipousuario_tamanho(t_lista* lista);
+
 /*
 * Procura na 'tabela' pela 'chave'. Caso encontre, salva o conteudo no ponteiro 'entrada'
 */
-int get_entrada(struct t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada);
+int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada);
 
 /*
 * Insere uma 'entrada' na tabela de simbolos 'tabela'

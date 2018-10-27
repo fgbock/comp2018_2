@@ -1,5 +1,13 @@
 #include "symboltable.h"
+#define NATUREZA_NULL               0
+#define NATUREZA_LITERAL_INT        1
+#define NATUREZA_LITERAL_FLOAT      2
+#define NATUREZA_LITERAL_CHAR       3
+#define NATUREZA_LITERAL_STRING     4
+#define NATUREZA_LITERAL_BOOL       5
+#define NATUREZA_IDENTIFICADOR      6
 
+struct t_lista* tabela_global;
 
 int free_tabela(t_lista* lista) {
 	t_lista* entrada_prev;
@@ -14,13 +22,13 @@ int free_tabela(t_lista* lista) {
 		switch (simb->classe_entrada){
 			case T_ENTRADA_DECLARACAO_FUNCAO:
 				aux1 = simb->funcao;
-				free_lista(&(aux1.parameters));
+				free_lista(aux1.parameters);
 				free(simb);
 				free(entrada_prev);
 				break;
 			case T_ENTRADA_TIPO_USUARIO:
 				aux2 = simb->tipo_usuario;
-				free_lista(&(aux2.campos));
+				free_lista(aux2.campos);
 				free(simb);
 				free(entrada_prev);
 				break;
@@ -59,13 +67,87 @@ int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave
 	return -1;
 }
 
+int set_tipousuario_tamanho(t_lista* lista){
+	int tamanho;
+	t_campo* campo; 
+	while(lista != NULL) {
+		campo = lista->conteudo;
+		switch(campo->tipo){
+			case NATUREZA_LITERAL_INT:
+				tamanho += 4;
+				break;
+			case NATUREZA_LITERAL_FLOAT:
+				tamanho += 8;
+				break;
+			case NATUREZA_LITERAL_CHAR:
+				tamanho += 1;
+				break;
+			case NATUREZA_LITERAL_STRING:
+				tamanho += 1;
+				break;
+			case NATUREZA_LITERAL_BOOL:
+				tamanho += 1;
+				break;
+		}
+		lista = lista->prox;
+		struct t_campo* campo = lista->conteudo;
+	}
+	return tamanho;
+}
+
+int get_tipousuario_tamanho(t_lista* tabela, char* chave_buscada){
+	t_lista* entrada = tabela;
+	t_entrada_simbolo* simbolo;
+	while (entrada != NULL) {
+		if (entrada->conteudo == NULL) {
+			entrada = entrada->prox;
+			continue;
+		}
+		simbolo = entrada->conteudo;
+		if ((strcmp(simbolo->chave, chave_buscada) == 0) && simbolo->classe_entrada == T_ENTRADA_TIPO_USUARIO) {
+			return (simbolo->tipo_usuario).size_in_bytes;
+		}
+		else {
+			entrada = entrada->prox;
+		}
+	}
+	return -1;	
+}
+
 int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 	t_lista* entrada = tabela;
+	t_tipo tipo_aux;
 	while(entrada->prox != NULL) {
 		entrada = entrada->prox;
 	}
 	entrada->prox = malloc(sizeof(t_lista));
 	entrada->prox->prox = NULL;
+	if (entrada_inserida->classe_entrada == T_ENTRADA_VARIAVEL){
+		tipo_aux = (entrada_inserida->variavel).tipo;
+		switch(tipo_aux.natureza_semantica){
+			case NATUREZA_LITERAL_INT:
+				entrada_inserida->tamanho_memoria = 4 * tipo_aux.tamanho_vetor;
+				break;
+			case NATUREZA_LITERAL_FLOAT:
+				entrada_inserida->tamanho_memoria = 8 * tipo_aux.tamanho_vetor;
+				break;
+			case NATUREZA_LITERAL_CHAR:
+				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				break;
+			case NATUREZA_LITERAL_STRING:
+				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				break;
+			case NATUREZA_LITERAL_BOOL:
+				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				break;
+			case NATUREZA_IDENTIFICADOR:
+				entrada_inserida->tamanho_memoria = get_tipousuario_tamanho(tabela_global, tipo_aux.user_type_name);
+				break;
+		}
+	}
+	else if (entrada_inserida->classe_entrada == T_ENTRADA_TIPO_USUARIO){
+		(entrada_inserida->tipo_usuario).size_in_bytes = set_tipousuario_tamanho((entrada_inserida->tipo_usuario).campos);
+	}
 	entrada->prox->conteudo = entrada_inserida;
 	return 0;
 }
