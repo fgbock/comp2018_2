@@ -71,6 +71,9 @@ int get_entrada(struct t_lista* tabela, t_entrada_simbolo* entrada_retorno, char
 */
 int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada);
 
+
+void print_table(t_lista* tabela);
+
 #endif
 
 

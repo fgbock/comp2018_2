@@ -224,6 +224,10 @@ void set_unknown_semantic(ast_node* node)
     {
         set_assignment_semantic(node);
     }
+    if (node->type == NODE_LOCAL_VAR)
+    {
+        set_local_var_semantic(node);
+    }
 }
 
 void set_assignment_semantic(ast_node* node)
@@ -329,10 +333,28 @@ void set_semantic_do_while(ast_node* node)
 void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
+    char* var_nome = node->child[0]->string_literal;
+    // Check if already declared
+    if (var_nome != NULL) 
+    {
+        t_entrada_simbolo* result;
+        if (get_entrada(&tabela, result, var_nome) == 0)
+        {
+            exit(ERR_DECLARED);
+        }
+    }
+
+    // Add to symbol table
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     table_entry->classe_entrada = T_ENTRADA_VARIAVEL;
-    node->semantic_nature = NATUREZA_NULL;
+    table_entry->chave = var_nome;
+
+    t_tipo type = from_node_type_to_table_type(node->child[1]);
+
+    table_entry->variavel.tipo = type;
     set_entrada(&tabela, table_entry);
+    node->semantic_nature = NATUREZA_NULL;
+    
 }
 
 void set_global_var_semantic(ast_node* node)
@@ -349,7 +371,7 @@ void set_global_var_semantic(ast_node* node)
     type.tamanho_vetor = var_declaracao_tamanho;
 
     // Check if already declared
-    if (var_nome != NULL) 
+    if (var_nome != NULL)
     {
         t_entrada_simbolo* result;
         if (get_entrada(&tabela, result, var_nome) == 0)
@@ -379,6 +401,18 @@ void set_new_user_type_semantic(ast_node* node)
 void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
+
+    char* function_identifier = node->child[2]->string_literal;
+
+    // Check if already declared
+    if (function_identifier != NULL)
+    {
+        t_entrada_simbolo* result;
+        if (get_entrada(&tabela, result, function_identifier) == 0)
+        {
+            exit(ERR_DECLARED);
+        }
+    }
 	
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
@@ -411,7 +445,6 @@ void set_function_definition_semantic(ast_node* node)
     }
     
 
-    char* function_identifier = node->child[2]->string_literal;
     t_tipo return_type = from_node_type_to_table_type(node->child[1]);
     return_type.is_const = 0;
     return_type.is_static = node->child[0]->type == NODE_STATIC;

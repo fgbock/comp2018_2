@@ -61,6 +61,11 @@ int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave
 
 int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 	t_lista* entrada = tabela;
+	if (tabela != NULL && tabela->conteudo == NULL) {
+		tabela->conteudo = entrada_inserida;
+		return 0;
+	}
+
 	while(entrada->prox != NULL) {
 		entrada = entrada->prox;
 	}
@@ -69,6 +74,21 @@ int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 	entrada->prox->conteudo = entrada_inserida;
 	return 0;
 }
+
+void print_table(t_lista* tabela)
+{
+	t_lista* p = tabela;
+	printf("Table: ");
+	while (p != NULL)
+	{
+		if (p->conteudo != NULL) {
+			printf("%s, ", ((t_entrada_simbolo *)p->conteudo)->chave);
+		}
+		p = p->prox;
+	}
+	printf("\n");
+}
+
 
 // TESTING:
 /*
