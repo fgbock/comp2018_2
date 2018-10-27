@@ -15,7 +15,14 @@ tests = {
   'poi07': 'ERR_DECLARED',
   'poi08': 'ERR_DECLARED',
   'poi09': 'ERR_DECLARED',
-  'poi10': 'ERR_DECLARED'
+  'poi10': 'ERR_DECLARED',
+  'poi11': 'OK',
+  'poi12': 'ERR_VARIABLE',
+  'poi13': 'ERR_VECTOR',
+  'poi14': 'ERR_FUNCTION',
+  'poi15': 'OK',
+  'poi16': 'OK'
+
 }
   
 error_name_to_code = {
