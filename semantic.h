@@ -4,11 +4,13 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "arvore.h"
-#include "symboltable.h"
+#include "scope_stack.h"
 #include "semantic_error_codes.h"
 #include "list.h"
 
 #define ASSERT(X) if (!(X)) { printf("Assert Failed"); exit(-1); }
+
+extern t_scope_stack scope_stack; 
 
 // Generic function to check and set semantic value of arithmetic nodes
 void set_arithmetic_semantic(ast_node* node);
@@ -84,6 +86,8 @@ void set_identifier_semantic(ast_node* node);
 void set_unknown_semantic(ast_node* node);
 
 void set_assignment_semantic(ast_node* node);
+
+void set_program_semantic();
 
 // Aux
 

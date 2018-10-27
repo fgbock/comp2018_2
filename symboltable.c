@@ -28,7 +28,7 @@ int free_tabela(t_lista* lista) {
 				break;
 			case T_ENTRADA_TIPO_USUARIO:
 				aux2 = simb->tipo_usuario;
-				free_lista(aux2.campos);
+				//free_lista(aux2.campos);
 				free(simb);
 				free(entrada_prev);
 				break;

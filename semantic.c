@@ -1,6 +1,5 @@
 #include "semantic.h"
 
-t_lista tabela; 
 
 // Generic function to check and set semantic value of arithmetic nodes
 void set_arithmetic_semantic(ast_node* node) {
@@ -127,7 +126,7 @@ void set_function_call_semantic(ast_node* node)
     if (function_identifier != NULL) 
     {
         t_entrada_simbolo* result;
-        if (get_entrada(&tabela, result, function_identifier) == -1)
+        if (scope_stack_get(&scope_stack, result, function_identifier) == -1)
         {
             exit(ERR_UNDECLARED);
         }
@@ -239,7 +238,7 @@ void set_assignment_semantic(ast_node* node)
     if (lhs_name != NULL) 
     {
         t_entrada_simbolo* result;
-        if (get_entrada(&tabela, result, lhs_name) == -1)
+        if (scope_stack_get(&scope_stack, result, lhs_name) == -1)
         {
             exit(ERR_UNDECLARED);
         }
@@ -338,7 +337,7 @@ void set_local_var_semantic(ast_node* node)
     if (var_nome != NULL) 
     {
         t_entrada_simbolo* result;
-        if (get_entrada(&tabela, result, var_nome) == 0)
+        if (scope_stack_get(&scope_stack, result, var_nome) == 0)
         {
             exit(ERR_DECLARED);
         }
@@ -352,7 +351,7 @@ void set_local_var_semantic(ast_node* node)
     t_tipo type = from_node_type_to_table_type(node->child[1]);
 
     table_entry->variavel.tipo = type;
-    set_entrada(&tabela, table_entry);
+    scope_stack_set(&scope_stack, table_entry);
     node->semantic_nature = NATUREZA_NULL;
     
 }
@@ -360,8 +359,9 @@ void set_local_var_semantic(ast_node* node)
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
-
+    printf("global var\n");
     // Nome, Static, Tamanho, Tipo
+    
     char* var_nome = node->child[0]->string_literal;
     int var_is_static = node->child[1]->type == NODE_STATIC;
     int var_declaracao_tamanho = from_node_size_to_table_size(node->child[2]);
@@ -374,7 +374,7 @@ void set_global_var_semantic(ast_node* node)
     if (var_nome != NULL)
     {
         t_entrada_simbolo* result;
-        if (get_entrada(&tabela, result, var_nome) == 0)
+        if (scope_stack_get(&scope_stack, result, var_nome) == 0)
         {
             exit(ERR_DECLARED);
         }
@@ -385,8 +385,9 @@ void set_global_var_semantic(ast_node* node)
     table_entry->classe_entrada = T_ENTRADA_VARIAVEL;
     table_entry->chave = var_nome;
     table_entry->variavel.tipo = type;
-    set_entrada(&tabela, table_entry);
+    scope_stack_set(&scope_stack, table_entry);
     node->semantic_nature = NATUREZA_NULL;
+    
 }
 
 void set_new_user_type_semantic(ast_node* node)
@@ -394,7 +395,7 @@ void set_new_user_type_semantic(ast_node* node)
     assert(node->type == NODE_NEW_TYPE);
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     table_entry->classe_entrada = T_ENTRADA_TIPO_USUARIO;
-    set_entrada(&tabela, table_entry);
+    scope_stack_set(&scope_stack, table_entry);
     node->semantic_nature = NATUREZA_NULL;
 }
 
@@ -408,7 +409,7 @@ void set_function_definition_semantic(ast_node* node)
     if (function_identifier != NULL)
     {
         t_entrada_simbolo* result;
-        if (get_entrada(&tabela, result, function_identifier) == 0)
+        if (scope_stack_get(&scope_stack, result, function_identifier) == 0)
         {
             exit(ERR_DECLARED);
         }
@@ -452,7 +453,7 @@ void set_function_definition_semantic(ast_node* node)
     table_entry->classe_entrada = T_ENTRADA_DECLARACAO_FUNCAO;
     table_entry->funcao.return_type = return_type;
     table_entry->funcao = function_definition;
-    set_entrada(&tabela, table_entry);
+    scope_stack_set(&scope_stack, table_entry);
 
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -531,7 +532,7 @@ int can_cast_to_bool(ast_node* node)
     else if (semantic_nature == NATUREZA_IDENTIFICADOR)
     {
         t_entrada_simbolo* entrada;
-        get_entrada(&tabela, entrada, node->string_literal);
+        scope_stack_get(&scope_stack, entrada, node->string_literal);
         // Se o identificador for de uma variavel que pode ser convertida para um booleano
         if (entrada->classe_entrada == T_ENTRADA_VARIAVEL && 
             can_cast_from_natureza_to_bool(entrada->variavel.tipo.natureza_semantica))
@@ -575,7 +576,7 @@ int can_cast_to_int(ast_node* node)
     {
         // Checa o identificador na tabela de simbolos
         t_entrada_simbolo* entrada;
-        get_entrada(&tabela, entrada, node->string_literal);
+        scope_stack_get(&scope_stack, entrada, node->string_literal);
         if (entrada == NULL)
         {
             return 0;
@@ -594,6 +595,12 @@ int can_cast_to_int(ast_node* node)
     {
         return 0;
     }
+}
+
+void set_program_semantic()
+{
+    printf("program\n");
+    scope_stack_push_scope(&scope_stack);
 }
 
 void exit_with_cannot_cast_to_error(int semantic_nature)
