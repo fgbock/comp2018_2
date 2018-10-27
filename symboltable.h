@@ -46,7 +46,7 @@ typedef struct t_entrada_simbolo {
 	char *chave;
 	int loc_linha;
 	int loc_coluna;
-	int tamanho_memoria;
+	int size_in_bytes;
 	int classe_entrada;
 	union {
 		t_entrada_simbolo_funcao      funcao;

@@ -11,7 +11,11 @@ tests = {
   'poi03': 'OK',
   'poi04': 'ERR_UNDECLARED',
   'poi05': 'ERR_UNDECLARED',
-  'poi06': 'ERR_UNDECLARED'
+  'poi06': 'ERR_UNDECLARED',
+  'poi07': 'ERR_DECLARED',
+  'poi08': 'ERR_DECLARED',
+  'poi09': 'ERR_DECLARED',
+  'poi10': 'ERR_DECLARED'
 }
   
 error_name_to_code = {
