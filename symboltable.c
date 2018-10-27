@@ -163,7 +163,36 @@ void print_table(t_lista* tabela)
 	while (p != NULL)
 	{
 		if (p->conteudo != NULL) {
-			printf("%s, ", ((t_entrada_simbolo *)p->conteudo)->chave);
+			//char *chave;
+			printf("Chave: %s, ", ((t_entrada_simbolo *)p->conteudo)->chave);
+			//int loc_linha;
+			printf("Linha: %d, ", ((t_entrada_simbolo *)p->conteudo)->loc_linha);
+			//int loc_coluna;
+			printf("Coluna: %d, ", ((t_entrada_simbolo *)p->conteudo)->loc_coluna);
+			//int size_in_bytes;
+			printf("Tamanho: %d, ", ((t_entrada_simbolo *)p->conteudo)->size_in_bytes);
+			if (((t_entrada_simbolo *)p->conteudo)->classe_entrada == T_ENTRADA_VARIAVEL){
+				switch(((t_entrada_simbolo *)p->conteudo)->variavel.tipo.natureza_semantica){
+					case NATUREZA_LITERAL_INT:
+						printf("Tipo: Int\n");
+						break;
+					case NATUREZA_LITERAL_FLOAT:
+						printf("Tipo: Float\n");
+						break;
+					case NATUREZA_LITERAL_CHAR:
+						printf("Tipo: Char\n");
+						break;
+					case NATUREZA_LITERAL_STRING:
+						printf("Tipo: String\n");
+						break;
+					case NATUREZA_LITERAL_BOOL:
+						printf("Tipo: Bool\n");
+						break;
+					case NATUREZA_IDENTIFICADOR:
+						printf("Tipo: Tipo de Usuario\n");
+						break;
+				}
+			}
 		}
 		p = p->prox;
 	}
