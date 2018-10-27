@@ -47,7 +47,7 @@ typedef struct t_entrada_simbolo {
 	char *chave;
 	int loc_linha;
 	int loc_coluna;
-	int tamanho_memoria;
+	int size_in_bytes;
 	int classe_entrada;
 	union {
 		t_entrada_simbolo_funcao      funcao;
@@ -75,6 +75,9 @@ int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave
 * Retorna 0 se sucesso, -1 se erro
 */
 int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada);
+
+
+void print_table(t_lista* tabela);
 
 #endif
 

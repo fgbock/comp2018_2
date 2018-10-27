@@ -117,6 +117,10 @@ int get_tipousuario_tamanho(t_lista* tabela, char* chave_buscada){
 int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 	t_lista* entrada = tabela;
 	t_tipo tipo_aux;
+	if (tabela != NULL && tabela->conteudo == NULL) {
+		tabela->conteudo = entrada_inserida;
+		return 0;
+	}
 	while(entrada->prox != NULL) {
 		entrada = entrada->prox;
 	}
@@ -126,22 +130,22 @@ int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 		tipo_aux = (entrada_inserida->variavel).tipo;
 		switch(tipo_aux.natureza_semantica){
 			case NATUREZA_LITERAL_INT:
-				entrada_inserida->tamanho_memoria = 4 * tipo_aux.tamanho_vetor;
+				entrada_inserida->size_in_bytes = 4 * tipo_aux.tamanho_vetor;
 				break;
 			case NATUREZA_LITERAL_FLOAT:
-				entrada_inserida->tamanho_memoria = 8 * tipo_aux.tamanho_vetor;
+				entrada_inserida->size_in_bytes = 8 * tipo_aux.tamanho_vetor;
 				break;
 			case NATUREZA_LITERAL_CHAR:
-				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				entrada_inserida->size_in_bytes = 1 * tipo_aux.tamanho_vetor;
 				break;
 			case NATUREZA_LITERAL_STRING:
-				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				entrada_inserida->size_in_bytes = 1 * tipo_aux.tamanho_vetor;
 				break;
 			case NATUREZA_LITERAL_BOOL:
-				entrada_inserida->tamanho_memoria = 1 * tipo_aux.tamanho_vetor;
+				entrada_inserida->size_in_bytes = 1 * tipo_aux.tamanho_vetor;
 				break;
 			case NATUREZA_IDENTIFICADOR:
-				entrada_inserida->tamanho_memoria = get_tipousuario_tamanho(tabela_global, tipo_aux.user_type_name);
+				entrada_inserida->size_in_bytes = get_tipousuario_tamanho(tabela_global, tipo_aux.user_type_name);
 				break;
 		}
 	}
@@ -151,6 +155,21 @@ int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada_inserida) {
 	entrada->prox->conteudo = entrada_inserida;
 	return 0;
 }
+
+void print_table(t_lista* tabela)
+{
+	t_lista* p = tabela;
+	printf("Table: ");
+	while (p != NULL)
+	{
+		if (p->conteudo != NULL) {
+			printf("%s, ", ((t_entrada_simbolo *)p->conteudo)->chave);
+		}
+		p = p->prox;
+	}
+	printf("\n");
+}
+
 
 // TESTING:
 /*
