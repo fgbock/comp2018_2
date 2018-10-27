@@ -32,12 +32,23 @@ int free_tabela(t_lista* lista) {
 	}
 }
 
-int get_entrada(struct t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
+t_lista* make_table() {
+	t_lista* table = malloc(sizeof(t_lista));
+	table->conteudo = NULL;
+	table->prox = NULL;
+	return table;
+}
+
+int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
 	t_lista* entrada = tabela;
 	t_entrada_simbolo* simbolo;
-	while(entrada != NULL) {
+	while (entrada != NULL) {
+		if (entrada->conteudo == NULL) {
+			entrada = entrada->prox;
+			continue;
+		}
 		simbolo = entrada->conteudo;
-		if (strcmp(simbolo->chave,chave_buscada) == 0) {
+		if (strcmp(simbolo->chave, chave_buscada) == 0) {
 			entrada_retorno = simbolo;
 			return 0;
 		}

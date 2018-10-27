@@ -56,6 +56,8 @@ typedef struct t_entrada_simbolo {
 } t_entrada_simbolo;
 
 
+t_lista* make_table();
+
 int free_tabela();
 
 /*

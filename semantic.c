@@ -218,6 +218,31 @@ void set_unary_bool_semantic(ast_node* node)
 }
 
 
+void set_unknown_semantic(ast_node* node)
+{
+    if (node->type == NODE_ASSIGNMENT)
+    {
+        set_assignment_semantic(node);
+    }
+}
+
+void set_assignment_semantic(ast_node* node)
+{
+    assert(node->type == NODE_ASSIGNMENT);
+    
+    char* lhs_name = node->child[1]->string_literal;
+    //printf("Seaching table for %s\n", lhs_name);
+    if (lhs_name != NULL) 
+    {
+        t_entrada_simbolo* result;
+        if (get_entrada(&tabela, result, lhs_name) == -1)
+        {
+            exit(ERR_UNDECLARED);
+        }
+    }
+    
+}
+
 void set_unary_number_semantic(ast_node* node)
 {
     int child_nature = node->child[0]->semantic_nature;

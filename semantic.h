@@ -81,6 +81,10 @@ void set_lit_char_semantic(ast_node* node);
 
 void set_identifier_semantic(ast_node* node);
 
+void set_unknown_semantic(ast_node* node);
+
+void set_assignment_semantic(ast_node* node);
+
 // Aux
 
 int can_cast_from_natureza_to_bool(int semantic_nature);

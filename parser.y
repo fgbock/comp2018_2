@@ -231,11 +231,11 @@ bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$
 atribuicao: acesso_variavel '=' expressao     { $$ = make_node(NODE_ASSIGNMENT_2); $$->child[0] = $1; $$->child[1] = $3; };
 atribuicao: TK_IDENTIFICADOR TK_IDENTIFICADOR { $$ = make_node(NODE_EMPTY); };
 
-declaracao_variavel_local_ou_atribuicao_ou_shift: identificador identificador {$$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; };
-declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[1] = $1; };
-declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const   { $$ = $2; $$->child[2] = make_node(NODE_CONST);  };
-declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static { $$ = $2; $$->child[3] = make_node(NODE_STATIC); };
-declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; $$->child[4] = $3; };
+declaracao_variavel_local_ou_atribuicao_ou_shift: identificador identificador { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; set_local_var_semantic($$); };
+declaracao_variavel_local_ou_atribuicao_ou_shift: identificador declaracao_variavel_local_ou_atribuicao_ou_shift_id { $$ = $2; $$->child[1] = $1;    set_unknown_semantic($$); };
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_CONST declaracao_variavel_local_const   { $$ = $2; $$->child[2] = make_node(NODE_CONST);     set_unknown_semantic($$); };
+declaracao_variavel_local_ou_atribuicao_ou_shift: TK_PR_STATIC declaracao_variavel_local_static { $$ = $2; $$->child[3] = make_node(NODE_STATIC);    set_unknown_semantic($$); };
+declaracao_variavel_local_ou_atribuicao_ou_shift: tipo_variavel_primitiva identificador opcional_declaracao_valor { $$ = make_node(NODE_LOCAL_VAR); $$->child[0] = $2; $$->child[1] = $1; $$->child[4] = $3; set_unknown_semantic($$); };
 
 declaracao_variavel_local_const: declaracao_variavel_local { $$ = $1; };
 declaracao_variavel_local_static: TK_PR_CONST declaracao_variavel_local { $$ = $2; $$->child[2] = make_node(NODE_CONST);  };

@@ -160,7 +160,7 @@ void descompila_internal(ast_node* node);
 
 void libera_internal(ast_node* node);
 
-void printree(ast_node* node, int lvl);
+void printree(ast_node* node, int lvl, int child);
 
 void descompila(void* arvore);
 

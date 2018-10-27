@@ -540,18 +540,22 @@ void libera_internal(ast_node* node) {
    free(node);
 }
 
-void printree(ast_node* node, int lvl){
-   int i;
+void printree(ast_node* node, int lvl, int child){
+	int i;
    if ( node == NULL) {
-	return;
+		return;
    }
-   for(int j = 0; j < lvl; j++){printf(" ");}
-   printf("Type: %d", node->type);
-   if (node->type == NODE_IDENTIFIER) printf(", %s", node->string_literal);
-   printf("\n");
+   for(int j = 0; j < lvl; j++){
+		printf(" ");
+	}
+   printf("Child: %d, Type: %d", child, node->type);
+   if (node->type == NODE_IDENTIFIER) 
+		printf(", %s", node->string_literal);
+   
+	printf("\n");
    for (i = 0; i < MAX_CHILD_NODES; i++) {
       if (node->child[i] != NULL) {
-	printree(node->child[i], lvl+1);
+			printree(node->child[i], lvl+1, i);
       }
    }	
 }
