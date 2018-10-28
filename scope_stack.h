@@ -14,6 +14,8 @@ typedef struct t_scope_stack {
 
 int is_declared_in_current_scope(t_scope_stack* stack, char* key);
 
+int is_declared_in_any_scope(t_scope_stack* stack, char* key);
+
 int scope_stack_get(t_scope_stack* stack, t_entrada_simbolo* out, char* key);
 
 void scope_stack_push_scope(t_scope_stack* stack);

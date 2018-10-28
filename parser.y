@@ -190,7 +190,7 @@ declaracao_variavel_global: identificador tipo_variavel_primitiva ';'           
 function_body: '{' comando_simples '}'    { $$ = make_node(NODE_FUNCTION_BODY); $$->child[0] = $2; };
 //bloco_comandos: '{' comando_simples '}' { $$ = make_node(NODE_COMMAND_BLOCK); $$->child[0] = $2; };
 
-declaracao_funcao_usertype_e_var_global_aux: identificador           identificador '(' primeiro_param_funcao ')' {$$ = make_node(NODE_FUNCTION_HEADER); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $4;};
+declaracao_funcao_usertype_e_var_global_aux: identificador           identificador '(' primeiro_param_funcao ')' { $$ = make_node(NODE_FUNCTION_HEADER); $$->child[0] = $1; $$->child[1] = $2; $$->child[2] = $4; set_new_scope_semantic(); };
 declaracao_funcao_usertype_e_var_global:    declaracao_funcao_usertype_e_var_global_aux function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = $1; $$->child[1] = $2; set_function_definition_semantic($$); };
 declaracao_funcao:                       TK_PR_STATIC tipo_variavel           identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_STATIC); $$->child[1] = $2; $$->child[2] = $3; $$->child[3] = $5;  $$->child[4] = $7; set_function_definition_semantic($$); };
 declaracao_funcao:                                    tipo_variavel_primitiva identificador '(' primeiro_param_funcao ')' function_body { $$ = make_node(NODE_FUNCTION_DEFINITION); $$->child[0] = make_node(NODE_EMPTY);  $$->child[1] = $1; $$->child[2] = $2; $$->child[3] = $4;  $$->child[4] = $6; set_function_definition_semantic($$); };

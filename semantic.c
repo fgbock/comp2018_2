@@ -46,6 +46,15 @@ void set_arithmetic_semantic(ast_node* node) {
     else if ((lhs_nature == NATUREZA_IDENTIFICADOR || rhs_nature == NATUREZA_IDENTIFICADOR))
     {
         // TODO: Check identifier on symbol table
+        t_entrada_simbolo* lhs_simbolo;
+        t_entrada_simbolo* rhs_simbolo;
+        if (scope_stack_get(&scope_stack, &lhs_simbolo, lhs_node->string_literal) != 0) {
+            exit(ERR_UNDECLARED);
+        }
+        if (scope_stack_get(&scope_stack, &rhs_simbolo, rhs_node->string_literal) != 0) {
+            exit(ERR_UNDECLARED);
+        }
+
         exit(ERR_USER_TO_X);
     }
     // Errors:
@@ -293,11 +302,24 @@ void set_for_semantic(ast_node* node)
 
 void set_input_semantic(ast_node* node)
 {
+    assert(node->type == NODE_INPUT);
     int input_nature = node->child[0]->semantic_nature;
-    if (input_nature != NATUREZA_IDENTIFICADOR)
+    ast_node* rhs = node->child[0];
+
+    if (rhs->type != NODE_VAR_ACCESS)
     {
-        // TODO: Check if is in symbol table
+        printf("Error: input only accepts identifiers\n");
         exit(ERR_WRONG_PAR_INPUT);
+    }
+    else
+    {
+        t_entrada_simbolo* out;
+        char* identifier = rhs->child[0]->string_literal;
+        if (is_declared_in_any_scope(&scope_stack, identifier) == 0)
+        {
+            printf("Error: Undeclared identifier after input\n");
+            exit(ERR_WRONG_PAR_INPUT);
+        }
     }
     node->semantic_nature = NATUREZA_NULL;
 }
@@ -333,7 +355,6 @@ void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
     char* var_nome = node->child[0]->string_literal;
-    printf("local_var %s\n", var_nome);
     // Check if already declared
     if (var_nome != NULL && is_declared_in_current_scope(&scope_stack, var_nome))
     {
@@ -350,6 +371,7 @@ void set_local_var_semantic(ast_node* node)
 
     table_entry->variavel.tipo = type;
     scope_stack_set(&scope_stack, table_entry);
+    print_table(scope_stack.list->head);
     node->semantic_nature = NATUREZA_NULL;
     
 }
@@ -359,7 +381,6 @@ void set_global_var_semantic(ast_node* node)
     assert(node->type == NODE_VAR_GLOBAL);
     // Nome, Static, Tamanho, Tipo
     char* var_nome = node->child[0]->string_literal;
-    printf("global_var %s\n", var_nome);
     int var_is_static = node->child[1]->type == NODE_STATIC;
     int var_declaracao_tamanho = from_node_size_to_table_size(node->child[2]);
     t_tipo type = from_node_type_to_table_type(node->child[3]);
@@ -407,7 +428,6 @@ void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
-    printf("set_function_definition_semantic\n");
     char* function_identifier = node->child[2]->string_literal;
 
     // Check if already declared
@@ -604,7 +624,6 @@ int can_cast_to_int(ast_node* node)
 
 void set_program_semantic()
 {
-    printf("program\n");
     scope_stack_push_scope(&scope_stack);
 }
 

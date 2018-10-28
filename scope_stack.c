@@ -9,6 +9,12 @@ void scope_stack_push_scope(t_scope_stack* stack)
     stack->list = scope;
 }
 
+int is_declared_in_any_scope(t_scope_stack* stack, char* key)
+{
+    t_entrada_simbolo* out;
+    return scope_stack_get(stack, out, key) == 0;
+}
+
 int is_declared_in_current_scope(t_scope_stack* stack, char* key)
 {
     t_entrada_simbolo* result;
