@@ -9,6 +9,8 @@ void set_arithmetic_semantic(ast_node* node) {
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
     
+    printf("arithmetic %d, %d\n", lhs_nature, rhs_nature);
+
     // int, int -> int
     if (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_INT)
     {
@@ -43,39 +45,43 @@ void set_arithmetic_semantic(ast_node* node) {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
     }
 
-    else if (lhs_nature == NODE_VAR_ACCESS)
+    if (lhs_nature == NATUREZA_IDENTIFICADOR)
     {
         check_arithmetic_identifier_semantic(lhs_node);
     }
-    else if (rhs_nature == NODE_VAR_ACCESS)
+    if (rhs_nature == NATUREZA_IDENTIFICADOR)
     {
         check_arithmetic_identifier_semantic(rhs_node);
     }
 
     // Errors:
-    else if ((lhs_nature == NATUREZA_LITERAL_CHAR || rhs_nature == NATUREZA_LITERAL_CHAR))
+    if ((lhs_nature == NATUREZA_LITERAL_CHAR || rhs_nature == NATUREZA_LITERAL_CHAR))
     {
         exit(ERR_CHAR_TO_X);
     }
 
-    else if ((lhs_nature == NATUREZA_LITERAL_STRING || rhs_nature == NATUREZA_LITERAL_STRING))
+    if ((lhs_nature == NATUREZA_LITERAL_STRING || rhs_nature == NATUREZA_LITERAL_STRING))
     {
         exit(ERR_STRING_TO_X);
     }
-    else
-    {
-        exit(ERR_WRONG_TYPE);
-    }
+    printf("Wrong type in expression\n");
+    exit(ERR_WRONG_TYPE);
+    
 }
 
 int check_arithmetic_identifier_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_ACCESS);
     char* identifier = node->child[0]->string_literal;
+    printf("checking %s\n", identifier);
+    print_table(scope_stack.list->head);
     t_entrada_simbolo* symbol;
     if (scope_stack_get(&scope_stack, &symbol, identifier) != 0) {
         exit(ERR_UNDECLARED);
     }
+    printf("classe_entrada: %d\n", symbol->classe_entrada);
+    printf("natureza_semantica: %d\n", symbol->variavel.tipo.natureza_semantica);
+
     if (symbol->classe_entrada != T_ENTRADA_VARIAVEL) {
         exit(ERR_VARIABLE);
     }
@@ -143,7 +149,7 @@ void set_lit_char_semantic(ast_node* node)
 
 void set_function_call_semantic(ast_node* node)
 {
-    ASSERT(node->type == NODE_FUNCTION_CALL);
+    assert(node->type == NODE_FUNCTION_CALL);
     char* function_identifier = node->child[0]->string_literal;
 
     if (function_identifier != NULL) 
@@ -385,9 +391,7 @@ void set_local_var_semantic(ast_node* node)
 
     table_entry->variavel.tipo = type;
     scope_stack_set(&scope_stack, table_entry);
-    print_table(scope_stack.list->head);
     node->semantic_nature = NATUREZA_NULL;
-    
 }
 
 void set_global_var_semantic(ast_node* node)
@@ -497,7 +501,7 @@ void set_function_definition_semantic(ast_node* node)
 
 void set_identifier_semantic(ast_node* node)
 {
-
+    node->semantic_nature = NATUREZA_IDENTIFICADOR;
 }
 
 // Aux
