@@ -47,7 +47,7 @@ t_lista* make_table() {
 	return table;
 }
 
-int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada) {
+int get_entrada(t_lista* tabela, t_entrada_simbolo** entrada_retorno, char* chave_buscada) {
 	t_lista* entrada = tabela;
 	t_entrada_simbolo* simbolo;
 	while (entrada != NULL) {
@@ -57,7 +57,7 @@ int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave
 		}
 		simbolo = entrada->conteudo;
 		if (strcmp(simbolo->chave, chave_buscada) == 0) {
-			entrada_retorno = simbolo;
+			*entrada_retorno = simbolo;
 			return 0;
 		}
 		else {

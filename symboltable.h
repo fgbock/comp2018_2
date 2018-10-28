@@ -70,7 +70,7 @@ int set_tipousuario_tamanho(t_lista* lista);
 /*
 * Procura na 'tabela' pela 'chave'. Caso encontre, salva o conteudo no ponteiro 'entrada'
 */
-int get_entrada(t_lista* tabela, t_entrada_simbolo* entrada_retorno, char* chave_buscada);
+int get_entrada(t_lista* tabela, t_entrada_simbolo** entrada_retorno, char* chave_buscada);
 
 /*
 * Insere uma 'entrada' na tabela de simbolos 'tabela'

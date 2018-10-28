@@ -12,13 +12,13 @@ void scope_stack_push_scope(t_scope_stack* stack)
 int is_declared_in_any_scope(t_scope_stack* stack, char* key)
 {
     t_entrada_simbolo* out;
-    return scope_stack_get(stack, out, key) == 0;
+    return scope_stack_get(stack, &out, key) == 0;
 }
 
 int is_declared_in_current_scope(t_scope_stack* stack, char* key)
 {
     t_entrada_simbolo* result;
-    return get_entrada(stack->list->head, result, key) == 0;
+    return get_entrada(stack->list->head, &result, key) == 0;
 }
 
 void scope_stack_pop_scope(t_scope_stack* stack)
@@ -31,7 +31,7 @@ int scope_stack_set(t_scope_stack* stack, t_entrada_simbolo* entrada)
     return set_entrada(stack->list->head, entrada);
 }
 
-int scope_stack_get(t_scope_stack* stack, t_entrada_simbolo* out, char* key)
+int scope_stack_get(t_scope_stack* stack, t_entrada_simbolo** out, char* key)
 {
     t_scope_aux* current_table_list = stack->list;
 

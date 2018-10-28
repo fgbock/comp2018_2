@@ -93,6 +93,8 @@ void set_new_scope_semantic();
 
 // Aux
 
+int check_arithmetic_identifier_semantic(ast_node* node);
+
 int can_cast_from_natureza_to_bool(int semantic_nature);
 
 int can_cast_to_bool(ast_node* node);

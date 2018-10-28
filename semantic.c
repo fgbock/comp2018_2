@@ -43,20 +43,15 @@ void set_arithmetic_semantic(ast_node* node) {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
     }
 
-    else if ((lhs_nature == NATUREZA_IDENTIFICADOR || rhs_nature == NATUREZA_IDENTIFICADOR))
+    else if (lhs_nature == NODE_VAR_ACCESS)
     {
-        // TODO: Check identifier on symbol table
-        t_entrada_simbolo* lhs_simbolo;
-        t_entrada_simbolo* rhs_simbolo;
-        if (scope_stack_get(&scope_stack, &lhs_simbolo, lhs_node->string_literal) != 0) {
-            exit(ERR_UNDECLARED);
-        }
-        if (scope_stack_get(&scope_stack, &rhs_simbolo, rhs_node->string_literal) != 0) {
-            exit(ERR_UNDECLARED);
-        }
-
-        exit(ERR_USER_TO_X);
+        check_arithmetic_identifier_semantic(lhs_node);
     }
+    else if (rhs_nature == NODE_VAR_ACCESS)
+    {
+        check_arithmetic_identifier_semantic(rhs_node);
+    }
+
     // Errors:
     else if ((lhs_nature == NATUREZA_LITERAL_CHAR || rhs_nature == NATUREZA_LITERAL_CHAR))
     {
@@ -70,6 +65,25 @@ void set_arithmetic_semantic(ast_node* node) {
     else
     {
         exit(ERR_WRONG_TYPE);
+    }
+}
+
+int check_arithmetic_identifier_semantic(ast_node* node)
+{
+    assert(node->type == NODE_VAR_ACCESS);
+    char* identifier = node->child[0]->string_literal;
+    t_entrada_simbolo* symbol;
+    if (scope_stack_get(&scope_stack, &symbol, identifier) != 0) {
+        exit(ERR_UNDECLARED);
+    }
+    if (symbol->classe_entrada != T_ENTRADA_VARIAVEL) {
+        exit(ERR_VARIABLE);
+    }
+    if (symbol->variavel.tipo.natureza_semantica == NATUREZA_LITERAL_CHAR) {
+        exit(ERR_CHAR_TO_X);
+    }
+    if (symbol->variavel.tipo.natureza_semantica == NATUREZA_LITERAL_STRING) {
+        exit(ERR_STRING_TO_X);
     }
 }
 
@@ -135,7 +149,7 @@ void set_function_call_semantic(ast_node* node)
     if (function_identifier != NULL) 
     {
         t_entrada_simbolo* result;
-        if (scope_stack_get(&scope_stack, result, function_identifier) == -1)
+        if (scope_stack_get(&scope_stack, &result, function_identifier) == -1)
         {
             exit(ERR_UNDECLARED);
         }
@@ -247,7 +261,7 @@ void set_assignment_semantic(ast_node* node)
     if (lhs_name != NULL) 
     {
         t_entrada_simbolo* result;
-        if (scope_stack_get(&scope_stack, result, lhs_name) == -1)
+        if (scope_stack_get(&scope_stack, &result, lhs_name) == -1)
         {
             exit(ERR_UNDECLARED);
         }
@@ -391,8 +405,7 @@ void set_global_var_semantic(ast_node* node)
     // Check if already declared
     if (var_nome != NULL)
     {
-        t_entrada_simbolo* result;
-        if (scope_stack_get(&scope_stack, result, var_nome) == 0)
+        if (is_declared_in_current_scope(&scope_stack, var_nome))
         {
             printf("Erro: Global variable %s already declared in this scope\n", var_nome);            
             exit(ERR_DECLARED);
@@ -433,8 +446,7 @@ void set_function_definition_semantic(ast_node* node)
     // Check if already declared
     if (function_identifier != NULL)
     {
-        t_entrada_simbolo* result;
-        if (scope_stack_get(&scope_stack, result, function_identifier) == 0)
+        if (is_declared_in_current_scope(&scope_stack, function_identifier))
         {
             exit(ERR_DECLARED);
         }
@@ -557,7 +569,7 @@ int can_cast_to_bool(ast_node* node)
     else if (semantic_nature == NATUREZA_IDENTIFICADOR)
     {
         t_entrada_simbolo* entrada;
-        scope_stack_get(&scope_stack, entrada, node->string_literal);
+        scope_stack_get(&scope_stack, &entrada, node->string_literal);
         // Se o identificador for de uma variavel que pode ser convertida para um booleano
         if (entrada->classe_entrada == T_ENTRADA_VARIAVEL && 
             can_cast_from_natureza_to_bool(entrada->variavel.tipo.natureza_semantica))
@@ -601,7 +613,7 @@ int can_cast_to_int(ast_node* node)
     {
         // Checa o identificador na tabela de simbolos
         t_entrada_simbolo* entrada;
-        scope_stack_get(&scope_stack, entrada, node->string_literal);
+        scope_stack_get(&scope_stack, &entrada, node->string_literal);
         if (entrada == NULL)
         {
             return 0;
