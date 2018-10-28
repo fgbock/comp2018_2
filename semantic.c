@@ -9,8 +9,6 @@ void set_arithmetic_semantic(ast_node* node) {
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
     
-    printf("arithmetic %d, %d\n", lhs_nature, rhs_nature);
-
     // int, int -> int
     if (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_INT)
     {
@@ -73,15 +71,11 @@ int check_arithmetic_identifier_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_ACCESS);
     char* identifier = node->child[0]->string_literal;
-    printf("checking %s\n", identifier);
-    print_table(scope_stack.list->head);
     t_entrada_simbolo* symbol;
+
     if (scope_stack_get(&scope_stack, &symbol, identifier) != 0) {
         exit(ERR_UNDECLARED);
     }
-    printf("classe_entrada: %d\n", symbol->classe_entrada);
-    printf("natureza_semantica: %d\n", symbol->variavel.tipo.natureza_semantica);
-
     if (symbol->classe_entrada != T_ENTRADA_VARIAVEL) {
         exit(ERR_VARIABLE);
     }
@@ -263,7 +257,6 @@ void set_assignment_semantic(ast_node* node)
     assert(node->type == NODE_ASSIGNMENT);
     
     char* lhs_name = node->child[1]->string_literal;
-    //printf("Seaching table for %s\n", lhs_name);
     if (lhs_name != NULL) 
     {
         t_entrada_simbolo* result;
@@ -546,6 +539,7 @@ t_tipo from_node_type_to_table_type(ast_node* node)
     {
         // error
     }
+    return return_type;
 }
 
 int can_cast_from_natureza_to_bool(int semantic_nature)
