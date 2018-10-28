@@ -64,6 +64,7 @@
 #define NODE_IDENTIFIER     50      // abc, aaa01
 #define NODE_FUNCTION_CALL  51      // abc(x1, x2, x3, ...)
 #define NODE_FUNCTION_DEFINITION 52 // abc(int x1, char x2, ...)
+#define NODE_FUNCTION_HEADER 452
 
 #define NODE_ARGUMENT             53 // (int x1)
 #define NODE_ARGUMENT_LIST        54 // (int x1, char x2, ...)
