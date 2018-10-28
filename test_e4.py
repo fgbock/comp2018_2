@@ -95,8 +95,8 @@ for file_name, correct_output in tests.items():
   return_code = result.returncode
   total = total + 1.0
   if return_code == error_name_to_code[correct_output]:
-		succ = succ + 1.0
-		print(file_name + " OK")
+	  succ = succ + 1.0
+	  print(file_name + " OK")
   elif return_code in error_code_to_name:
     print(file_name + " Failed: returned " + error_code_to_name[return_code] + " instead of " + correct_output)
   else:
