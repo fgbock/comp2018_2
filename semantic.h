@@ -91,6 +91,7 @@ void set_program_semantic();
 
 void set_new_scope_semantic();
 
+
 // Aux
 
 int check_arithmetic_identifier_semantic(ast_node* node);

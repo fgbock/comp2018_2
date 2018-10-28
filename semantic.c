@@ -188,6 +188,7 @@ void set_do_while_semantic(ast_node* node)
 void set_return_nature(ast_node* node)
 {
     // TODO: Check function type
+    printf("set_return_nature\n");
     node->semantic_nature = NATUREZA_NULL;
 }
 
@@ -367,6 +368,7 @@ void set_semantic_do_while(ast_node* node)
 void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
+    printf("set_local_var_semantic\n");
     char* var_nome = node->child[0]->string_literal;
     // Check if already declared
     if (var_nome != NULL && is_declared_in_current_scope(&scope_stack, var_nome))
@@ -390,6 +392,7 @@ void set_local_var_semantic(ast_node* node)
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
+    printf("Creating global var\n");
     // Nome, Static, Tamanho, Tipo
     char* var_nome = node->child[0]->string_literal;
     int var_is_static = node->child[1]->type == NODE_STATIC;
@@ -438,8 +441,12 @@ void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
-    char* function_identifier = node->child[2]->string_literal;
+    ast_node* function_header_node = node->child[0];
 
+    char* function_identifier = function_header_node->child[2]->string_literal;
+    printf("set_function_definition_semantic %s\n", function_identifier);
+
+    
     // Check if already declared
     if (function_identifier != NULL)
     {
@@ -451,7 +458,7 @@ void set_function_definition_semantic(ast_node* node)
 	
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
-	
+	/*
     // Create parameters list
     if (node->child[3]->type == NODE_ARGUMENT_LIST)
     {
@@ -478,17 +485,17 @@ void set_function_definition_semantic(ast_node* node)
             add_list(function_definition.parameters, parameter_type);
         }
     }
-    
+    */
 
-    t_tipo return_type = from_node_type_to_table_type(node->child[1]);
+    t_tipo return_type = from_node_type_to_table_type(function_header_node->child[1]);
     return_type.is_const = 0;
-    return_type.is_static = node->child[0]->type == NODE_STATIC;
+    return_type.is_static = function_header_node->child[0]->type == NODE_STATIC;
     table_entry->chave = function_identifier;
     table_entry->classe_entrada = T_ENTRADA_DECLARACAO_FUNCAO;
     table_entry->funcao.return_type = return_type;
     table_entry->funcao = function_definition;
     scope_stack_set(&scope_stack, table_entry);
-
+    
     node->semantic_nature = NATUREZA_NULL;
 }
 
