@@ -12,6 +12,7 @@ typedef struct t_scope_stack {
     t_scope_aux* list;
 } t_scope_stack;
 
+int is_declared_in_current_scope(t_scope_stack* stack, char* key);
 
 int scope_stack_get(t_scope_stack* stack, t_entrada_simbolo* out, char* key);
 

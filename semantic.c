@@ -333,14 +333,12 @@ void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
     char* var_nome = node->child[0]->string_literal;
+    printf("local_var %s\n", var_nome);
     // Check if already declared
-    if (var_nome != NULL) 
+    if (var_nome != NULL && is_declared_in_current_scope(&scope_stack, var_nome))
     {
-        t_entrada_simbolo* result;
-        if (scope_stack_get(&scope_stack, result, var_nome) == 0)
-        {
-            exit(ERR_DECLARED);
-        }
+        printf("Error: Local variable %s is already declared in this scope\n", var_nome);
+        exit(ERR_DECLARED);
     }
 
     // Add to symbol table
@@ -359,10 +357,9 @@ void set_local_var_semantic(ast_node* node)
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
-    printf("global var\n");
     // Nome, Static, Tamanho, Tipo
-    
     char* var_nome = node->child[0]->string_literal;
+    printf("global_var %s\n", var_nome);
     int var_is_static = node->child[1]->type == NODE_STATIC;
     int var_declaracao_tamanho = from_node_size_to_table_size(node->child[2]);
     t_tipo type = from_node_type_to_table_type(node->child[3]);
@@ -376,6 +373,7 @@ void set_global_var_semantic(ast_node* node)
         t_entrada_simbolo* result;
         if (scope_stack_get(&scope_stack, result, var_nome) == 0)
         {
+            printf("Erro: Global variable %s already declared in this scope\n", var_nome);            
             exit(ERR_DECLARED);
         }
     }
@@ -399,10 +397,17 @@ void set_new_user_type_semantic(ast_node* node)
     node->semantic_nature = NATUREZA_NULL;
 }
 
+void set_new_scope_semantic()
+{
+    printf("Creating new scope\n");
+    scope_stack_push_scope(&scope_stack);
+}
+
 void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
+    printf("set_function_definition_semantic\n");
     char* function_identifier = node->child[2]->string_literal;
 
     // Check if already declared

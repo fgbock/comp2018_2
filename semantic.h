@@ -89,6 +89,8 @@ void set_assignment_semantic(ast_node* node);
 
 void set_program_semantic();
 
+void set_new_scope_semantic();
+
 // Aux
 
 int can_cast_from_natureza_to_bool(int semantic_nature);
