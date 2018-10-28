@@ -85,16 +85,24 @@ error_name_to_code = {
   'ERR_WRONG_PAR_RETURN': 52
 }
 
+succ = 0.0
+total = 0.0
 error_code_to_name = {v: k for k, v in error_name_to_code.items()}
   
 for file_name, correct_output in tests.items():
   result = subprocess.Popen("cat ./e4tests/" + file_name + " | ./etapa4", stdout=subprocess.PIPE, shell=True)
   result.wait()
   return_code = result.returncode
-    
+  total = total + 1.0
   if return_code == error_name_to_code[correct_output]:
-    print(file_name + " OK")
+		succ = succ + 1.0
+		print(file_name + " OK")
   elif return_code in error_code_to_name:
     print(file_name + " Failed: returned " + error_code_to_name[return_code] + " instead of " + correct_output)
   else:
     print(file_name + " Unknown error")
+percent = repr(succ / total * 100)
+print("Success rate: " + percent[0:4] + "%")
+
+
+
