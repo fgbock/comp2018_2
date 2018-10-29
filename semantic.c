@@ -419,7 +419,6 @@ void set_global_var_semantic(ast_node* node)
     table_entry->variavel.tipo = type;
     scope_stack_set(&scope_stack, table_entry);
     node->semantic_nature = NATUREZA_NULL;
-    
 }
 
 void set_new_user_type_semantic(ast_node* node)
@@ -433,7 +432,6 @@ void set_new_user_type_semantic(ast_node* node)
 
 void set_new_scope_semantic()
 {
-    printf("Creating new scope\n");
     scope_stack_push_scope(&scope_stack);
 }
 
@@ -441,10 +439,10 @@ void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
-    ast_node* function_header_node = node->child[0];
+    scope_stack_pop_scope(&scope_stack);
 
+    ast_node* function_header_node = node->child[0];
     char* function_identifier = function_header_node->child[2]->string_literal;
-    printf("set_function_definition_semantic %s\n", function_identifier);
 
     
     // Check if already declared
