@@ -1,4 +1,4 @@
-etapa4: 
+etapa5:
 	bison -d -v parser.y
 	gcc -g -c parser.tab.c
 	flex scanner.l
@@ -9,8 +9,9 @@ etapa4:
 	gcc -c symboltable.c
 	gcc -c scope_stack.c
 	gcc -c semantic.c
+	gcc -c codegen.c
 	gcc -c main.c
-	gcc -o etapa4 main.o arvore.o list.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
+	gcc -o etapa4 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
 
 debug: 
 	bison -d -v parser.y --report-file=REPORTFILE
@@ -23,9 +24,10 @@ debug:
 	gcc -c symboltable.c
 	gcc -c scope_stack.c
 	gcc -c semantic.c
+	gcc -c codegen.c
 	gcc -g -c main.c
-	gcc -o etapa4 main.o arvore.o list.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
+	gcc -o etapa4 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
 
 clean:
-	rm -rf etapa4 lex.yy.c lex.yy.o main.o arvore.o list.o semantic.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE temp1 temp2 symboltable.o scope_stack.o
+	rm -rf etapa5 lex.yy.c lex.yy.o main.o arvore.o list.o codegen.o semantic.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE temp1 temp2 symboltable.o scope_stack.o
 	

@@ -148,6 +148,8 @@ typedef struct ast_node {
 
    // Children
    struct ast_node* child[MAX_CHILD_NODES];
+
+   char* register_name;
 } ast_node;
 
 
