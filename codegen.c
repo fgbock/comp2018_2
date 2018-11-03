@@ -37,7 +37,7 @@ void generate_code(ast_node* node)
       	break;
 
       	case NODE_BOOL_LITERAL:
-            // TODO:
+            generate_boolean_literal_code(node);
       	break;
 
       	case NODE_COMMAND_LIST:
@@ -50,15 +50,15 @@ void generate_code(ast_node* node)
       	break;
 
       	case NODE_IF:
-            // TODO:
+		  	generate_if_code(node);
       	break;
 
       	case NODE_WHILE:
-            // TODO:
+            generate_while_code(node);
       	break;
 
       	case NODE_DO_WHILE:
-            // TODO:
+            generate_do_while_code(node);
       	break;
 
       	case NODE_LESS:
@@ -86,11 +86,11 @@ void generate_code(ast_node* node)
 		break;
 
 		case NODE_AND:
-			generate_relational_op(node, "and");
+			generate_and_code(node);
 		break;
 
 		case NODE_OR:
-			generate_relational_op(node, "or");
+			generate_or_code(node);
 		break;
 
         case NODE_ADD:
@@ -116,9 +116,137 @@ void generate_code(ast_node* node)
     }
 }
 
+void generate_and_code(ast_node* node)
+{
+	ast_node* lhs = node->child[0];
+	ast_node* rhs = node->child[1];
+
+	// Implement short-circut
+	lhs->false_label = node->false_label;
+	lhs->true_label = next_label();
+
+	rhs->false_label = node->false_label;
+	rhs->true_label = node->true_label;
+
+	generate_code(lhs);
+	printf("%s:\n", rhs->true_label);
+	generate_code(lhs);
+}
+
+void generate_or_code(ast_node* node)
+{
+	ast_node* lhs = node->child[0];
+	ast_node* rhs = node->child[1];
+
+	// Implement short-circuit
+	lhs->true_label = node->true_label;
+	lhs->false_label = next_label();
+
+	rhs->true_label = node->true_label;
+	rhs->false_label = node->false_label;
+
+	generate_code(lhs);
+	printf("%s:\n", lhs->false_label);
+	generate_code(rhs);
+
+}
+
+void generate_boolean_literal_code(ast_node* node)
+{
+	if (node->bool_literal)
+	{
+		printf("jumpI -> %s\n", node->true_label);
+	}
+	else
+	{
+		printf("jumpI -> %s\n", node->false_label);
+	}
+}
+
+void generate_comment(char* comment)
+{
+	printf("// %s \n", comment);
+}
+
+void generate_if_code(ast_node* node)
+{
+	char* true_label = next_label();
+	char* false_label = next_label();
+	char* done_label = next_label();
+	node->child[0]->true_label = true_label;
+	node->child[1]->false_label = false_label;
+
+	generate_comment("If");
+	generate_code(node->child[0]); // Expression
+	printf("%s:\n", true_label);
+
+	generate_comment("Then");
+	generate_code(node->child[1]); // Then
+	printf("%s:\n", false_label);
+	printf("jumpI -> %s\n", done_label);
+	
+	generate_comment("Else");
+	generate_code(node->child[2]); // Else
+
+	generate_comment("End if");
+	printf("%s:\n", done_label);
+}
+
+void generate_while_code(ast_node* node)
+{
+	char* begin_label = next_label();
+	char* true_label = next_label();
+	char* false_label = next_label();
+	node->child[0]->true_label = true_label;
+	node->child[1]->false_label = false_label;
+	printf("%s:\n", begin_label);
+
+	generate_comment("While");
+	generate_code(node->child[0]); // Conditional
+	printf("%s:\n", true_label);
+
+	generate_comment("Do:");
+	generate_code(node->child[1]); // Command block
+	printf("jumpI -> %s\n", begin_label);
+
+	generate_comment("End while");
+	printf("%s:\n", false_label);
+
+}
+
+void generate_do_while_code(ast_node* node)
+{
+    char* begin_label = next_label();
+	char* done_label = next_label();
+	node->child[1]->true_label = begin_label;
+	node->child[1]->false_label = done_label;
+	printf("%s:\n", begin_label);
+
+	generate_comment("Do");
+	generate_code(node->child[0]); // Body
+
+	generate_comment("While");
+	generate_code(node->child[1]); // Expression
+	printf("jumpI -> %s\n", begin_label);
+
+	generate_comment("End do-while");
+	printf("%s:\n", done_label);
+}
+
 void generate_relational_op(ast_node* node, char* instruction_code)
 {
-    // TODO:
+	node->register_name = next_register();
+	generate_code(node->child[0]);
+	generate_code(node->child[1]);
+	printf("%s %s %s -> %s", 
+		instruction_code, 
+		node->child[0]->register_name,
+		node->child[1]->register_name,
+		node->register_name);
+    printf("cbr %s -> %s, %s\n",
+		node->register_name,
+		node->true_label,
+		node->false_label);
 }
 
 void generate_var_access(ast_node* node)
@@ -142,7 +270,6 @@ void generate_binary_op(ast_node* node, char* instruction_name)
         node->register_name
 	);
 }
-
 
 char* next_register()
 {

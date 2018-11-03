@@ -150,6 +150,9 @@ typedef struct ast_node {
    struct ast_node* child[MAX_CHILD_NODES];
 
    char* register_name;
+
+   char* true_label;
+   char* false_label;
 } ast_node;
 
 
