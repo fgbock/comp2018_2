@@ -13,9 +13,16 @@ void generate_code(ast_node* node)
             generate_code(node->child[1]);
       	break;
 
-		case NODE_BRACKET_EXPR:
+		case NODE_COMMAND_BLOCK:
 			generate_code(node->child[0]);
+			generate_code(node->child[1]);
+		break;
+
+		case NODE_BRACKET_EXPR:
+			node->child[0]->true_label = node->true_label;
+			node->child[0]->false_label = node->false_label;
 			node->register_name = node->child[0]->register_name;
+			generate_code(node->child[0]);
 		break;
 
       	case NODE_FUNCTION_DEFINITION:
@@ -120,7 +127,6 @@ void generate_and_code(ast_node* node)
 {
 	ast_node* lhs = node->child[0];
 	ast_node* rhs = node->child[1];
-
 	// Implement short-circut
 	lhs->false_label = node->false_label;
 	lhs->true_label = next_label();
@@ -128,9 +134,14 @@ void generate_and_code(ast_node* node)
 	rhs->false_label = node->false_label;
 	rhs->true_label = node->true_label;
 
+	generate_comment("'and' begin");
+	generate_comment("lhs:");
 	generate_code(lhs);
+
 	printf("%s:\n", rhs->true_label);
-	generate_code(lhs);
+	generate_comment("rhs:");
+	generate_code(rhs);
+	generate_comment("'and' end");
 }
 
 void generate_or_code(ast_node* node)
@@ -145,9 +156,11 @@ void generate_or_code(ast_node* node)
 	rhs->true_label = node->true_label;
 	rhs->false_label = node->false_label;
 
+	generate_comment("'or' begin");
 	generate_code(lhs);
 	printf("%s:\n", lhs->false_label);
 	generate_code(rhs);
+	generate_comment("'or' end");
 
 }
 
@@ -176,7 +189,7 @@ void generate_if_code(ast_node* node)
 	node->child[0]->true_label = true_label;
 	node->child[1]->false_label = false_label;
 
-	generate_comment("If");
+	generate_comment("'if' begin");
 	generate_code(node->child[0]); // Expression
 	printf("%s:\n", true_label);
 
@@ -188,7 +201,7 @@ void generate_if_code(ast_node* node)
 	generate_comment("Else");
 	generate_code(node->child[2]); // Else
 
-	generate_comment("End if");
+	generate_comment("'if' end");
 	printf("%s:\n", done_label);
 }
 
@@ -198,18 +211,19 @@ void generate_while_code(ast_node* node)
 	char* true_label = next_label();
 	char* false_label = next_label();
 	node->child[0]->true_label = true_label;
-	node->child[1]->false_label = false_label;
+	node->child[0]->false_label = false_label;
+
 	printf("%s:\n", begin_label);
 
-	generate_comment("While");
+	generate_comment("'while' begin");
 	generate_code(node->child[0]); // Conditional
 	printf("%s:\n", true_label);
 
-	generate_comment("Do:");
+	generate_comment("'while' do:");
 	generate_code(node->child[1]); // Command block
 	printf("jumpI -> %s\n", begin_label);
 
-	generate_comment("End while");
+	generate_comment("'while' end");
 	printf("%s:\n", false_label);
 
 }
@@ -238,7 +252,7 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 	node->register_name = next_register();
 	generate_code(node->child[0]);
 	generate_code(node->child[1]);
-	printf("%s %s %s -> %s", 
+	printf("%s %s %s -> %s\n", 
 		instruction_code, 
 		node->child[0]->register_name,
 		node->child[1]->register_name,
