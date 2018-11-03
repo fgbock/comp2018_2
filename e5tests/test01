@@ -1,4 +1,5 @@
 int main() {
   int j <= 1;
+  j = (2*10)+5;
   return 0;
 }

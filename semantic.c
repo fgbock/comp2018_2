@@ -13,12 +13,14 @@ void set_arithmetic_semantic(ast_node* node) {
     if (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_INT)
     {
         node->semantic_nature = NATUREZA_LITERAL_INT;
+        return;
     }
 
     // float, float -> float
     else if (lhs_nature == NATUREZA_LITERAL_FLOAT && rhs_nature == NATUREZA_LITERAL_FLOAT)
     {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
+        return;
     }
 
     // A lot of implicit conversions:
@@ -27,6 +29,7 @@ void set_arithmetic_semantic(ast_node* node) {
     (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_BOOL)) 
     {
         node->semantic_nature = NATUREZA_LITERAL_INT;
+        return;
     }
 
     // float, bool -> float
@@ -34,6 +37,7 @@ void set_arithmetic_semantic(ast_node* node) {
     (lhs_nature == NATUREZA_LITERAL_FLOAT && rhs_nature == NATUREZA_LITERAL_BOOL)) 
     {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
+        return;
     }
 
     // int, float -> float
@@ -41,6 +45,7 @@ void set_arithmetic_semantic(ast_node* node) {
        (lhs_nature == NATUREZA_LITERAL_FLOAT && rhs_nature == NATUREZA_LITERAL_INT))
     {
         node->semantic_nature = NATUREZA_LITERAL_FLOAT;
+        return;
     }
 
     if (lhs_nature == NATUREZA_IDENTIFICADOR)
@@ -65,6 +70,11 @@ void set_arithmetic_semantic(ast_node* node) {
     printf("Wrong type in expression\n");
     exit(ERR_WRONG_TYPE);
     
+}
+
+void set_node_parenthesis(ast_node* node)
+{
+    node->semantic_nature = node->child[0]->semantic_nature;
 }
 
 int check_arithmetic_identifier_semantic(ast_node* node)

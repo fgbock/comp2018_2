@@ -157,7 +157,7 @@ expressao: expressao TK_OC_OR  expressao { $$ = make_node(NODE_OR);         $$->
 expressao: literal           { $$ = $1; };
 expressao: acesso_variavel   { $$ = $1; };
 expressao: chamada_funcao    { $$ = $1; };
-expressao: '(' expressao ')' { $$ = make_node(NODE_BRACKET_EXPR); $$->child[0] = $2; };
+expressao: '(' expressao ')' { $$ = make_node(NODE_BRACKET_EXPR); $$->child[0] = $2; set_node_parenthesis($$); };
 expressao: expressao '?' expressao ':' expressao { $$ = make_node(NODE_TERNARY); $$->child[0] = $1; $$->child[1] = $3; $$->child[2] = $5; set_ternary_expression_semantic($$); };
 
 /* declarações de tipo */

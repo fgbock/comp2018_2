@@ -91,6 +91,8 @@ void set_program_semantic();
 
 void set_new_scope_semantic();
 
+void set_node_parenthesis();
+
 
 // Aux
 

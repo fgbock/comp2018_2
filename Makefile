@@ -11,7 +11,7 @@ etapa5:
 	gcc -c semantic.c
 	gcc -c codegen.c
 	gcc -c main.c
-	gcc -o etapa4 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
+	gcc -o etapa5 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
 
 debug: 
 	bison -d -v parser.y --report-file=REPORTFILE
@@ -26,7 +26,7 @@ debug:
 	gcc -c semantic.c
 	gcc -c codegen.c
 	gcc -g -c main.c
-	gcc -o etapa4 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
+	gcc -o etapa5 main.o arvore.o list.o codegen.o semantic.o symboltable.o scope_stack.o yyerror.o parser.tab.o lex.yy.o
 
 clean:
 	rm -rf etapa5 lex.yy.c lex.yy.o main.o arvore.o list.o codegen.o semantic.o yyerror.o parser.tab.c parser.tab.h parser.tab.o parser.output REPORTFILE temp1 temp2 symboltable.o scope_stack.o

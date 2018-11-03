@@ -18,7 +18,8 @@ int main (int argc, char **argv)
   scope_stack_push_scope(&scope_stack);
   int ret = yyparse();
   //descompila(arvore);
-  //printree(arvore, 0, 0);
+  printree(arvore, 0, 0);
+  printf("Generating code:\n");
   generate_code((ast_node*)arvore);
   libera(arvore);
   yylex_destroy();
