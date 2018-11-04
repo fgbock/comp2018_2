@@ -1,8 +1,8 @@
 #include "scope_stack.h"
 
-void scope_stack_push_scope(t_scope_stack* stack)
+void scope_stack_push_scope(t_scope_stack* stack, int is_global_table)
 {
-    symbol_table* table = make_table();
+    t_symbol_table* table = make_table(is_global_table);
     t_scope_aux* scope = malloc(sizeof(t_scope_aux));
     scope->tail = stack->list;
     scope->head = table;

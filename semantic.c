@@ -442,14 +442,14 @@ void set_new_user_type_semantic(ast_node* node)
 
 void set_new_scope_semantic()
 {
-    scope_stack_push_scope(&scope_stack);
+    scope_stack_push_scope(&scope_stack, 0);
 }
 
 void set_function_definition_semantic(ast_node* node)
 {
     assert(node->type == NODE_FUNCTION_DEFINITION);
 
-    scope_stack_pop_scope(&scope_stack);
+    //scope_stack_pop_scope(&scope_stack);
 
     ast_node* function_header_node = node->child[0];
     char* function_identifier = function_header_node->child[2]->string_literal;
@@ -649,7 +649,7 @@ int can_cast_to_int(ast_node* node)
 
 void set_program_semantic()
 {
-    scope_stack_push_scope(&scope_stack);
+    scope_stack_push_scope(&scope_stack, 0);
 }
 
 void exit_with_cannot_cast_to_error(int semantic_nature)

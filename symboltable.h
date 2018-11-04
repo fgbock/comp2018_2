@@ -37,6 +37,8 @@ typedef struct t_entrada_simbolo_tipousuario {
 
 typedef struct t_entrada_declaracao_variavel {
 	t_tipo tipo;
+	size_t offset_in_bytes;
+	int size_in_bytes;
 } t_entrada_declaracao_variavel;
 
 #define T_ENTRADA_DECLARACAO_FUNCAO 0
@@ -47,7 +49,6 @@ typedef struct t_entrada_simbolo {
 	char *chave;
 	int loc_linha;
 	int loc_coluna;
-	int size_in_bytes;
 	int classe_entrada;
 	union {
 		t_entrada_simbolo_funcao      funcao;
@@ -56,30 +57,34 @@ typedef struct t_entrada_simbolo {
 	};
 } t_entrada_simbolo;
 
-typedef t_lista symbol_table;
+typedef struct t_symbol_table {
+	size_t offset_in_bytes;
+	int is_global_table;
+	t_lista symbols;
+} t_symbol_table;
+
+//typedef t_lista symbol_table;
 
 
-t_lista* make_table();
+t_symbol_table* make_table(int is_global_table);
 
-int free_tabela();
-
-int get_tipousuario_tamanho(t_lista* tabela, char* chave_buscada);
-
-int set_tipousuario_tamanho(t_lista* lista);
+//int free_tabela();
 
 /*
 * Procura na 'tabela' pela 'chave'. Caso encontre, salva o conteudo no ponteiro 'entrada'
 */
-int get_entrada(t_lista* tabela, t_entrada_simbolo** entrada_retorno, char* chave_buscada);
+int get_entrada(t_symbol_table* table, t_entrada_simbolo** entrada_retorno, char* chave_buscada);
 
 /*
 * Insere uma 'entrada' na tabela de simbolos 'tabela'
 * Retorna 0 se sucesso, -1 se erro
 */
-int set_entrada(t_lista* tabela, t_entrada_simbolo* entrada);
+int set_entrada(t_symbol_table* table, t_entrada_simbolo* entrada);
+
+int get_natureza_size(int natureza_semantica);
 
 
-void print_table(t_lista* tabela);
+void print_table(t_symbol_table* table);
 
 #endif
 

@@ -1,6 +1,7 @@
 {
     "python.pythonPath": "/usr/bin/python3",
     "files.associations": {
-        "codegen.h": "c"
+        "codegen.h": "c",
+        "symboltable.h": "c"
     }
 }
