@@ -37,8 +37,9 @@ typedef struct t_entrada_simbolo_tipousuario {
 
 typedef struct t_entrada_declaracao_variavel {
 	t_tipo tipo;
-	size_t offset_in_bytes;
+	int offset_in_bytes;
 	int size_in_bytes;
+	int is_global_var;
 } t_entrada_declaracao_variavel;
 
 #define T_ENTRADA_DECLARACAO_FUNCAO 0
@@ -58,7 +59,7 @@ typedef struct t_entrada_simbolo {
 } t_entrada_simbolo;
 
 typedef struct t_symbol_table {
-	size_t offset_in_bytes;
+	int offset_in_bytes;
 	int is_global_table;
 	t_lista symbols;
 } t_symbol_table;

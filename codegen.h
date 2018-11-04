@@ -28,6 +28,8 @@ void generate_or_code(ast_node* node);
 
 void generate_boolean_literal_code(ast_node* node);
 
+void generate_assignment_code(ast_node* node);
+
 void generate_comment(char* comment);
 
 char* next_register();

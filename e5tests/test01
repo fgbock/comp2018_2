@@ -1,6 +1,9 @@
+aa int;
+
 int main() {
   int j <= 1;
-  while((3 > 4) && (1 < 2)) do {
-  };
+  int k <= 1;
+  aa = 20;
+  k = 10;
   return 0;
 }

@@ -30,13 +30,12 @@ void generate_code(ast_node* node)
       	break;
 
 		case NODE_FUNCTION_BODY:
+			// Generate the function body directly
 			generate_code(node->child[0]); // Instructions
 		break;
 
 		case NODE_ASSIGNMENT:
-			// TODO:
-			generate_code(node->child[3]); // rhs
-			//printf("load")
+			generate_assignment_code(node);
 		break;
 
       	case NODE_LOCAL_VAR:
@@ -121,6 +120,29 @@ void generate_code(ast_node* node)
             printf("loadI %d => %s\n", node->int_literal, node->register_name);
        	break;
     }
+}
+
+void generate_assignment_code(ast_node* node)
+{
+	generate_comment("rhs of the assignment");
+	generate_code(node->child[3]); // rhs
+
+	t_entrada_simbolo* out;
+	scope_stack_get(&scope_stack, &out, node->child[1]->string_literal);
+
+	char* temp_register = next_register();
+	generate_comment("Storing the rhs into the variable");
+	if (out->variavel.is_global_var)
+	{
+    	// Endereço de variáveis globais são um deslocamento em relação ao registrador especial rbss
+		printf("add rbss, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
+	}
+	else
+	{
+		// Endereço de variáveis locais são um deslocamento em relação ao registrador especial rfp
+		printf("add rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
+	}
+	printf("store %s => %d\n", temp_register, out->variavel.offset_in_bytes);
 }
 
 void generate_and_code(ast_node* node)

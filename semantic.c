@@ -67,7 +67,7 @@ void set_arithmetic_semantic(ast_node* node) {
     {
         exit(ERR_STRING_TO_X);
     }
-    printf("Wrong type in expression\n");
+    printf("Error: Wrong type in expression\n");
     exit(ERR_WRONG_TYPE);
     
 }
@@ -198,7 +198,6 @@ void set_do_while_semantic(ast_node* node)
 void set_return_nature(ast_node* node)
 {
     // TODO: Check function type
-    printf("set_return_nature\n");
     node->semantic_nature = NATUREZA_NULL;
 }
 
@@ -378,7 +377,6 @@ void set_semantic_do_while(ast_node* node)
 void set_local_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_LOCAL_VAR);
-    printf("set_local_var_semantic\n");
     char* var_nome = node->child[0]->string_literal;
     // Check if already declared
     if (var_nome != NULL && is_declared_in_current_scope(&scope_stack, var_nome))
@@ -402,7 +400,6 @@ void set_local_var_semantic(ast_node* node)
 void set_global_var_semantic(ast_node* node)
 {
     assert(node->type == NODE_VAR_GLOBAL);
-    printf("Creating global var\n");
     // Nome, Static, Tamanho, Tipo
     char* var_nome = node->child[0]->string_literal;
     int var_is_static = node->child[1]->type == NODE_STATIC;

@@ -114,6 +114,7 @@ int set_entrada(t_symbol_table* table, t_entrada_simbolo* entrada_inserida)
 		t_tipo tipo_aux = entrada_inserida->variavel.tipo;
 		entrada_inserida->variavel.size_in_bytes = get_natureza_size(tipo_aux.natureza_semantica) * tipo_aux.tamanho_vetor;
 		entrada_inserida->variavel.offset_in_bytes = table->offset_in_bytes;
+		entrada_inserida->variavel.is_global_var = table->is_global_table;
 		table->offset_in_bytes += entrada_inserida->variavel.size_in_bytes;
 	}
 	entrada->prox->conteudo = entrada_inserida;
@@ -124,7 +125,8 @@ void print_table(t_symbol_table* table)
 {
 	t_lista* p = &table->symbols;
 	printf("Table: ");
-	printf("Offset: %ld\n", table->offset_in_bytes);
+	printf("Offset: %d\n", table->offset_in_bytes);
+	printf("Is global: %d\n", table->is_global_table);
 	while (p != NULL)
 	{
 		if (p->conteudo != NULL)
@@ -135,7 +137,8 @@ void print_table(t_symbol_table* table)
 			printf("Coluna: %d, ", table_entry->loc_coluna);
 			if (table_entry->classe_entrada == T_ENTRADA_VARIAVEL)
 			{
-			printf("Tamanho: %d, ", table_entry->variavel.size_in_bytes);
+				printf("Tamanho: %d, ", table_entry->variavel.size_in_bytes);
+				printf("Is global: %d,  ", table_entry->variavel.is_global_var);
 				switch(table_entry->variavel.tipo.natureza_semantica)
 				{
 					case NATUREZA_LITERAL_INT:
