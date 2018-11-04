@@ -135,12 +135,12 @@ void generate_assignment_code(ast_node* node)
 	if (out->variavel.is_global_var)
 	{
     	// Endereço de variáveis globais são um deslocamento em relação ao registrador especial rbss
-		printf("add rbss, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
+		printf("addI rbss, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
 	}
 	else
 	{
 		// Endereço de variáveis locais são um deslocamento em relação ao registrador especial rfp
-		printf("add rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
+		printf("addI rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
 	}
 	printf("store %s => %d\n", temp_register, out->variavel.offset_in_bytes);
 }
@@ -274,7 +274,7 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 	node->register_name = next_register();
 	generate_code(node->child[0]);
 	generate_code(node->child[1]);
-	printf("%s %s %s -> %s\n", 
+	printf("%s %s, %s -> %s\n", 
 		instruction_code, 
 		node->child[0]->register_name,
 		node->child[1]->register_name,
@@ -299,7 +299,7 @@ void generate_binary_op(ast_node* node, char* instruction_name)
     generate_code(node->child[0]);
     generate_code(node->child[1]);
     node->register_name = next_register();
-    printf("%s %s %s => %s\n", 
+    printf("%s %s, %s => %s\n", 
         instruction_name,
         node->child[0]->register_name, 
         node->child[1]->register_name, 

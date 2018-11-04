@@ -19,8 +19,8 @@ int main (int argc, char **argv)
   int ret = yyparse();
   //descompila(arvore);
   //printree(arvore, 0, 0);
-  print_table(scope_stack.list->head);
-  print_table(scope_stack.list->tail->head);
+  //print_table(scope_stack.list->head);
+  //print_table(scope_stack.list->tail->head);
   generate_code((ast_node*)arvore);
   libera(arvore);
   yylex_destroy();

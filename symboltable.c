@@ -79,7 +79,8 @@ int get_entrada(t_symbol_table* table, t_entrada_simbolo** entrada_retorno, char
 
 int get_natureza_size(int natureza_semantica)
 {
-	switch(natureza_semantica){
+	switch(natureza_semantica)
+	{
 		case NATUREZA_LITERAL_INT:
 			return 4;
 		case NATUREZA_LITERAL_FLOAT:
@@ -91,10 +92,26 @@ int get_natureza_size(int natureza_semantica)
 		case NATUREZA_LITERAL_BOOL:
 			return 1;
 	}
+	return 0;
 }
 
 int set_entrada(t_symbol_table* table, t_entrada_simbolo* entrada_inserida)
 {
+	// Generate missing properties
+	if (entrada_inserida->classe_entrada == T_ENTRADA_VARIAVEL)
+	{
+		t_tipo tipo_aux = entrada_inserida->variavel.tipo;
+		entrada_inserida->variavel.size_in_bytes = get_natureza_size(tipo_aux.natureza_semantica);
+		if (tipo_aux.tamanho_vetor != -1)
+		{
+			entrada_inserida->variavel.size_in_bytes *= tipo_aux.tamanho_vetor;
+		}
+		entrada_inserida->variavel.offset_in_bytes = table->offset_in_bytes;
+		entrada_inserida->variavel.is_global_var = table->is_global_table;
+		table->offset_in_bytes += entrada_inserida->variavel.size_in_bytes;
+	}
+
+	// Add into table
 	t_lista* entrada = &table->symbols;
 	if (table != NULL && entrada->conteudo == NULL) 
 	{
@@ -108,15 +125,6 @@ int set_entrada(t_symbol_table* table, t_entrada_simbolo* entrada_inserida)
 	entrada->prox = malloc(sizeof(t_lista));
 	entrada->prox->prox = NULL;
 
-
-	if (entrada_inserida->classe_entrada == T_ENTRADA_VARIAVEL)
-	{
-		t_tipo tipo_aux = entrada_inserida->variavel.tipo;
-		entrada_inserida->variavel.size_in_bytes = get_natureza_size(tipo_aux.natureza_semantica) * tipo_aux.tamanho_vetor;
-		entrada_inserida->variavel.offset_in_bytes = table->offset_in_bytes;
-		entrada_inserida->variavel.is_global_var = table->is_global_table;
-		table->offset_in_bytes += entrada_inserida->variavel.size_in_bytes;
-	}
 	entrada->prox->conteudo = entrada_inserida;
 	return 0;
 }
@@ -138,6 +146,7 @@ void print_table(t_symbol_table* table)
 			if (table_entry->classe_entrada == T_ENTRADA_VARIAVEL)
 			{
 				printf("Tamanho: %d, ", table_entry->variavel.size_in_bytes);
+				printf("Offset: %d,  ", table_entry->variavel.offset_in_bytes);
 				printf("Is global: %d,  ", table_entry->variavel.is_global_var);
 				switch(table_entry->variavel.tipo.natureza_semantica)
 				{

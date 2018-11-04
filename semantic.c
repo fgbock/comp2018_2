@@ -391,6 +391,7 @@ void set_local_var_semantic(ast_node* node)
     table_entry->chave = var_nome;
 
     t_tipo type = from_node_type_to_table_type(node->child[1]);
+    type.tamanho_vetor = -1; // TODO:
 
     table_entry->variavel.tipo = type;
     scope_stack_set(&scope_stack, table_entry);
