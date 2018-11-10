@@ -39,7 +39,7 @@ void generate_code(ast_node* node)
 		break;
 
       	case NODE_LOCAL_VAR:
-            // TODO:
+            generate_local_var_code(node);
       	break;
 
       	case NODE_BOOL_LITERAL:
@@ -124,6 +124,38 @@ void generate_code(ast_node* node)
             printf("loadI %d => %s\n", node->int_literal, node->register_name);
        	break;
     }
+}
+
+void generate_local_var_code(ast_node* node)
+{
+	t_entrada_simbolo* lhs_out;
+	scope_stack_get(&scope_stack, &lhs_out, node->child[0]->string_literal);
+
+	ast_node* optional_value_definition = node->child[4]; // Declaracao de valor opcional
+	if (optional_value_definition->type == NODE_INT_LITERAL)
+	{
+		generate_comment("Initializing local variable with int literal");
+		char* temp_register = next_register();
+		printf("addI rbss, %d => %s\n", lhs_out->variavel.offset_in_bytes, temp_register);
+		printf("loadI %d => %s\n", optional_value_definition->int_literal, temp_register);
+	}
+	else if (optional_value_definition->type == NODE_IDENTIFIER)
+	{
+		generate_comment("Initializing local variable with another variable");
+		t_entrada_simbolo* rhs_out;
+		scope_stack_get(&scope_stack, &rhs_out, optional_value_definition->string_literal);
+
+		generate_comment("Loading rhs value");
+		char* rhs_value_register = next_register();
+		char* rhs_memory_address_register = next_register();
+		printf("addI rbss, %d => %s\n", rhs_out->variavel.offset_in_bytes, rhs_memory_address_register);
+		printf("load %s => %s\n", rhs_memory_address_register, rhs_value_register);
+
+		generate_comment("Storing into lhs variable");
+		char* lhs_memory_address_register = next_register();
+		printf("addI rbbs, %d => %s\n", lhs_out->variavel.offset_in_bytes, lhs_memory_address_register);
+		printf("store %s => %s\n", lhs_memory_address_register, rhs_value_register);
+	}
 }
 
 void generate_assignment_code(ast_node* node)

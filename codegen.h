@@ -30,6 +30,8 @@ void generate_boolean_literal_code(ast_node* node);
 
 void generate_assignment_code(ast_node* node);
 
+void generate_local_var_code(ast_node* node);
+
 void generate_comment(char* comment);
 
 char* next_register();
