@@ -18,11 +18,11 @@ int main (int argc, char **argv)
   scope_stack_push_scope(&scope_stack, 1);
   int ret = yyparse();
   //descompila(arvore);
-  //printree(arvore, 0, 0);
+  printree(arvore, 0, 0);
   //print_table(scope_stack.list->head);
   //print_table(scope_stack.list->tail->head);
   generate_code((ast_node*)arvore);
-  libera(arvore);
-  yylex_destroy();
+  //libera(arvore);
+  //yylex_destroy();
   return ret;
 }

@@ -59,6 +59,10 @@ void generate_code(ast_node* node)
 		  	generate_if_code(node);
       	break;
 
+		case NODE_ELSE:
+			generate_code(node->child[0]);
+		break;
+
       	case NODE_WHILE:
             generate_while_code(node);
       	break;
@@ -209,7 +213,7 @@ void generate_if_code(ast_node* node)
 	char* false_label = next_label();
 	char* done_label = next_label();
 	node->child[0]->true_label = true_label;
-	node->child[1]->false_label = false_label;
+	node->child[0]->false_label = false_label;
 
 	generate_comment("'if' begin");
 	generate_code(node->child[0]); // Expression
@@ -217,10 +221,10 @@ void generate_if_code(ast_node* node)
 
 	generate_comment("Then");
 	generate_code(node->child[1]); // Then
-	printf("%s:\n", false_label);
 	printf("jumpI -> %s\n", done_label);
-	
+
 	generate_comment("Else");
+	printf("%s:\n", false_label);
 	generate_code(node->child[2]); // Else
 
 	generate_comment("'if' end");
@@ -287,11 +291,13 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 
 void generate_var_access(ast_node* node)
 {
+	//printf("generate_var_access\n");
     t_entrada_simbolo* out;
-    scope_stack_get(&scope_stack, &out, node->string_literal);
+    //scope_stack_get(&scope_stack, &out, node->string_literal);
+	node->register_name = next_register();
     //out->variavel.tipo.
-    node->child[0]; // Identifier
-    node->child[2]; // Optional vector access
+    //node->child[0]; // Identifier
+    //node->child[2]; // Optional vector access
 }
 
 void generate_binary_op(ast_node* node, char* instruction_name)

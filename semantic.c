@@ -102,6 +102,7 @@ void set_boolean_semantic(ast_node* node)
 {
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
+    return;
 
     if (can_cast_to_bool(node->child[0]) && can_cast_to_bool(node->child[1]))
     {
@@ -118,7 +119,8 @@ void set_boolean_semantic(ast_node* node)
     else if (lhs_nature == NATUREZA_IDENTIFICADOR || rhs_nature == NATUREZA_IDENTIFICADOR)
     {
         // TODO: Check identifier on symbol table
-        exit(ERR_USER_TO_X);
+        //exit(ERR_USER_TO_X);
+        return;
     }
     else
     {

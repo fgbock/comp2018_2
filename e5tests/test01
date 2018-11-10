@@ -1,9 +1,11 @@
 aa int;
 
 int main() {
-  int j <= 1;
-  int k <= 1;
-  aa = 20;
-  k = 10;
-  return 0;
+  int j <= 0;
+  if (1 > 2) then {
+    j = 1+2;
+  } else {
+    j = 2+4;
+  };
+  j = 0;
 }
