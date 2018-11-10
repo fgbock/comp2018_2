@@ -1,8 +1,9 @@
 aa int;
 
 int main() {
-  int j <= 0;
-  int k <= j;
+  aa = 7;
+  int j <= 7;
+  int k <= 7;
   if (j > 2) then {
     j = 1+2;
   } else {
