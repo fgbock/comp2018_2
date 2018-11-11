@@ -158,15 +158,17 @@ void generate_local_var_code(ast_node* node)
 	{
 		generate_comment("Initializing local variable with int literal");
 		char* temp_register = next_register();
-		printf("addI rbss, %d => %s\n", lhs_out->variavel.offset_in_bytes, temp_register);
-		printf("loadI %d => %s\n", optional_value_definition->int_literal, temp_register);
+		char* temp_register_2 = next_register();
+		printf("addI rfp, %d => %s\n", lhs_out->variavel.offset_in_bytes, temp_register);
+		printf("loadI %d => %s\n", optional_value_definition->int_literal, temp_register_2);
+		printf("store %s => %s\n", temp_register_2, temp_register);
 	}
 	else if (optional_value_definition->type == NODE_IDENTIFIER)
 	{
 		generate_comment("Initializing local variable with another variable");
 		char* rhs_value_register_name = generate_variable_load_code(optional_value_definition->string_literal);
 		char* lhs_memory_address_register = next_register();
-		printf("addI rbbs, %d => %s\n", lhs_out->variavel.offset_in_bytes, lhs_memory_address_register);
+		printf("addI rfp, %d => %s\n", lhs_out->variavel.offset_in_bytes, lhs_memory_address_register);
 		printf("store %s => %s\n", lhs_memory_address_register, rhs_value_register_name);
 	}
 }
