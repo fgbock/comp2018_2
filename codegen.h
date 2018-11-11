@@ -34,6 +34,9 @@ void generate_local_var_code(ast_node* node);
 
 void generate_comment(char* comment);
 
+// Returns register with value
+char* generate_variable_load_code(char* variable_identifier);
+
 char* next_register();
 
 char* next_label();

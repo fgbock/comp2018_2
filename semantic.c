@@ -51,10 +51,12 @@ void set_arithmetic_semantic(ast_node* node) {
     if (lhs_nature == NATUREZA_IDENTIFICADOR)
     {
         check_arithmetic_identifier_semantic(lhs_node);
+        return;
     }
     if (rhs_nature == NATUREZA_IDENTIFICADOR)
     {
         check_arithmetic_identifier_semantic(rhs_node);
+        return;
     }
 
     // Errors:

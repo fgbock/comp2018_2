@@ -126,6 +126,28 @@ void generate_code(ast_node* node)
     }
 }
 
+char* generate_variable_load_code(char* variable_identifier)
+{
+	char* register_name = next_register();
+	char* variable_address_register_name = next_register();
+	t_entrada_simbolo* out;
+	scope_stack_get(&scope_stack, &out, variable_identifier);
+
+	if (out->variavel.is_global_var)
+	{
+    	// Endereço de variáveis globais são um deslocamento em relação ao registrador especial rbss
+		printf("addI rbss, %d => %s\n", out->variavel.offset_in_bytes, variable_address_register_name);
+	}
+	else
+	{
+		// Endereço de variáveis locais são um deslocamento em relação ao registrador especial rfp
+		printf("addI rfp, %d => %s\n", out->variavel.offset_in_bytes, variable_address_register_name);
+	}
+	printf("load %s => %s\n", variable_address_register_name, register_name);
+
+	return register_name;
+}
+
 void generate_local_var_code(ast_node* node)
 {
 	t_entrada_simbolo* lhs_out;
@@ -142,19 +164,10 @@ void generate_local_var_code(ast_node* node)
 	else if (optional_value_definition->type == NODE_IDENTIFIER)
 	{
 		generate_comment("Initializing local variable with another variable");
-		t_entrada_simbolo* rhs_out;
-		scope_stack_get(&scope_stack, &rhs_out, optional_value_definition->string_literal);
-
-		generate_comment("Loading rhs value");
-		char* rhs_value_register = next_register();
-		char* rhs_memory_address_register = next_register();
-		printf("addI rbss, %d => %s\n", rhs_out->variavel.offset_in_bytes, rhs_memory_address_register);
-		printf("load %s => %s\n", rhs_memory_address_register, rhs_value_register);
-
-		generate_comment("Storing into lhs variable");
+		char* rhs_value_register_name = generate_variable_load_code(optional_value_definition->string_literal);
 		char* lhs_memory_address_register = next_register();
 		printf("addI rbbs, %d => %s\n", lhs_out->variavel.offset_in_bytes, lhs_memory_address_register);
-		printf("store %s => %s\n", lhs_memory_address_register, rhs_value_register);
+		printf("store %s => %s\n", lhs_memory_address_register, rhs_value_register_name);
 	}
 }
 
@@ -178,7 +191,7 @@ void generate_assignment_code(ast_node* node)
 		// Endereço de variáveis locais são um deslocamento em relação ao registrador especial rfp
 		printf("addI rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
 	}
-	printf("store %s => %d\n", temp_register, out->variavel.offset_in_bytes);
+	printf("store %s => %s\n", node->child[3]->register_name, temp_register);
 }
 
 void generate_and_code(ast_node* node)
@@ -323,13 +336,8 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 
 void generate_var_access(ast_node* node)
 {
-	//printf("generate_var_access\n");
-    t_entrada_simbolo* out;
-    //scope_stack_get(&scope_stack, &out, node->string_literal);
-	node->register_name = next_register();
-    //out->variavel.tipo.
-    //node->child[0]; // Identifier
-    //node->child[2]; // Optional vector access
+	ast_node* var_identifier_node = node->child[0];
+	node->register_name = generate_variable_load_code(var_identifier_node->string_literal);
 }
 
 void generate_binary_op(ast_node* node, char* instruction_name)
