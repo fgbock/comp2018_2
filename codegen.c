@@ -211,7 +211,7 @@ void generate_and_code(ast_node* node)
 	generate_comment("lhs:");
 	generate_code(lhs);
 
-	printf("%s:\n", rhs->true_label);
+	printf("%s:\n", lhs->true_label);
 	generate_comment("rhs:");
 	generate_code(rhs);
 	generate_comment("'and' end");
