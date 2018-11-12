@@ -1,0 +1,17 @@
+a int;
+b int;
+c int;
+d int;
+
+int main() {
+  a = 10;
+  b = 13;
+  c = 15;
+  d = 17;
+  int aa <= 19;
+  int bb <= 21;
+  int cc <= 23;
+  int dd <= 25;
+}
+
+

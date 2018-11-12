@@ -1,9 +1,0 @@
-i int;
-
-int main() {
-  int j <= 4;
-  i = 0;
-  if (j > 2 & i < 1) then {
-    a = a * 1;
-  }
-}

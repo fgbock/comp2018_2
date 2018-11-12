@@ -1,0 +1,10 @@
+int main() {
+  int a <= 1;
+  int b <= 0;
+  int c;
+  if ((a >= 1) || (b >= 1)) then {
+    c = 222;
+  } else {
+    c = 111;
+  };
+}

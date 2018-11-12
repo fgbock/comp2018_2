@@ -1,0 +1,44 @@
+// Initializing local variable with int literal 
+addI rfp, 0 => r1
+loadI 6 => r2
+store r2 => r1
+// Initializing local variable with int literal 
+addI rfp, 4 => r3
+loadI 3 => r4
+store r4 => r3
+// rhs of the assignment 
+addI rfp, 0 => r6
+load r6 => r5
+addI rfp, 4 => r8
+load r8 => r7
+add r5, r7 => r9
+// Storing the rhs into the variable 
+addI rfp, 8 => r10
+store r9 => r10
+// rhs of the assignment 
+addI rfp, 0 => r12
+load r12 => r11
+addI rfp, 4 => r14
+load r14 => r13
+sub r11, r13 => r15
+// Storing the rhs into the variable 
+addI rfp, 12 => r16
+store r15 => r16
+// rhs of the assignment 
+addI rfp, 0 => r18
+load r18 => r17
+addI rfp, 4 => r20
+load r20 => r19
+mult r17, r19 => r21
+// Storing the rhs into the variable 
+addI rfp, 16 => r22
+store r21 => r22
+// rhs of the assignment 
+addI rfp, 0 => r24
+load r24 => r23
+addI rfp, 4 => r26
+load r26 => r25
+div r23, r25 => r27
+// Storing the rhs into the variable 
+addI rfp, 20 => r28
+store r27 => r28
