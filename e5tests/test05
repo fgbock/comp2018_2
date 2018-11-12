@@ -1,0 +1,10 @@
+int main() {
+  int a <= 0;
+  int b <= 24;
+  int c [10];
+  while(a < b)
+  do {
+    a = a + 1;
+    c [a] = b - 1;
+  };
+}
