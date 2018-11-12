@@ -1,0 +1,30 @@
+int main() {
+  int a <= 0;
+  int b <= 0;
+  int ff <= 0;
+  int tf <= 0;
+  int ft <= 0;
+  int tt <= 0;
+
+  if ((a == 1) && (b == 1 )) then {
+    ff = 1;
+  };
+
+  a = 1;
+  if ((a == 1) && (b == 1 )) then {
+    tf = 1;
+  };
+
+  b = 1;
+  if ((a == 1) && (b == 1 )) then {
+    tt = 1;
+  };
+
+  a = 0;
+  if ((a == 1) && (b == 1 )) then {
+    ft = 1;
+  };
+
+  a = 123;
+  b = 123;
+}
