@@ -8,6 +8,7 @@ void set_arithmetic_semantic(ast_node* node) {
     ast_node* rhs_node = node->child[1];
     int lhs_nature = node->child[0]->semantic_nature;
     int rhs_nature = node->child[1]->semantic_nature;
+    return;
     
     // int, int -> int
     if (lhs_nature == NATUREZA_LITERAL_INT && rhs_nature == NATUREZA_LITERAL_INT)
