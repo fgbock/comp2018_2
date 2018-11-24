@@ -9,9 +9,9 @@ void generate(ast_node* root)
 void generate_bootstrap_code()
 {
 	generate_comment("Initialize pointers");
-	printf("loadI 0 => rfp");
-	printf("loadI 0 => rsp");
-	printf("loadI 0 => rbss");
+	printf("loadI 0 => rfp\n");
+	printf("loadI 0 => rsp\n");
+	printf("loadI 0 => rbss\n");
 }
 
 void generate_code(ast_node* node)
@@ -146,9 +146,8 @@ void generate_code(ast_node* node)
 
 void generate_function_call(ast_node* node)
 {
-	assert(node->type == NODE_FUNCTION_CALL);
     char* function_identifier = node->child[0]->string_literal;
-	printf("// Calling function %d\n", function_identifier);
+	printf("// Calling function %s\n", function_identifier);
 
 	ast_node* argument_node = node->child[1];
 	while(argument_node->type == NODE_ARGUMENT_LIST)
