@@ -170,6 +170,19 @@ void print_table(t_symbol_table* table)
 						break;
 				}
 			}
+			if (table_entry->classe_entrada == T_ENTRADA_DECLARACAO_FUNCAO){
+				t_lista* t_aux = table_entry->funcao.parameters;
+				while (t_aux != NULL){
+					printf("WOWIE\n");
+                                        t_argumento* arg = (t_argumento *)t_aux->conteudo;
+					//printf("%d\n", arg);
+                                        if (arg == NULL) break;
+					printf("Variable type: %d\n", arg->arg_tipo.natureza_semantica);
+					printf("Variable name: %s\n", arg->identificador);
+					t_aux = t_aux->prox;
+				}
+				printf("Return Type: %d\n", table_entry->funcao.return_type.natureza_semantica);
+			}
 		}
 		p = p->prox;
 	}

@@ -469,42 +469,51 @@ void set_function_definition_semantic(ast_node* node)
 	
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
-	/*
+
     // Create parameters list
-    if (node->child[3]->type == NODE_ARGUMENT_LIST)
+    ast_node* function_signature = node->child[0];
+    if (function_signature->child[3]->type == NODE_ARGUMENT_LIST)
     {
     
         // Create root and add first parameter
         function_definition.parameters = create_list();
         t_tipo* parameter_type = malloc(sizeof(t_tipo));
-        *parameter_type = from_node_type_to_table_type(node->child[3]->child[0]);
+        *parameter_type = from_node_type_to_table_type(function_signature->child[3]->child[0]->child[2]);
         add_list(function_definition.parameters, parameter_type);
 		
         // Add next parameters
-        ast_node* argument_list = node->child[3];
-        while (argument_list->type == NODE_ARGUMENT_LIST)
+        ast_node* argument_list = function_signature->child[3];
+	int i = 1;
+        while (argument_list->child[i]->type == NODE_ARGUMENT)
         {
-        	// Get data from ast node
+	    /*
+            // Get data from ast node
             ast_node* parameter_ast_node = argument_list->child[0]; // head
             argument_list = argument_list->child[1]; // tail
+	    
 
             // Load parameter type from ast_node and add on the list
             t_tipo* parameter_type = malloc(sizeof(t_tipo));
             *parameter_type = from_node_type_to_table_type(parameter_ast_node);
             
-            // Add to parameter list
+	    */
+	    *parameter_type = from_node_type_to_table_type(argument_list->child[i]->child[2]);
             add_list(function_definition.parameters, parameter_type);
+            // Add to parameter list
+	    i++;
         }
     }
-    */
+    
 
     t_tipo return_type = from_node_type_to_table_type(function_header_node->child[1]);
     return_type.is_const = 0;
     return_type.is_static = function_header_node->child[0]->type == NODE_STATIC;
     table_entry->chave = function_identifier;
     table_entry->classe_entrada = T_ENTRADA_DECLARACAO_FUNCAO;
-    table_entry->funcao.return_type = return_type;
+    
     table_entry->funcao = function_definition;
+    table_entry->funcao.return_type = return_type;
+    
     scope_stack_set(&scope_stack, table_entry);
     
     node->semantic_nature = NATUREZA_NULL;
