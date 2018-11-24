@@ -19,7 +19,7 @@ int main (int argc, char **argv)
   int ret = yyparse();
   //descompila(arvore);
   //printree(arvore, 0, 0);
-  generate_code((ast_node*)arvore);
+  generate((ast_node*)arvore);
   //libera(arvore);
   //yylex_destroy();
   return ret;

@@ -1,5 +1,19 @@
 #include "codegen.h"
 
+void generate(ast_node* root) 
+{
+	generate_bootstrap_code();
+	generate_code(root);
+}
+
+void generate_bootstrap_code()
+{
+	generate_comment("Initialize pointers");
+	printf("loadI 0 => rfp");
+	printf("loadI 0 => rsp");
+	printf("loadI 0 => rbss");
+}
+
 void generate_code(ast_node* node)
 {
 	if (node == NULL)
@@ -25,8 +39,12 @@ void generate_code(ast_node* node)
 			generate_code(node->child[0]);
 		break;
 
+		case NODE_FUNCTION_CALL:
+			generate_function_call(node);
+		break;
+
       	case NODE_FUNCTION_DEFINITION:
-            generate_code(node->child[1]); // Body
+		  	generate_function_definition(node);
       	break;
 
 		case NODE_FUNCTION_BODY:
@@ -124,6 +142,31 @@ void generate_code(ast_node* node)
             printf("loadI %d => %s\n", node->int_literal, node->register_name);
        	break;
     }
+}
+
+void generate_function_call(ast_node* node)
+{
+	assert(node->type == NODE_FUNCTION_CALL);
+    char* function_identifier = node->child[0]->string_literal;
+	printf("// Calling function %d\n", function_identifier);
+
+	ast_node* argument_node = node->child[1];
+	while(argument_node->type == NODE_ARGUMENT_LIST)
+	{
+		char* register_name = next_register();
+		generate_code(argument_node->child[0]);
+
+		// TODO: Load from register to register activation
+		// argument_node->register_name
+	
+		// Next argument
+		argument_node = argument_node->child[1];
+	}
+}
+
+void generate_function_definition(ast_node* node)
+{
+	generate_code(node->child[1]); // Body
 }
 
 char* generate_variable_load_code(char* variable_identifier)
