@@ -470,37 +470,28 @@ void set_function_definition_semantic(ast_node* node)
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
 
-    // Create parameters list
-    ast_node* function_signature = node->child[0];
-    if (function_signature->child[3]->type == NODE_ARGUMENT_LIST)
+    // Create parameters list 
+    if (function_header_node->child[3]->type == NODE_ARGUMENT_LIST)
     {
-    
         // Create root and add first parameter
         function_definition.parameters = create_list();
-        t_tipo* parameter_type = malloc(sizeof(t_tipo));
-        *parameter_type = from_node_type_to_table_type(function_signature->child[3]->child[0]->child[2]);
-        add_list(function_definition.parameters, parameter_type);
+        t_argumento* arg = malloc(sizeof(t_argumento));
+        arg->identificador = function_header_node->child[3]->child[0]->child[3]->string_literal;
+        add_list(function_definition.parameters, arg);
 		
         // Add next parameters
-        ast_node* argument_list = function_signature->child[3];
-	int i = 1;
-        while (argument_list->child[i]->type == NODE_ARGUMENT)
+        ast_node* argument_list = function_header_node->child[3]->child[1];
+        while (argument_list->type == NODE_ARGUMENT_LIST)
         {
-	    /*
-            // Get data from ast node
-            ast_node* parameter_ast_node = argument_list->child[0]; // head
-            argument_list = argument_list->child[1]; // tail
-	    
+            // Load parameter type from ast_node
+            t_argumento* parameter_type = malloc(sizeof(t_argumento));
+            parameter_type->identificador = argument_list->child[0]->child[3]->string_literal;
 
-            // Load parameter type from ast_node and add on the list
-            t_tipo* parameter_type = malloc(sizeof(t_tipo));
-            *parameter_type = from_node_type_to_table_type(parameter_ast_node);
-            
-	    */
-	    *parameter_type = from_node_type_to_table_type(argument_list->child[i]->child[2]);
-            add_list(function_definition.parameters, parameter_type);
             // Add to parameter list
-	    i++;
+            add_list(function_definition.parameters, parameter_type);
+            
+            // Next
+	        argument_list = argument_list->child[1];
         }
     }
     

@@ -10,6 +10,12 @@ t_lista* create_list()
 
 void add_list(t_lista* list, void* data)
 {
+	if (list->conteudo == NULL)
+	{
+		list->conteudo = data;
+		return;
+	}
+	
 	t_lista* entrada_prev;
 	t_lista* entrada = list;
     while(entrada != NULL)
