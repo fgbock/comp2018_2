@@ -1,6 +1,7 @@
 #ifndef CODEGEN
 #define CODEGEN
 
+#include <stdarg.h>
 #include "./arvore.h"
 #include "./scope_stack.h"
 
@@ -9,6 +10,8 @@ extern t_scope_stack scope_stack;
 void generate(ast_node* root);
 
 // Private
+
+void instruction(const char *format, ...);
 
 void generate_code(ast_node* node);
 
