@@ -17,7 +17,7 @@ int main (int argc, char **argv)
 {
   scope_stack_push_scope(&scope_stack, 1);
   int ret = yyparse();
-  // descompila(arvore);
+  //descompila(arvore);
   //printree(arvore, 0, 0);
   generate((ast_node*)arvore);
   //libera(arvore);

@@ -2,7 +2,7 @@
 
 int current_instruction = 0;
 
-void generate(ast_node* root) 
+void generate(ast_node* root)
 {
 	generate_bootstrap_code();
 	generate_code(root);
@@ -102,7 +102,7 @@ void generate_code(ast_node* node)
 		case NODE_GREATER:
 			generate_relational_op(node, "cmp_GT");
 		break;
-			
+
 		case NODE_GE:
 			generate_relational_op(node, "cmp_GE");
 		break;
@@ -171,12 +171,12 @@ void generate_function_call(ast_node* node)
 
 		// TODO: Load from register to register activation
 		// argument_node->register_name
-	
+
 		// Next argument
 		argument_node = argument_node->child[1];
 	}
 
-	instruction("jumpI -> %s\n"), function_identifier;
+	instruction("jumpI -> L%s\n", function_identifier);
 }
 
 void generate_function_definition(ast_node* node)
@@ -385,8 +385,8 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 	node->register_name = next_register();
 	generate_code(node->child[0]);
 	generate_code(node->child[1]);
-	instruction("%s %s, %s -> %s\n", 
-		instruction_code, 
+	instruction("%s %s, %s -> %s\n",
+		instruction_code,
 		node->child[0]->register_name,
 		node->child[1]->register_name,
 		node->register_name);
@@ -399,9 +399,9 @@ void generate_relational_op(ast_node* node, char* instruction_code)
 void generate_var_access(ast_node* node)
 {
 	ast_node* var_identifier_node = node->child[0];
-	printf("loading var %s\n", var_identifier_node->string_literal);
+	//printf("loading var %s\n", var_identifier_node->string_literal);
 	node->register_name = generate_variable_load_code(var_identifier_node->string_literal);
-	printf("loaded\n");
+	//printf("loaded\n");
 }
 
 void generate_binary_op(ast_node* node, char* instruction_name)
@@ -409,10 +409,10 @@ void generate_binary_op(ast_node* node, char* instruction_name)
     generate_code(node->child[0]);
     generate_code(node->child[1]);
     node->register_name = next_register();
-    instruction("%s %s, %s => %s\n", 
+    instruction("%s %s, %s => %s\n",
         instruction_name,
-        node->child[0]->register_name, 
-        node->child[1]->register_name, 
+        node->child[0]->register_name,
+        node->child[1]->register_name,
         node->register_name
 	);
 }

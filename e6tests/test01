@@ -1,8 +1,8 @@
-int mult (int z, int w)
+int mult()
 {
-  int x;
-  x = z * w;
-  return x;
+  int z;
+  z = z * 5;
+  return z;
 }
 
 int main()
@@ -10,5 +10,5 @@ int main()
   int x;
   int y;
   x = 2;
-  y = mult(x, x);
+  y = mult();
 }
