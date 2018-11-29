@@ -1,0 +1,29 @@
+// Initialize pointers 
+loadI 0 => rfp
+loadI 0 => rsp
+loadI 0 => rbss
+// Start functon definition 
+Lmult:
+// rhs of the assignment 
+addI rfp, 0 => r2
+load r2 => r1
+loadI 5 => r3
+mult r1, r3 => r4
+// Storing the rhs into the variable 
+addI rfp, 0 => r5
+store r4 => r5
+// End functon definition 
+// Start functon definition 
+Lmain:
+// rhs of the assignment 
+loadI 2 => r6
+// Storing the rhs into the variable 
+addI rfp, 4 => r7
+store r6 => r7
+// rhs of the assignment 
+// Calling function mult
+jumpI -> Lmult
+// Storing the rhs into the variable 
+addI rfp, 8 => r9
+store r8 => r9
+// End functon definition 

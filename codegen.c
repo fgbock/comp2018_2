@@ -175,7 +175,7 @@ void generate_function_call(ast_node* node)
 		// Next argument
 		argument_node = argument_node->child[1];
 	}
-
+	node->register_name = next_register();
 	instruction("jumpI -> L%s\n", function_identifier);
 }
 
@@ -254,7 +254,10 @@ void generate_assignment_code(ast_node* node)
 		// Endereço de variáveis locais são um deslocamento em relação ao registrador especial rfp
 		instruction("addI rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
 	}
-	instruction("store %s => %s\n", node->child[3]->register_name, temp_register);
+	if(node->child[3]->type == NODE_FUNCTION_CALL){
+		instruction("store %s => %s\n", node->child[3]->register_name, temp_register);
+	}
+	else instruction("store %s => %s\n", node->child[3]->register_name, temp_register);
 }
 
 void generate_and_code(ast_node* node)
