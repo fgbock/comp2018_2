@@ -1,29 +1,53 @@
 // Initialize pointers 
 loadI 0 => rfp
-loadI 0 => rsp
+loadI 10000 => rsp
 loadI 0 => rbss
+loadI 16 => r100
+loadI 24 => r101
 // Start functon definition 
 Lmult:
 // rhs of the assignment 
-addI rfp, 0 => r2
-load r2 => r1
-loadI 5 => r3
-mult r1, r3 => r4
+loadI 2 => r2
 // Storing the rhs into the variable 
+addI rfp, 0 => r3
+store r2 => r3
+// rhs of the assignment 
 addI rfp, 0 => r5
-store r4 => r5
+load r5 => r4
+loadI 5 => r6
+mult r4, r6 => r7
+// Storing the rhs into the variable 
+addI rfp, 0 => r8
+store r7 => r8
+// rhs of the return 
+addI rfp, 0 => r10
+load r10 => r9
+i2i rsp => r12
+addI rsp, 4 => rsp
+store r9 => r12
+load rsp => r11
+addI r11, 16 => rsp
+addI rsp, 4 => rsp
+jump -> r11
 // End functon definition 
 // Start functon definition 
 Lmain:
 // rhs of the assignment 
-loadI 2 => r6
+loadI 2 => r14
 // Storing the rhs into the variable 
-addI rfp, 4 => r7
-store r6 => r7
+addI rfp, 4 => r15
+store r14 => r15
 // rhs of the assignment 
 // Calling function mult
+subI rsp, 4 => rsp
+store rpc => rsp
+subI rsp, 4 => rsp
 jumpI -> Lmult
+subI rsp, 8 => rsp
+i2i rsp => r16
+addI rsp, 8 => rsp
 // Storing the rhs into the variable 
-addI rfp, 8 => r9
-store r8 => r9
+addI rfp, 8 => r17
+load r16 => r18
+store r18 => r17
 // End functon definition 

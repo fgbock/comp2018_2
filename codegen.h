@@ -5,6 +5,8 @@
 #include "./arvore.h"
 #include "./scope_stack.h"
 
+
+
 extern t_scope_stack scope_stack;
 
 void generate(ast_node* root);
@@ -12,6 +14,8 @@ void generate(ast_node* root);
 // Private
 
 void instruction(const char *format, ...);
+
+void generate_return_op(ast_node* node);
 
 void generate_code(ast_node* node);
 

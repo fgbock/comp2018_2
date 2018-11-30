@@ -12,8 +12,10 @@ void generate_bootstrap_code()
 {
 	generate_comment("Initialize pointers");
 	instruction("loadI 0 => rfp\n");
-	instruction("loadI 0 => rsp\n");
+	instruction("loadI 10000 => rsp\n");
 	instruction("loadI 0 => rbss\n");
+	instruction("loadI 16 => r100\n");
+	instruction("loadI 24 => r101\n");
 }
 
 void generate_code(ast_node* node)
@@ -25,6 +27,7 @@ void generate_code(ast_node* node)
     switch (node->type)
     {
         case NODE_PROGRAM:
+
             generate_code(node->child[0]);
             generate_code(node->child[1]);
       	break;
@@ -143,6 +146,10 @@ void generate_code(ast_node* node)
          	node->register_name = next_register();
             instruction("loadI %d => %s\n", node->int_literal, node->register_name);
        	break;
+
+				case NODE_RETURN:
+					generate_return_op(node);
+				break;
     }
 }
 
@@ -156,6 +163,27 @@ void instruction(const char *format, ...)
 	va_start(arglist, format);
 	vprintf(format, arglist);
 	va_end(arglist);
+}
+void generate_return_op(ast_node* node){
+	generate_comment("rhs of the return");
+	generate_code(node->child[0]); // rhs
+	char* return_addr = next_register();
+	char* return_var = next_register();
+	//pop
+	instruction("i2i rsp => %s\n", return_var);
+	instruction("addI rsp, 4 => rsp\n");
+	//
+	if(node->child[0]->type == NODE_FUNCTION_CALL){
+		instruction("store %s => %s\n", node->child[0]->register_name, return_var);
+	}
+	else instruction("store %s => %s\n", node->child[0]->register_name, return_var);
+
+	instruction("load rsp => %s\n", return_addr);
+	instruction("addI %s, 16 => rsp\n", return_addr);
+	instruction("addI rsp, 4 => rsp\n");
+	instruction("jump -> %s\n", return_addr);
+	//instruction("jumpI -> L100\n");
+
 }
 
 void generate_function_call(ast_node* node)
@@ -176,12 +204,22 @@ void generate_function_call(ast_node* node)
 		argument_node = argument_node->child[1];
 	}
 	node->register_name = next_register();
+	//Push return addr and returnval
+	instruction("subI rsp, 4 => rsp\n");
+	instruction("store rpc => rsp\n");
+	instruction("subI rsp, 4 => rsp\n");
 	instruction("jumpI -> L%s\n", function_identifier);
+	// Get return value
+//	instruction("L100:\n");
+	instruction("subI rsp, 8 => rsp\n");
+	instruction("i2i rsp => %s\n", node->register_name);
+	instruction("addI rsp, 8 => rsp\n");
 }
 
 void generate_function_definition(ast_node* node)
 {
 	generate_comment("Start functon definition");
+	node->register_name = next_register();
 	instruction("L%s:\n", node->child[0]->child[2]->string_literal);
 	generate_code(node->child[1]); // Body
 	generate_comment("End functon definition");
@@ -255,7 +293,9 @@ void generate_assignment_code(ast_node* node)
 		instruction("addI rfp, %d => %s\n", out->variavel.offset_in_bytes, temp_register);
 	}
 	if(node->child[3]->type == NODE_FUNCTION_CALL){
-		instruction("store %s => %s\n", node->child[3]->register_name, temp_register);
+		char* temp_register2 = next_register();
+		instruction("load %s => %s\n", node->child[3]->register_name, temp_register2);
+		instruction("store %s => %s\n", temp_register2, temp_register);
 	}
 	else instruction("store %s => %s\n", node->child[3]->register_name, temp_register);
 }
