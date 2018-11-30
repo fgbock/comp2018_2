@@ -2,6 +2,7 @@
 loadI 0 => rfp
 loadI 1000 => rsp
 loadI 0 => rbss
+jumpI => Lmain
 // Start functon definition 
 Lmult:
 // rhs of the assignment 
@@ -20,15 +21,18 @@ store r7 => r8
 // rhs of the return 
 addI rfp, 0 => r10
 load r10 => r9
-jumpI -> Ltest
+load rsp => r11
+addI rsp, 4 => rsp
+addI r11, 2 => r11
+jump -> r11
 // End functon definition 
 // Start functon definition 
 Lmain:
 // rhs of the assignment 
 // Calling function mult
+subI rsp, 4 => rsp
 store rpc => rsp
 jumpI -> Lmult
-Ltest:
 // Storing the rhs into the variable 
 addI rfp, 4 => r15
 load r14 => r16

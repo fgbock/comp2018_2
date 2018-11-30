@@ -14,6 +14,7 @@ void generate_bootstrap_code()
 	instruction("loadI 0 => rfp\n");
 	instruction("loadI 1000 => rsp\n");
 	instruction("loadI 0 => rbss\n");
+	instruction("jumpI => Lmain\n");
 }
 
 void generate_code(ast_node* node)
@@ -170,8 +171,8 @@ void generate_return_op(ast_node* node){
 
 	// Pop stack, increment old Program Counter by two to skip jump, increment stack pointer, jump to caller (PC)
 	instruction("load rsp => %s\n", ret_addr);
-	instruction("addI %s, 2 => %s\n",ret_addr,ret_addr);
 	instruction("addI rsp, 4 => rsp\n");
+	instruction("addI %s, 2 => %s\n",ret_addr,ret_addr);
 	instruction("jump -> %s\n", ret_addr);
 
 }
@@ -196,8 +197,8 @@ void generate_function_call(ast_node* node)
 	node->register_name = next_register();
 
 	//Push Program Counter (PC) into stack pointer addr, subtract stack pointer, jump to function
+	instruction("subI rsp, 4 => rsp\n");
 	instruction("store rpc => rsp\n");
-	instruction("subI rpc, 4 => rsp\n");
 	instruction("jumpI -> L%s\n", function_identifier);
 }
 
