@@ -22,11 +22,7 @@ store r7 => r8
 // rhs of the return 
 addI rfp, 0 => r10
 load r10 => r9
-i2i rsp => r12
-addI rsp, 4 => rsp
-store r9 => r12
 load rsp => r11
-addI r11, 16 => rsp
 addI rsp, 4 => rsp
 jump -> r11
 // End functon definition 
@@ -40,12 +36,8 @@ store r14 => r15
 // rhs of the assignment 
 // Calling function mult
 subI rsp, 4 => rsp
-store rpc => rsp
-subI rsp, 4 => rsp
+i2i rpc => rsp
 jumpI -> Lmult
-subI rsp, 8 => rsp
-i2i rsp => r16
-addI rsp, 8 => rsp
 // Storing the rhs into the variable 
 addI rfp, 8 => r17
 load r16 => r18

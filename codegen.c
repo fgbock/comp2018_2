@@ -14,8 +14,6 @@ void generate_bootstrap_code()
 	instruction("loadI 0 => rfp\n");
 	instruction("loadI 10000 => rsp\n");
 	instruction("loadI 0 => rbss\n");
-	instruction("loadI 16 => r100\n");
-	instruction("loadI 24 => r101\n");
 }
 
 void generate_code(ast_node* node)
@@ -170,6 +168,7 @@ void generate_return_op(ast_node* node){
 	char* return_addr = next_register();
 	char* return_var = next_register();
 	//pop
+	/*
 	instruction("i2i rsp => %s\n", return_var);
 	instruction("addI rsp, 4 => rsp\n");
 	//
@@ -182,8 +181,10 @@ void generate_return_op(ast_node* node){
 	instruction("addI %s, 16 => rsp\n", return_addr);
 	instruction("addI rsp, 4 => rsp\n");
 	instruction("jump -> %s\n", return_addr);
-	//instruction("jumpI -> L100\n");
-
+	*/
+	instruction("load rsp => %s\n", return_addr);
+		instruction("addI rsp, 4 => rsp\n");
+	instruction("jump -> %s\n", return_addr);
 }
 
 void generate_function_call(ast_node* node)
@@ -206,14 +207,14 @@ void generate_function_call(ast_node* node)
 	node->register_name = next_register();
 	//Push return addr and returnval
 	instruction("subI rsp, 4 => rsp\n");
-	instruction("store rpc => rsp\n");
-	instruction("subI rsp, 4 => rsp\n");
+	instruction("i2i rpc => rsp\n");
+//	instruction("subI rsp, 4 => rsp\n");
 	instruction("jumpI -> L%s\n", function_identifier);
 	// Get return value
-//	instruction("L100:\n");
+	/*
 	instruction("subI rsp, 8 => rsp\n");
 	instruction("i2i rsp => %s\n", node->register_name);
-	instruction("addI rsp, 8 => rsp\n");
+	instruction("addI rsp, 8 => rsp\n");*/
 }
 
 void generate_function_definition(ast_node* node)
