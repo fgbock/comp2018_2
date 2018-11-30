@@ -1,0 +1,31 @@
+int f1()
+{
+  int x;
+  x = 12;
+  return x;
+}
+
+int f2()
+{
+  int z;
+  z = f1();
+  z = z + 2;
+  return z;
+}
+
+int f3()
+{
+  int p;
+  p = f2();
+  p = z + 2;
+  return p;
+}
+
+
+int main()
+{
+  int y;
+  y = 0;
+  y = f3();
+  y = y * 3;
+}
