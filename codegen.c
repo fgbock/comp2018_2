@@ -12,7 +12,7 @@ void generate_bootstrap_code()
 {
 	generate_comment("Initialize pointers");
 	instruction("loadI 0 => rfp\n");
-	instruction("loadI 10000 => rsp\n");
+	instruction("loadI 1000 => rsp\n");
 	instruction("loadI 0 => rbss\n");
 }
 
@@ -165,26 +165,15 @@ void instruction(const char *format, ...)
 void generate_return_op(ast_node* node){
 	generate_comment("rhs of the return");
 	generate_code(node->child[0]); // rhs
-	char* return_addr = next_register();
-	char* return_var = next_register();
-	//pop
-	/*
-	instruction("i2i rsp => %s\n", return_var);
-	instruction("addI rsp, 4 => rsp\n");
-	//
-	if(node->child[0]->type == NODE_FUNCTION_CALL){
-		instruction("store %s => %s\n", node->child[0]->register_name, return_var);
-	}
-	else instruction("store %s => %s\n", node->child[0]->register_name, return_var);
+	char* ret_addr = next_register();
+	char* ret_val = next_register();
 
-	instruction("load rsp => %s\n", return_addr);
-	instruction("addI %s, 16 => rsp\n", return_addr);
+	// Pop stack, increment old Program Counter by two to skip jump, increment stack pointer, jump to caller (PC)
+	instruction("load rsp => %s\n", ret_addr);
+	instruction("addI %s, 2 => %s\n",ret_addr,ret_addr);
 	instruction("addI rsp, 4 => rsp\n");
-	instruction("jump -> %s\n", return_addr);
-	*/
-	instruction("load rsp => %s\n", return_addr);
-		instruction("addI rsp, 4 => rsp\n");
-	instruction("jump -> %s\n", return_addr);
+	instruction("jump -> %s\n", ret_addr);
+
 }
 
 void generate_function_call(ast_node* node)
@@ -205,16 +194,11 @@ void generate_function_call(ast_node* node)
 		argument_node = argument_node->child[1];
 	}
 	node->register_name = next_register();
-	//Push return addr and returnval
-	instruction("subI rsp, 4 => rsp\n");
-	instruction("i2i rpc => rsp\n");
-//	instruction("subI rsp, 4 => rsp\n");
+
+	//Push Program Counter (PC) into stack pointer addr, subtract stack pointer, jump to function
+	instruction("store rpc => rsp\n");
+	instruction("subI rpc, 4 => rsp\n");
 	instruction("jumpI -> L%s\n", function_identifier);
-	// Get return value
-	/*
-	instruction("subI rsp, 8 => rsp\n");
-	instruction("i2i rsp => %s\n", node->register_name);
-	instruction("addI rsp, 8 => rsp\n");*/
 }
 
 void generate_function_definition(ast_node* node)
