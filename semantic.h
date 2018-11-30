@@ -89,7 +89,7 @@ void set_assignment_semantic(ast_node* node);
 
 void set_program_semantic();
 
-void set_new_scope_semantic();
+void set_function_signature_semantic(ast_node* node);
 
 void set_node_parenthesis();
 

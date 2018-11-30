@@ -443,7 +443,7 @@ void set_new_user_type_semantic(ast_node* node)
     node->semantic_nature = NATUREZA_NULL;
 }
 
-void set_new_scope_semantic()
+void set_function_signature_semantic(ast_node* node)
 {
     scope_stack_push_scope(&scope_stack, 0);
 }
@@ -457,7 +457,6 @@ void set_function_definition_semantic(ast_node* node)
     ast_node* function_header_node = node->child[0];
     char* function_identifier = function_header_node->child[2]->string_literal;
 
-    
     // Check if already declared
     if (function_identifier != NULL)
     {
@@ -469,26 +468,35 @@ void set_function_definition_semantic(ast_node* node)
 	
     t_entrada_simbolo* table_entry = malloc(sizeof(t_entrada_simbolo));
     t_entrada_simbolo_funcao function_definition;
-
     // Create parameters list 
     if (function_header_node->child[3]->type == NODE_ARGUMENT_LIST)
     {
         // Create root and add first parameter
-        function_definition.parameters = create_list();
-        t_argumento* arg = malloc(sizeof(t_argumento));
-        arg->identificador = function_header_node->child[3]->child[0]->child[3]->string_literal;
-        add_list(function_definition.parameters, arg);
-		
+        t_entrada_simbolo* function_parameter_entry = malloc(sizeof(t_entrada_simbolo));
+
+        // function_definition.parameters = create_list();
+        // t_argumento* arg = malloc(sizeof(t_argumento));
+        // arg->identificador = function_header_node->child[3]->child[0]->child[3]->string_literal;
+        // add_list(function_definition.parameters, arg);
+
+        function_parameter_entry->classe_entrada = T_ENTRADA_VARIAVEL;
+        function_parameter_entry->chave = function_header_node->child[3]->child[0]->child[3]->string_literal;
+        scope_stack_set(&scope_stack, function_parameter_entry);
+
         // Add next parameters
         ast_node* argument_list = function_header_node->child[3]->child[1];
         while (argument_list->type == NODE_ARGUMENT_LIST)
         {
+            function_parameter_entry = malloc(sizeof(t_entrada_simbolo));
+            function_parameter_entry->classe_entrada = T_ENTRADA_VARIAVEL;
+            function_parameter_entry->chave = function_header_node->child[3]->child[0]->child[3]->string_literal;
+            scope_stack_set(&scope_stack, function_parameter_entry);    
             // Load parameter type from ast_node
-            t_argumento* parameter_type = malloc(sizeof(t_argumento));
-            parameter_type->identificador = argument_list->child[0]->child[3]->string_literal;
+            // t_argumento* parameter_type = malloc(sizeof(t_argumento));
+            // parameter_type->identificador = argument_list->child[0]->child[3]->string_literal;
 
             // Add to parameter list
-            add_list(function_definition.parameters, parameter_type);
+            // add_list(function_definition.parameters, parameter_type);
             
             // Next
 	        argument_list = argument_list->child[1];
