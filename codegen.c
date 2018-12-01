@@ -170,9 +170,9 @@ void generate_return_op(ast_node* node){
 	char* ret_val = next_register();
 
 	// Pop stack, increment old Program Counter by two to skip jump, increment stack pointer, jump to caller (PC)
+	instruction("subI rsp, 4 => rsp\n");
 	instruction("load rsp => %s\n", ret_addr);
-	instruction("addI rsp, 4 => rsp\n");
-	instruction("addI %s, 2 => %s\n",ret_addr,ret_addr);
+	instruction("addI %s, 3 => %s\n",ret_addr,ret_addr);
 	instruction("jump -> %s\n", ret_addr);
 
 }
@@ -188,7 +188,7 @@ void generate_function_call(ast_node* node)
 		char* register_name = next_register();
 		generate_code(argument_node->child[0]);
 		char* var = argument_node->child[0]->register_name;
-		instruction("subI rsp, 4 => rsp\n");
+		instruction("addI rsp, 4 => rsp\n");
 		instruction("store %s => rsp\n", var);
 		// Next argument
 		argument_node = argument_node->child[1];
@@ -196,8 +196,8 @@ void generate_function_call(ast_node* node)
 	node->register_name = next_register();
 
 	//Push Program Counter (PC) into stack pointer addr, subtract stack pointer, jump to function
-	instruction("subI rsp, 4 => rsp\n");
 	instruction("store rpc => rsp\n");
+	instruction("addI rsp, 4 => rsp\n");
 	instruction("jumpI -> L%s\n", function_identifier);
 }
 

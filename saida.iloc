@@ -8,9 +8,9 @@ Lidentidade:
 // rhs of the return 
 addI rfp, 0 => r3
 load r3 => r2
+subI rsp, 4 => rsp
 load rsp => r4
-addI rsp, 4 => rsp
-addI r4, 2 => r4
+addI r4, 3 => r4
 jump -> r4
 // End functon definition 
 // Start functon definition 
@@ -21,9 +21,9 @@ load r8 => r7
 addI rfp, 0 => r10
 load r10 => r9
 add r7, r9 => r11
+subI rsp, 4 => rsp
 load rsp => r12
-addI rsp, 4 => rsp
-addI r12, 2 => r12
+addI r12, 3 => r12
 jump -> r12
 // End functon definition 
 // Start functon definition 
@@ -31,10 +31,10 @@ Lmain:
 // rhs of the assignment 
 // Calling function identidade
 loadI 10 => r16
-subI rsp, 4 => rsp
+addI rsp, 4 => rsp
 store r16 => rsp
-subI rsp, 4 => rsp
 store rpc => rsp
+addI rsp, 4 => rsp
 jumpI -> Lidentidade
 // Storing the rhs into the variable 
 addI rfp, 0 => r18
@@ -43,13 +43,13 @@ store r19 => r18
 // rhs of the assignment 
 // Calling function add
 loadI 10 => r21
-subI rsp, 4 => rsp
+addI rsp, 4 => rsp
 store r21 => rsp
 loadI 5 => r23
-subI rsp, 4 => rsp
+addI rsp, 4 => rsp
 store r23 => rsp
-subI rsp, 4 => rsp
 store rpc => rsp
+addI rsp, 4 => rsp
 jumpI -> Ladd
 // Storing the rhs into the variable 
 addI rfp, 4 => r25
