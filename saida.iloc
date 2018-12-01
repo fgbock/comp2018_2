@@ -4,37 +4,55 @@ loadI 1000 => rsp
 loadI 0 => rbss
 jumpI => Lmain
 // Start functon definition 
-Lmult:
-// rhs of the assignment 
-loadI 3 => r2
-// Storing the rhs into the variable 
-addI rfp, 0 => r3
-store r2 => r3
-// rhs of the assignment 
-addI rfp, 0 => r5
-load r5 => r4
-loadI 5 => r6
-mult r4, r6 => r7
-// Storing the rhs into the variable 
-addI rfp, 0 => r8
-store r7 => r8
+Lidentidade:
 // rhs of the return 
+addI rfp, 0 => r3
+load r3 => r2
+load rsp => r4
+addI rsp, 4 => rsp
+addI r4, 2 => r4
+jump -> r4
+// End functon definition 
+// Start functon definition 
+Ladd:
+// rhs of the return 
+addI rfp, 0 => r8
+load r8 => r7
 addI rfp, 0 => r10
 load r10 => r9
-load rsp => r11
+add r7, r9 => r11
+load rsp => r12
 addI rsp, 4 => rsp
-addI r11, 2 => r11
-jump -> r11
+addI r12, 2 => r12
+jump -> r12
 // End functon definition 
 // Start functon definition 
 Lmain:
 // rhs of the assignment 
-// Calling function mult
+// Calling function identidade
+loadI 10 => r16
+subI rsp, 4 => rsp
+store r16 => rsp
 subI rsp, 4 => rsp
 store rpc => rsp
-jumpI -> Lmult
+jumpI -> Lidentidade
 // Storing the rhs into the variable 
-addI rfp, 4 => r15
-load r14 => r16
-store r16 => r15
+addI rfp, 0 => r18
+load r17 => r19
+store r19 => r18
+// rhs of the assignment 
+// Calling function add
+loadI 10 => r21
+subI rsp, 4 => rsp
+store r21 => rsp
+loadI 5 => r23
+subI rsp, 4 => rsp
+store r23 => rsp
+subI rsp, 4 => rsp
+store rpc => rsp
+jumpI -> Ladd
+// Storing the rhs into the variable 
+addI rfp, 4 => r25
+load r24 => r26
+store r26 => r25
 // End functon definition 

@@ -187,10 +187,9 @@ void generate_function_call(ast_node* node)
 	{
 		char* register_name = next_register();
 		generate_code(argument_node->child[0]);
-
-		// TODO: Load from register to register activation
-		// argument_node->register_name
-
+		char* var = argument_node->child[0]->register_name;
+		instruction("subI rsp, 4 => rsp\n");
+		instruction("store %s => rsp\n", var);
 		// Next argument
 		argument_node = argument_node->child[1];
 	}
